@@ -184,28 +184,9 @@
     color: #fff;
   }
   .bar:hover { filter: brightness(1.25); transform: translateY(-50%) scaleY(1.12); }
-  .bar .bar-label {
-    position: absolute;
-    inset: 0 8px;
-    display: flex;
-    align-items: center;
-    overflow: hidden;
-    white-space: nowrap;
-  }
   .bar.final {
     background: repeating-linear-gradient(135deg, var(--bar-final) 0, var(--bar-final) 5px, #3d4498 5px, #3d4498 10px);
     box-shadow: 0 2px 10px rgba(74,82,176,.35);
-  }
-  .bar-chip {
-    position: absolute;
-    top: -13px;
-    left: 0;
-    font-size: 9.5px;
-    font-weight: 600;
-    letter-spacing: .4px;
-    color: #aab2f5;
-    white-space: nowrap;
-    pointer-events: none;
   }
   .bar.approx::after {
     content: "?";
@@ -229,19 +210,15 @@
     width: 2px;
     background: var(--reg);
     z-index: 5;
-    pointer-events: none;
+    cursor: help;
   }
-  .reg-chip {
+  .reg-mark::after {
+    content: "";
     position: absolute;
-    top: 2px;
-    left: 4px;
-    font-size: 9.5px;
-    font-weight: 600;
-    color: var(--reg);
-    white-space: nowrap;
-    background: rgba(14,20,32,.85);
-    padding: 1px 5px;
-    border-radius: 4px;
+    top: 0;
+    bottom: 0;
+    left: -5px;
+    right: -5px;
   }
 
   .today-line {
@@ -252,20 +229,6 @@
     background: var(--today);
     z-index: 25;
     pointer-events: none;
-  }
-  .today-line .today-chip {
-    position: sticky;
-    top: var(--header-h);
-    margin-top: 8px;
-    margin-left: -1px;
-    background: var(--today);
-    color: #fff;
-    font-size: 10.5px;
-    font-weight: 700;
-    border-radius: 5px;
-    padding: 2px 7px;
-    white-space: nowrap;
-    display: inline-block;
   }
 
   .empty {
@@ -493,17 +456,6 @@
         bar.className = "bar" + (seg.kind === "final" ? " final" : "") + (seg.start_approx ? " approx" : "");
         bar.style.left = x0 + "px";
         bar.style.width = w + "px";
-        if (seg.label && w > 96) {
-          const lbl = document.createElement("span");
-          lbl.className = "bar-label";
-          lbl.textContent = seg.label;
-          bar.appendChild(lbl);
-        } else if (seg.kind === "final" || seg.label) {
-          const chip = document.createElement("span");
-          chip.className = "bar-chip";
-          chip.textContent = seg.kind === "final" ? (seg.label || "финал") : seg.label;
-          bar.appendChild(chip);
-        }
         bar.addEventListener("mouseenter", e => showTip(e, h));
         bar.addEventListener("mousemove", moveTip);
         bar.addEventListener("mouseleave", hideTip);
@@ -518,7 +470,9 @@
           const mk = document.createElement("div");
           mk.className = "reg-mark";
           mk.style.left = x + "px";
-          mk.innerHTML = `<span class="reg-chip">рег. ${dm}</span>`;
+          mk.addEventListener("mouseenter", e => showTip(e, h));
+          mk.addEventListener("mousemove", moveTip);
+          mk.addEventListener("mouseleave", hideTip);
           track.appendChild(mk);
         }
       }
@@ -536,7 +490,6 @@
       const line = document.createElement("div");
       line.className = "today-line";
       line.style.left = dayIdx(t) * DAY_W + "px";
-      line.innerHTML = `<span class="today-chip">сегодня ${t.getDate()}.${String(t.getMonth() + 1).padStart(2, "0")}</span>`;
       timeline.appendChild(line);
     }
   }
