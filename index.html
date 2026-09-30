@@ -18,8 +18,12 @@
     --today: #ff5d5d;
     --corner-w: 330px;
     --header-h: 46px;
-    --row-h: 58px;
+    --row-h: 52px;
     --day-w: 4px;
+    --bar: #6c7cf5;
+    --bar-dark: #5564e0;
+    --bar-final: #4a52b0;
+    --reg: #ffd76a;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { height: 100%; }
@@ -43,12 +47,7 @@
   }
   .topbar h1 { font-size: 17px; font-weight: 700; letter-spacing: .2px; }
   .topbar .subtitle { color: var(--muted); font-size: 12px; margin-top: 2px; }
-  .legend { display: flex; gap: 14px; margin-left: auto; font-size: 12.5px; color: var(--muted); }
-  .legend-item { display: inline-flex; align-items: center; gap: 6px; }
-  .dot { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
-  .dot-hack { background: var(--hack); }
-  .dot-sor { background: var(--sor); }
-  .controls { display: flex; align-items: center; gap: 10px; }
+  .controls { display: flex; align-items: center; gap: 10px; margin-left: auto; }
   .controls input[type="search"] {
     background: var(--panel-2);
     border: 1px solid var(--border);
@@ -60,19 +59,6 @@
     outline: none;
   }
   .controls input[type="search"]:focus { border-color: #3f5a8c; }
-  .filters { display: flex; gap: 6px; }
-  .filters button {
-    background: var(--panel-2);
-    color: var(--muted);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 6px 12px;
-    font: inherit;
-    font-size: 12.5px;
-    cursor: pointer;
-  }
-  .filters button:hover { color: var(--text); }
-  .filters button.active { background: #2b3a5e; color: var(--text); border-color: #3f5a8c; }
 
   /* ---------- Gantt ---------- */
   .gantt-scroll {
@@ -169,15 +155,8 @@
   .tag-sor { background: rgba(63,169,245,.16); color: var(--sor); border: 1px solid rgba(63,169,245,.4); }
   .name-row .info { min-width: 0; }
   .name-row .info .n {
-    font-size: 13.5px;
+    font-size: 14px;
     font-weight: 600;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .name-row .info .d {
-    font-size: 11.5px;
-    color: var(--muted);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -198,18 +177,36 @@
     border-radius: 7px;
     cursor: pointer;
     transition: filter .12s, transform .12s;
-    display: flex;
-    align-items: center;
-    overflow: hidden;
+    background: linear-gradient(180deg, #8493ff, var(--bar-dark));
+    box-shadow: 0 2px 10px rgba(108,124,245,.35);
     font-size: 11px;
     font-weight: 600;
     color: #fff;
-    padding: 0 8px;
-    white-space: nowrap;
   }
   .bar:hover { filter: brightness(1.25); transform: translateY(-50%) scaleY(1.12); }
-  .bar.b-hack { background: linear-gradient(180deg, #ff9d57, #f0702a); box-shadow: 0 2px 10px rgba(255,138,61,.35); }
-  .bar.b-sor { background: linear-gradient(180deg, #5cb8f9, #2d8ee0); box-shadow: 0 2px 10px rgba(63,169,245,.35); }
+  .bar .bar-label {
+    position: absolute;
+    inset: 0 8px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .bar.final {
+    background: repeating-linear-gradient(135deg, var(--bar-final) 0, var(--bar-final) 5px, #3d4498 5px, #3d4498 10px);
+    box-shadow: 0 2px 10px rgba(74,82,176,.35);
+  }
+  .bar-chip {
+    position: absolute;
+    top: -13px;
+    left: 0;
+    font-size: 9.5px;
+    font-weight: 600;
+    letter-spacing: .4px;
+    color: #aab2f5;
+    white-space: nowrap;
+    pointer-events: none;
+  }
   .bar.approx::after {
     content: "?";
     position: absolute;
@@ -225,7 +222,27 @@
     align-items: center;
     justify-content: center;
   }
-  .bar-label { overflow: hidden; text-overflow: ellipsis; }
+  .reg-mark {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--reg);
+    z-index: 5;
+    pointer-events: none;
+  }
+  .reg-chip {
+    position: absolute;
+    top: 2px;
+    left: 4px;
+    font-size: 9.5px;
+    font-weight: 600;
+    color: var(--reg);
+    white-space: nowrap;
+    background: rgba(14,20,32,.85);
+    padding: 1px 5px;
+    border-radius: 4px;
+  }
 
   .today-line {
     position: absolute;
@@ -311,15 +328,6 @@
   </div>
   <div class="controls">
     <input id="search" type="search" placeholder="Поиск по названию или задаче…">
-    <div class="filters">
-      <button data-f="all" class="active">Все</button>
-      <button data-f="ХАК">Хакатоны</button>
-      <button data-f="СОР">Соревнования</button>
-    </div>
-  </div>
-  <div class="legend">
-    <span class="legend-item"><i class="dot dot-hack"></i>Хакатон</span>
-    <span class="legend-item"><i class="dot dot-sor"></i>Соревнование</span>
   </div>
 </header>
 
@@ -333,9 +341,10 @@
 <script>
 (function () {
   const DAY_W = 4;
-  const ROW_H = 58;
+  const ROW_H = 52;
   const HEADER_H = 46;
   const CORNER_W = 330;
+  const FINAL_DAYS = 2;
   const MONTHS = ["Янв","Фев","Мар","Апр","Май","Июн","Июл","Авг","Сен","Окт","Ноя","Дек"];
 
   const ganttInner = document.getElementById("ganttInner");
@@ -343,7 +352,6 @@
   const tooltip = document.getElementById("tooltip");
   const search = document.getElementById("search");
   const subtitle = document.getElementById("subtitle");
-  const filters = document.querySelectorAll(".filters button");
 
   const parseISO = s => { const [y, m, d] = s.split("-").map(Number); return new Date(y, m - 1, d); };
   const dayIdx = d => Math.round((d - MIN) / 86400000);
@@ -351,13 +359,30 @@
     const [y, m, d] = iso.split("-").map(Number);
     return d + "." + String(m).padStart(2, "0");
   };
-  const fmtRange = h => {
-    const s = fmtDate(h.start) + " – " + fmtDate(h.end);
-    return h.start_approx ? "≈" + s : s;
-  };
 
   let MIN, MAX, TOTAL_DAYS, TIMELINE_W;
-  let state = { filter: "all", query: "" };
+  let state = { query: "" };
+
+  function isoOf(d) {
+    return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+  }
+  function buildSegments(h) {
+    if (h.phases) {
+      return h.phases.map((p, i) => ({
+        start: p.start, end: p.end, label: p.label, start_approx: p.start_approx,
+        kind: i === h.phases.length - 1 ? "final" : "main"
+      }));
+    }
+    const segs = [{ start: h.start, end: h.end, label: null, start_approx: h.start_approx, kind: "main" }];
+    const hasFinal = (h.format || "").toLowerCase().includes("финал");
+    const dur = Math.round((parseISO(h.end) - parseISO(h.start)) / 86400000);
+    if (hasFinal && dur >= 4) {
+      const finalStart = new Date(parseISO(h.end).getTime() - (FINAL_DAYS - 1) * 86400000);
+      segs[0].end = isoOf(new Date(finalStart.getTime() - 86400000));
+      segs.push({ start: isoOf(finalStart), end: h.end, label: "финал", start_approx: false, kind: "final" });
+    }
+    return segs;
+  }
 
   function computeRange() {
     const all = [];
@@ -376,7 +401,6 @@
   }
 
   function matches(h) {
-    if (state.filter !== "all" && h.type !== state.filter) return false;
     if (!state.query) return true;
     const q = state.query.toLowerCase();
     return h.name.toLowerCase().includes(q) ||
@@ -403,7 +427,7 @@
 
     const corner = document.createElement("div");
     corner.className = "corner";
-    corner.textContent = "Событие · даты · приз";
+    corner.textContent = "Событие";
     header.appendChild(corner);
 
     const months = document.createElement("div");
@@ -451,10 +475,8 @@
       nameRow.className = "name-row";
       nameRow.innerHTML =
         `<span class="tag ${h.type === "ХАК" ? "tag-hack" : "tag-sor"}">${h.type === "ХАК" ? "ХАК" : "СОР"}</span>` +
-        `<div class="info"><div class="n"></div><div class="d"></div></div>`;
+        `<div class="info"><div class="n"></div></div>`;
       nameRow.querySelector(".n").textContent = h.name;
-      nameRow.querySelector(".d").textContent = (h.registration ? "рег. " + h.registration + " · " : "") +
-        fmtRange(h) + (h.prize ? " · " + h.prize : "");
       names.appendChild(nameRow);
 
       const track = document.createElement("div");
@@ -462,25 +484,44 @@
       track.style.top = y + "px";
       track.style.width = TIMELINE_W + "px";
 
-      const segments = (h.phases || [{ start: h.start, end: h.end, label: null, start_approx: h.start_approx }]);
-      segments.forEach(seg => {
+      buildSegments(h).forEach(seg => {
         const x0 = dayIdx(parseISO(seg.start)) * DAY_W;
         const x1 = (dayIdx(parseISO(seg.end)) + 1) * DAY_W;
+        const w = x1 - x0;
+        if (w <= 0) return;
         const bar = document.createElement("div");
-        bar.className = "bar " + (h.type === "ХАК" ? "b-hack" : "b-sor") + (seg.start_approx ? " approx" : "");
+        bar.className = "bar" + (seg.kind === "final" ? " final" : "") + (seg.start_approx ? " approx" : "");
         bar.style.left = x0 + "px";
-        bar.style.width = (x1 - x0) + "px";
-        if (seg.label && x1 - x0 > 96) {
+        bar.style.width = w + "px";
+        if (seg.label && w > 96) {
           const lbl = document.createElement("span");
           lbl.className = "bar-label";
           lbl.textContent = seg.label;
           bar.appendChild(lbl);
+        } else if (seg.kind === "final" || seg.label) {
+          const chip = document.createElement("span");
+          chip.className = "bar-chip";
+          chip.textContent = seg.kind === "final" ? (seg.label || "финал") : seg.label;
+          bar.appendChild(chip);
         }
         bar.addEventListener("mouseenter", e => showTip(e, h));
         bar.addEventListener("mousemove", moveTip);
         bar.addEventListener("mouseleave", hideTip);
         track.appendChild(bar);
       });
+
+      if (h.registration && h.registration.startsWith("до ")) {
+        const dm = h.registration.slice(3);
+        const [d, mo] = dm.split(".").map(Number);
+        const x = dayIdx(new Date(MIN.getFullYear(), mo - 1, d)) * DAY_W;
+        if (x >= 0 && x <= TIMELINE_W) {
+          const mk = document.createElement("div");
+          mk.className = "reg-mark";
+          mk.style.left = x + "px";
+          mk.innerHTML = `<span class="reg-chip">рег. ${dm}</span>`;
+          track.appendChild(mk);
+        }
+      }
       timeline.appendChild(track);
     });
 
@@ -535,12 +576,6 @@
   }
 
   /* ---------- controls ---------- */
-  filters.forEach(btn => btn.addEventListener("click", () => {
-    filters.forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
-    state.filter = btn.dataset.f;
-    build();
-  }));
   search.addEventListener("input", () => { state.query = search.value.trim(); build(); });
   scrollEl.addEventListener("scroll", hideTip);
 

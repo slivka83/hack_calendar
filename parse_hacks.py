@@ -20,7 +20,7 @@ def to_iso(day, month):
 
 def parse_dates(raw):
     """'📅 9.02 – 30.03 (рег. до 4.04)' -> dict с датами."""
-    main = raw.split("(", 1)[0]
+    main = re.sub(r"^\s*📅\s*Даты:\s*", "", raw.split("(", 1)[0])
     result = {"start": None, "end": None, "start_approx": False,
               "registration": None, "phases": None}
 

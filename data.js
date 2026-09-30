@@ -450,7 +450,7 @@ const HACKS = [
     "registration": null,
     "phases": [
       {
-        "label": "📅 Даты:  -  квалификация",
+        "label": "квалификация",
         "start": "2026-10-23",
         "end": "2026-11-01",
         "start_approx": false
