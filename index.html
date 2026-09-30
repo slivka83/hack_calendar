@@ -3,27 +3,59 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0d1322">
 <title>ML-соревнования и хакатоны — Гантт</title>
 <meta name="description" content="Диаграмма Ганта: ближайшие ML-соревнования и хакатоны. Даты, призы, форматы.">
+<script>
+(function () {
+  try {
+    var saved = localStorage.getItem("hc-theme");
+    var theme = saved === "light" || saved === "dark"
+      ? saved
+      : (window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+    document.documentElement.dataset.theme = theme;
+  } catch (e) {}
+})();
+</script>
 <style>
   :root {
-    --bg: #0e1420;
-    --panel: #151d2e;
-    --panel-2: #1a2338;
-    --border: #25304a;
-    --text: #e8edf7;
-    --muted: #8d99b3;
-    --hack: #ff8a3d;
-    --sor: #3fa9f5;
+    color-scheme: dark;
+    --bg: #0d1322;
+    --panel: #141c2f;
+    --panel-2: #1b2542;
+    --border: #263154;
+    --text: #e9edf8;
+    --muted: #8f9cb8;
+    --accent: #7c8cf5;
     --today: #ff5d5d;
+    --reg: #ffd166;
+    --bar-hi: #8a97ff;
+    --fmt-online: #57d68a;
+    --fmt-offline: #ff9a56;
+    --fmt-hybrid: #b18cff;
+    --scroll-thumb: #2c3a63;
     --corner-w: 330px;
     --header-h: 46px;
-    --row-h: 52px;
-    --day-w: 4px;
-    --bar: #6c7cf5;
-    --bar-dark: #5564e0;
-    --bar-final: #4a52b0;
-    --reg: #ffd76a;
+    --row-h: 72px;
+    --bar-h: 26px;
+    --timeline-w: 0px;
+  }
+  html[data-theme="light"] {
+    color-scheme: light;
+    --bg: #eef1f7;
+    --panel: #ffffff;
+    --panel-2: #e6eaf4;
+    --border: #ccd5e8;
+    --text: #1d2740;
+    --muted: #5b6a8c;
+    --accent: #4c5ae0;
+    --today: #e03434;
+    --reg: #b98a00;
+    --bar-hi: #7180ef;
+    --fmt-online: #1f9d57;
+    --fmt-offline: #d96414;
+    --fmt-hybrid: #7c50e8;
+    --scroll-thumb: #b6c2de;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { height: 100%; }
@@ -33,38 +65,106 @@
     font: 14px/1.45 "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     display: flex;
     flex-direction: column;
+    -webkit-font-smoothing: antialiased;
+    transition: background-color .25s, color .25s;
   }
+  ::selection { background: color-mix(in srgb, var(--accent) 40%, transparent); }
 
   /* ---------- Top bar ---------- */
   .topbar {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 18px;
     padding: 10px 18px;
     border-bottom: 1px solid var(--border);
     background: var(--panel);
     flex-wrap: wrap;
+    transition: background-color .25s, border-color .25s;
   }
+  .title-block { min-width: 0; margin-right: auto; }
   .topbar h1 { font-size: 17px; font-weight: 700; letter-spacing: .2px; }
-  .topbar .subtitle { color: var(--muted); font-size: 12px; margin-top: 2px; }
-  .controls { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+
+  .controls { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+  .seg {
+    display: flex;
+    gap: 2px;
+    padding: 3px;
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+  .seg-btn {
+    appearance: none;
+    background: none;
+    border: 1px solid transparent;
+    color: var(--muted);
+    font: inherit;
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 7px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color .15s, background-color .15s, border-color .15s;
+  }
+  .seg-btn:hover { color: var(--text); }
+  .seg-btn.is-active {
+    color: var(--text);
+    background: color-mix(in srgb, var(--accent) 16%, transparent);
+    border-color: color-mix(in srgb, var(--accent) 40%, transparent);
+  }
+  .seg-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+
   .controls input[type="search"] {
     background: var(--panel-2);
     border: 1px solid var(--border);
     color: var(--text);
-    border-radius: 8px;
-    padding: 6px 12px;
-    width: 190px;
+    border-radius: 9px;
+    padding: 7px 12px;
+    width: 240px;
     font: inherit;
     outline: none;
+    transition: border-color .15s, box-shadow .15s;
   }
-  .controls input[type="search"]:focus { border-color: #3f5a8c; }
+  .controls input[type="search"]::placeholder { color: var(--muted); }
+  .controls input[type="search"]:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--border)); }
+  .controls input[type="search"]:focus-visible {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent);
+  }
+
+  .icon-btn {
+    appearance: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    flex: none;
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    color: var(--muted);
+    cursor: pointer;
+    transition: color .15s, border-color .15s;
+  }
+  .icon-btn:hover { color: var(--text); border-color: color-mix(in srgb, var(--accent) 45%, var(--border)); }
+  .icon-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
   /* ---------- Gantt ---------- */
+  .gantt-wrap { flex: 1; min-height: 0; display: flex; flex-direction: column; }
   .gantt-scroll {
     flex: 1;
-    overflow: auto;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
     position: relative;
+  }
+  .gantt-scroll::-webkit-scrollbar { width: 10px; }
+  .gantt-scroll::-webkit-scrollbar-thumb { background: var(--scroll-thumb); border-radius: 6px; border: 2px solid var(--bg); }
+  .gantt-scroll::-webkit-scrollbar-track { background: transparent; }
+  @supports not selector(::-webkit-scrollbar) {
+    .gantt-scroll { scrollbar-width: thin; scrollbar-color: var(--scroll-thumb) transparent; }
   }
   .gantt-inner {
     position: relative;
@@ -90,449 +190,1217 @@
     display: flex;
     align-items: center;
     padding: 0 14px;
-    font-size: 12px;
-    font-weight: 600;
+    font-size: 11px;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: .6px;
+    letter-spacing: .8px;
     color: var(--muted);
   }
-  .months {
-    flex: 0 0 var(--timeline-w);
-    display: flex;
-  }
-  .gantt-body {
-    display: flex;
-    align-items: flex-start;
-  }
+  .months { flex: 0 0 var(--timeline-w); display: flex; }
   .month-cell {
     border-right: 1px solid var(--border);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 12px;
-    font-weight: 600;
+    font-size: 11px;
+    font-weight: 700;
     color: var(--muted);
     text-transform: uppercase;
-    letter-spacing: .5px;
+    letter-spacing: .6px;
     flex: none;
+    overflow: hidden;
+    white-space: nowrap;
   }
+  .month-cell:nth-child(even) { background: color-mix(in srgb, var(--accent) 7%, transparent); }
+  .gantt-body { display: flex; align-items: flex-start; }
   .names-col {
     position: sticky;
     left: 0;
     z-index: 15;
     flex: 0 0 var(--corner-w);
+    min-width: 0;
     background: var(--bg);
     border-right: 1px solid var(--border);
   }
   .timeline {
     position: relative;
     flex: 0 0 var(--timeline-w);
-    height: calc(var(--row-h) * var(--rows));
-    background:
-      repeating-linear-gradient(to right, transparent 0, transparent calc(var(--day-w)*7 - 1px), rgba(37,48,74,.55) calc(var(--day-w)*7 - 1px), rgba(37,48,74,.55) calc(var(--day-w)*7));
+    isolation: isolate;
+  }
+  .month-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: color-mix(in srgb, var(--border) 90%, transparent);
+  }
+  .month-band {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    background: color-mix(in srgb, var(--accent) 5%, transparent);
   }
 
   .name-row {
     height: var(--row-h);
-    border-bottom: 1px solid rgba(37,48,74,.6);
+    border-bottom: 1px solid color-mix(in srgb, var(--border) 55%, transparent);
     display: flex;
     align-items: center;
     gap: 10px;
     padding: 0 14px;
-    background: var(--bg);
+    overflow: hidden;
   }
-  .name-row .tag {
-    flex: none;
-    width: 34px;
-    text-align: center;
-    font-size: 10px;
-    font-weight: 700;
-    border-radius: 5px;
-    padding: 2px 0;
-    letter-spacing: .3px;
+  .name-row:hover, .name-row.is-hover { background: var(--panel-2); }
+
+  .name-row .info {
+    min-width: 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
   }
-  .tag-hack { background: rgba(255,138,61,.16); color: var(--hack); border: 1px solid rgba(255,138,61,.4); }
-  .tag-sor { background: rgba(63,169,245,.16); color: var(--sor); border: 1px solid rgba(63,169,245,.4); }
-  .name-row .info { min-width: 0; }
-  .name-row .info .n {
-    font-size: 14px;
+  .n-line { display: flex; align-items: center; gap: 7px; min-width: 0; }
+  .n-line .n {
+    min-width: 0;
+    font-size: 13.5px;
     font-weight: 600;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    cursor: pointer;
+    text-decoration: underline dashed;
+    text-decoration-color: color-mix(in srgb, var(--muted) 75%, transparent);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    transition: color .15s, text-decoration-color .15s;
   }
-  .name-row:hover { background: var(--panel-2); }
+  .n-line .n:hover { color: var(--accent); text-decoration-color: var(--accent); }
+  .src {
+    flex: none;
+    display: inline-flex;
+    padding: 2px;
+    border-radius: 5px;
+    color: var(--muted);
+    opacity: .55;
+    transition: color .15s, opacity .15s;
+  }
+  .name-row:hover .src, .src:hover, .src:focus-visible { color: var(--accent); opacity: 1; }
+  .src:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  button.src { background: none; border: none; font: inherit; cursor: pointer; }
+
+  .chips { display: flex; flex-wrap: nowrap; gap: .38em; overflow: hidden; min-width: 0; width: max-content; font-size: 10.5px; }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: .476em;
+    font-size: 1em;
+    font-weight: 600;
+    line-height: 1;
+    padding: .333em .667em;
+    border-radius: 999px;
+    color: var(--muted);
+    background: color-mix(in srgb, var(--muted) 10%, transparent);
+    border: 1px solid color-mix(in srgb, var(--muted) 22%, transparent);
+    white-space: nowrap;
+  }
+  .chip-prize {
+    color: var(--reg);
+    background: color-mix(in srgb, var(--reg) 10%, transparent);
+    border-color: color-mix(in srgb, var(--reg) 32%, transparent);
+  }
+  .chip-track {
+    color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+    border-color: color-mix(in srgb, var(--accent) 38%, transparent);
+  }
+  .chip-fmt::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--fmt); }
+  .fmt-online { --fmt: var(--fmt-online); }
+  .fmt-offline { --fmt: var(--fmt-offline); }
+  .fmt-hybrid { --fmt: var(--fmt-hybrid); }
 
   /* ---------- Bars ---------- */
   .bar-track {
     position: absolute;
     height: var(--row-h);
-    border-bottom: 1px solid rgba(37,48,74,.6);
+    border-bottom: 1px solid color-mix(in srgb, var(--border) 55%, transparent);
   }
+  .bar-track.is-hover { background: color-mix(in srgb, var(--panel-2) 50%, transparent); }
   .bar {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    height: 26px;
-    border-radius: 7px;
+    height: var(--bar-h);
+    min-width: 3px;
+    border-radius: 6px;
     cursor: pointer;
-    transition: filter .12s, transform .12s;
-    background: linear-gradient(180deg, #8493ff, var(--bar-dark));
-    box-shadow: 0 2px 10px rgba(108,124,245,.35);
-    font-size: 11px;
-    font-weight: 600;
-    color: #fff;
+    transition: filter .15s, transform .15s;
+    background: var(--bar-hi);
   }
-  .bar:hover { filter: brightness(1.25); transform: translateY(-50%) scaleY(1.12); }
-  .bar.final {
-    background: repeating-linear-gradient(135deg, var(--bar-final) 0, var(--bar-final) 5px, #3d4498 5px, #3d4498 10px);
-    box-shadow: 0 2px 10px rgba(74,82,176,.35);
-  }
-  .bar.approx::after {
-    content: "?";
-    position: absolute;
-    right: 5px;
-    top: 3px;
-    font-size: 10px;
-    font-weight: 800;
-    background: rgba(0,0,0,.35);
-    border-radius: 50%;
-    width: 13px;
-    height: 13px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+  .bar::before { content: ""; position: absolute; inset: -4px -2px; }
+  .bar:hover { filter: brightness(1.2); transform: translateY(-50%) scaleY(1.12); }
+  .bar:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .reg-mark {
     position: absolute;
-    top: 0;
-    bottom: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: var(--bar-h);
     width: 2px;
     background: var(--reg);
     z-index: 5;
     cursor: help;
   }
-  .reg-mark::after {
+  .reg-mark::before {
     content: "";
     position: absolute;
-    top: 0;
-    bottom: 0;
-    left: -5px;
-    right: -5px;
+    top: -3px;
+    left: 50%;
+    width: 6px;
+    height: 6px;
+    transform: translateX(-50%) rotate(45deg);
+    background: var(--reg);
   }
+  .reg-mark::after { content: ""; position: absolute; top: 0; bottom: 0; left: -5px; right: -5px; }
 
   .today-line {
     position: absolute;
     top: 0;
     bottom: 0;
     width: 2px;
-    background: var(--today);
-    z-index: 25;
+    z-index: 30;
     pointer-events: none;
+    background: var(--today);
   }
 
   .empty {
     position: absolute;
     inset: 0;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 12px;
     color: var(--muted);
     font-size: 15px;
     z-index: 5;
-    background: rgba(14,20,32,.6);
+    background: color-mix(in srgb, var(--bg) 70%, transparent);
   }
+  .link {
+    background: none;
+    border: none;
+    color: var(--accent);
+    font: inherit;
+    font-size: 13px;
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 6px;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .link:hover, .link:focus-visible { color: var(--bar-hi); }
 
   /* ---------- Tooltip ---------- */
   .tooltip {
     position: fixed;
     z-index: 100;
-    max-width: 400px;
-    background: #1b2440;
-    border: 1px solid #35456f;
+    max-width: 420px;
+    background: var(--panel);
+    border: 1px solid var(--border);
     border-radius: 12px;
     padding: 14px 16px;
-    box-shadow: 0 10px 34px rgba(0,0,0,.55);
     pointer-events: none;
-    font-size: 12.5px;
+    font-size: 13.5px;
+    line-height: 1.55;
   }
+  .tooltip .tt-name { font-size: 15px; }
   .tooltip.hidden { display: none; }
-  .tooltip .tt-head {
+  .tt-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .tt-name { font-size: 14px; font-weight: 700; }
+  .tt-dates { color: var(--muted); margin-bottom: 8px; font-size: 12px; }
+  .tt-row { margin: 4px 0; }
+  .tt-label { color: var(--muted); margin-right: 6px; }
+  .tt-prize { font-weight: 700; color: var(--reg); }
+  .tt-list { margin: 4px 0 4px 18px; color: color-mix(in srgb, var(--text) 82%, var(--muted)); }
+  .tt-list li { margin: 3px 0; }
+  .tt-when { color: var(--muted); margin: 3px 0; display: flex; gap: 7px; }
+  .tt-when:last-child { margin-bottom: 0; }
+  .tt-ico { flex: none; }
+  .tt-link { color: var(--accent); text-underline-offset: 3px; }
+  .tt-link:hover, .tt-link:focus-visible { color: var(--bar-hi); }
+  button.tt-link { background: none; border: none; padding: 0; font: inherit; font-weight: 600; cursor: pointer; }
+  .tt-cal { display: flex; align-items: center; flex-wrap: wrap; gap: 2px 10px; }
+  .tt-cal .tt-link { font-weight: 600; }
+
+  /* ---------- Modal ---------- */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
     display: flex;
     align-items: center;
-    gap: 8px;
-    margin-bottom: 8px;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(4, 8, 18, .55);
   }
-  .tooltip .tag {
-    flex: none;
-    width: 38px;
-    text-align: center;
-    font-size: 10px;
-    font-weight: 700;
-    border-radius: 5px;
-    padding: 2px 0;
-    letter-spacing: .3px;
+  .modal-backdrop.hidden { display: none; }
+  .modal {
+    position: relative;
+    width: min(480px, 100%);
+    max-height: min(72vh, 640px);
+    overflow: auto;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 20px;
+    font-size: 13px;
+    line-height: 1.5;
   }
-  .tooltip .tt-name { font-size: 14px; font-weight: 700; }
-  .tooltip .tt-dates { color: var(--muted); margin-bottom: 8px; font-size: 12px; }
-  .tooltip .tt-row { margin: 4px 0; }
-  .tooltip .tt-label { color: var(--muted); margin-right: 6px; }
-  .tooltip .tt-prize { font-weight: 700; color: #ffd76a; }
-  .tooltip ul { margin: 4px 0 4px 18px; color: #c7d2e8; }
-  .tooltip ul li { margin: 3px 0; }
+  .modal .tt-head { padding-right: 30px; }
+  .modal-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font: inherit;
+    font-size: 18px;
+    line-height: 1;
+    color: var(--muted);
+    background: none;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .modal-close:hover { color: var(--text); background: var(--panel-2); }
+  .modal-close:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+  @media (max-width: 900px) {
+    :root { --corner-w: 300px; }
+  }
+  @media (max-width: 600px) {
+    :root { --corner-w: 200px; --row-h: 56px; }
+    .chips { display: none; }
+    .topbar { padding: 10px 12px; gap: 12px; }
+    .controls { width: 100%; }
+    .controls input[type="search"] { width: 100%; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
 </style>
 </head>
 <body>
 
 <header class="topbar">
-  <div>
+  <div class="title-block">
     <h1>ML-соревнования и хакатоны</h1>
-    <div class="subtitle" id="subtitle">Загрузка…</div>
   </div>
   <div class="controls">
-    <input id="search" type="search" placeholder="Поиск по названию или задаче…">
+    <div class="seg" id="rangeGroup" role="group" aria-label="Период отображения">
+      <button type="button" class="seg-btn is-active" data-range="6" aria-pressed="true">6 мес</button>
+      <button type="button" class="seg-btn" data-range="12" aria-pressed="false">1 год</button>
+      <button type="button" class="seg-btn" data-range="24" aria-pressed="false">2 года</button>
+      <button type="button" class="seg-btn" data-range="0" aria-pressed="false">Все</button>
+    </div>
+    <input id="search" type="search" placeholder="Поиск по названию, задаче или типу…"
+           aria-label="Поиск событий" title="Нажмите «/», чтобы перейти к поиску">
+    <button id="themeToggle" class="icon-btn" type="button" aria-label="Переключить тему"></button>
   </div>
 </header>
 
-<div class="gantt-scroll" id="ganttScroll">
-  <div class="gantt-inner" id="ganttInner"></div>
+<div class="gantt-wrap" id="ganttWrap">
+  <div class="gantt-scroll">
+    <div class="gantt-inner" id="ganttInner"></div>
+  </div>
 </div>
 
-<div class="tooltip hidden" id="tooltip"></div>
+<div class="tooltip hidden" id="tooltip" role="status"></div>
+
+<div class="modal-backdrop hidden" id="modalBackdrop">
+  <div class="modal" id="modalCard" role="dialog" aria-modal="true" aria-label="">
+    <button type="button" class="modal-close" id="modalClose" aria-label="Закрыть">&times;</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
 
 <script src="data.js"></script>
 <script>
 (function () {
-  const DAY_W = 4;
-  const ROW_H = 52;
-  const HEADER_H = 46;
-  const CORNER_W = 330;
-  const FINAL_DAYS = 2;
-  const MONTHS = ["Янв","Фев","Мар","Апр","Май","Июн","Июл","Авг","Сен","Окт","Ноя","Дек"];
+  "use strict";
 
+  const MS_DAY = 86400000;
+  const MONTHS = ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"];
+  const LINK_SVG = '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>';
+  const CAL_SVG = '<svg viewBox="0 0 48 48" width="10" height="10" fill="currentColor" aria-hidden="true"><path d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>';
+  const ICS_SVG = '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/><path d="M12 13v4.5"/><path d="m9.8 15.3 2.2 2.2 2.2-2.2"/></svg>';
+  const SUN_SVG = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>';
+  const MOON_SVG = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+
+  const ganttWrap = document.getElementById("ganttWrap");
+  const ganttScroll = ganttWrap.querySelector(".gantt-scroll");
   const ganttInner = document.getElementById("ganttInner");
-  const scrollEl = document.getElementById("ganttScroll");
   const tooltip = document.getElementById("tooltip");
-  const search = document.getElementById("search");
-  const subtitle = document.getElementById("subtitle");
+  const modalBackdrop = document.getElementById("modalBackdrop");
+  const modalCard = document.getElementById("modalCard");
+  const modalContent = document.getElementById("modalContent");
+  const modalClose = document.getElementById("modalClose");
+  const searchInput = document.getElementById("search");
+  const rangeGroup = document.getElementById("rangeGroup");
+  const themeToggle = document.getElementById("themeToggle");
+  const themeColor = document.querySelector('meta[name="theme-color"]');
 
-  const parseISO = s => { const [y, m, d] = s.split("-").map(Number); return new Date(y, m - 1, d); };
-  const dayIdx = d => Math.round((d - MIN) / 86400000);
-  const fmtDate = iso => {
-    const [y, m, d] = iso.split("-").map(Number);
-    return d + "." + String(m).padStart(2, "0");
-  };
+  let DAY_W = 4;
+  let ROW_H = 72;
 
+  const EVENTS = (typeof HACKS !== "undefined" && Array.isArray(HACKS)
+    ? HACKS.filter(h => h && h.start && h.end).reverse()
+    : []);
+
+  const state = { query: "", range: 6 };
   let MIN, MAX, TOTAL_DAYS, TIMELINE_W;
-  let state = { query: "" };
+  let CELLS = [];
 
-  function isoOf(d) {
-    return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
-  }
-  function buildSegments(h) {
-    if (h.phases) {
-      return h.phases.map((p, i) => ({
-        start: p.start, end: p.end, label: p.label, start_approx: p.start_approx,
-        kind: i === h.phases.length - 1 ? "final" : "main"
-      }));
-    }
-    const segs = [{ start: h.start, end: h.end, label: null, start_approx: h.start_approx, kind: "main" }];
-    const hasFinal = (h.format || "").toLowerCase().includes("финал");
-    const dur = Math.round((parseISO(h.end) - parseISO(h.start)) / 86400000);
-    if (hasFinal && dur >= 4) {
-      const finalStart = new Date(parseISO(h.end).getTime() - (FINAL_DAYS - 1) * 86400000);
-      segs[0].end = isoOf(new Date(finalStart.getTime() - 86400000));
-      segs.push({ start: isoOf(finalStart), end: h.end, label: "финал", start_approx: false, kind: "final" });
-    }
-    return segs;
-  }
+  /* ---------- helpers ---------- */
+  const el = (tag, cls, text) => {
+    const node = document.createElement(tag);
+    if (cls) node.className = cls;
+    if (text != null) node.textContent = text;
+    return node;
+  };
+  const parseISO = iso => {
+    const [y, m, d] = iso.split("-").map(Number);
+    return new Date(y, m - 1, d);
+  };
+  const fmtDate = (iso, withYear) => {
+    const parts = iso.split("-");
+    return Number(parts[2]) + "." + parts[1] + (withYear ? "." + parts[0] : "");
+  };
+  const fmtRange = (start, end, approx, withYear) =>
+    (approx ? "≈" : "") + fmtDate(start, withYear) + " – " + fmtDate(end, withYear);
+  const stripLabel = s => s.replace(/^(Приз(?:ы)?|Участие|Формат):\s*/, "");
 
-  function computeRange() {
-    const all = [];
-    HACKS.forEach(h => {
-      all.push(parseISO(h.start), parseISO(h.end));
-      (h.phases || []).forEach(p => all.push(parseISO(p.start), parseISO(p.end)));
+  /* ---------- chips ---------- */
+  function trackTags(h) {
+    const seen = new Set();
+    const tags = [];
+    (h.tasks || []).forEach(t => {
+      const m = t.match(/^\[([^\]]+)\]/);
+      if (!m) return;
+      m[1].split(/[,/]+/).forEach(part => {
+        const tag = part.trim().toUpperCase();
+        if (tag && !seen.has(tag)) { seen.add(tag); tags.push(tag); }
+      });
     });
-    MIN = new Date(Math.min(...all));
-    MIN = new Date(MIN.getFullYear(), MIN.getMonth(), 1);
-    MAX = new Date(Math.max(...all));
-    MAX = new Date(MAX.getFullYear(), MAX.getMonth() + 1, 0);
-    TOTAL_DAYS = Math.round((MAX - MIN) / 86400000) + 1;
-    TIMELINE_W = TOTAL_DAYS * DAY_W;
-    ganttInner.style.setProperty("--timeline-w", TIMELINE_W + "px");
-    ganttInner.style.setProperty("--rows", HACKS.length);
+    return tags;
+  }
+  const MONEY_RE = /([\d][\d\s\u00a0]*?)\s*(т\.?\s*р\.?|тыс\.?\s*(?:руб\.?|р\.?)?|млн\.?\s*(?:руб\.?|р\.?)?|млрд\.?\s*(?:руб\.?|р\.?)?|миллион(?:а|ов)?|руб(?:лей|ля|\.)?|р\.?|₽|\$|€)/gi;
+  const MONEY_UNITS = [
+    [/^млрд/, 1e9, "₽"],
+    [/^млн|^миллион/, 1e6, "₽"],
+    [/^тыс|^т$|^т\./, 1e3, "₽"],
+    [/^\$/, 1, "$"],
+    [/^€/, 1, "€"],
+  ];
+  function moneyUnit(unit) {
+    const s = unit.toLowerCase();
+    for (const [re, mult, cur] of MONEY_UNITS) {
+      if (re.test(s)) return { mult, cur };
+    }
+    return { mult: 1, cur: "₽" };
+  }
+  function moneyTotal(text) {
+    let total = 0, cur = null;
+    for (const m of text.matchAll(MONEY_RE)) {
+      const unit = moneyUnit(m[2].trim());
+      if (cur && unit.cur !== cur) continue;
+      cur = cur || unit.cur;
+      total += parseInt(m[1].replace(/[\s\u00a0]/g, ""), 10) * unit.mult;
+    }
+    if (cur == null) return null;
+    return String(total).replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " " + cur;
+  }
+  function prizeChip(h) {
+    if (!h.prize) return null;
+    return moneyTotal(stripLabel(h.prize));
+  }
+  function formatChip(h) {
+    if (!h.format) return null;
+    const f = h.format;
+    const online = /онлайн|kaggle/i.test(f);
+    const offline = /офлайн|очно|финал[а-яё]*\s+в/i.test(f);
+    if (/гибрид/i.test(f) || (online && offline)) return { cat: "гибрид", cls: "fmt-hybrid" };
+    if (online) return { cat: "онлайн", cls: "fmt-online" };
+    if (offline) return { cat: "офлайн", cls: "fmt-offline" };
+    return null;
+  }
+  function participationChip(h) {
+    if (!h.participation) return null;
+    const p = h.participation;
+    const solo = /соло/i.test(p);
+    const team = /команд/i.test(p);
+    if (solo && team) return "соло/команда";
+    if (solo) return "соло";
+    if (team) return "команда";
+    return null;
+  }
+
+  /* ---------- data ---------- */
+  function segmentsOf(h) {
+    if (Array.isArray(h.phases) && h.phases.length) {
+      return h.phases.map(p => ({ start: p.start, end: p.end }));
+    }
+    return [{ start: h.start, end: h.end }];
+  }
+
+  function regDeadline(h) {
+    if (h.registration_iso) return parseISO(h.registration_iso);
+    if (!h.registration || !h.registration.startsWith("до ")) return null;
+    const m = h.registration.match(/^до (\d{1,2})\.(\d{1,2})$/);
+    if (!m) return null;
+    const month = Number(m[2]), day = Number(m[1]);
+    const start = parseISO(h.start);
+    let best = null;
+    for (const year of [start.getFullYear() - 1, start.getFullYear(), start.getFullYear() + 1]) {
+      const d = new Date(year, month - 1, day);
+      if (d >= MIN && d <= MAX) return d;
+      if (!best || Math.abs(d - start) < Math.abs(best - start)) best = d;
+    }
+    return best;
+  }
+
+  function dataMaxDate() {
+    let max = -Infinity;
+    EVENTS.forEach(h => {
+      max = Math.max(max, parseISO(h.start).getTime(), parseISO(h.end).getTime());
+      (h.phases || []).forEach(p => {
+        max = Math.max(max, parseISO(p.start).getTime(), parseISO(p.end).getTime());
+      });
+    });
+    return new Date(max);
+  }
+
+  function rangeWindow() {
+    if (!state.range) return null;
+    const last = dataMaxDate();
+    return {
+      from: new Date(last.getFullYear(), last.getMonth() - (state.range - 1), 1),
+      to: new Date(last.getFullYear(), last.getMonth() + 1, 0),
+    };
+  }
+
+  function baseEvents() {
+    const w = rangeWindow();
+    if (!w) return EVENTS;
+    return EVENTS.filter(h => {
+      const dates = [parseISO(h.start), parseISO(h.end)];
+      (h.phases || []).forEach(p => dates.push(parseISO(p.start), parseISO(p.end)));
+      return dates.every(d => d >= w.from && d <= w.to);
+    });
+  }
+
+  function computeRange(base) {
+    if (!base.length) return false;
+    const stamps = [];
+    base.forEach(h => {
+      stamps.push(parseISO(h.start), parseISO(h.end));
+      (h.phases || []).forEach(p => stamps.push(parseISO(p.start), parseISO(p.end)));
+    });
+    let lo = Math.min.apply(null, stamps);
+    let hi = Math.max.apply(null, stamps);
+    const w = rangeWindow();
+    if (w) {
+      lo = w.from.getTime();
+      hi = w.to.getTime();
+    }
+    const loDate = new Date(lo), hiDate = new Date(hi);
+    const months = (hiDate.getFullYear() - loDate.getFullYear()) * 12 +
+                   (hiDate.getMonth() - loDate.getMonth()) + 1;
+    if (months > 12) {
+      MIN = new Date(loDate.getFullYear(), 0, 1);
+      MAX = new Date(hiDate.getFullYear(), 11, 31);
+    } else {
+      MIN = new Date(loDate.getFullYear(), loDate.getMonth(), 1);
+      MAX = new Date(hiDate.getFullYear(), hiDate.getMonth() + 1, 0);
+    }
+    TOTAL_DAYS = Math.round((MAX - MIN) / MS_DAY) + 1;
+    return true;
   }
 
   function matches(h) {
     if (!state.query) return true;
-    const q = state.query.toLowerCase();
-    return h.name.toLowerCase().includes(q) ||
-           h.tasks.some(t => t.toLowerCase().includes(q));
+    return h.name.toLowerCase().includes(state.query) ||
+           (h.type || "").toLowerCase().includes(state.query) ||
+           (h.tasks || []).some(t => t.toLowerCase().includes(state.query));
   }
 
-  function visible() { return HACKS.filter(matches); }
-
-  function build() {
-    const items = visible();
-    const rows = items.length;
-    ganttInner.style.setProperty("--rows", Math.max(rows, 1));
-    subtitle.textContent = `${HACKS.length} событий · ${rows} показано`;
-    ganttInner.innerHTML = "";
-
-    if (!rows) {
-      ganttInner.innerHTML = '<div class="empty">Ничего не найдено</div>';
-      return;
-    }
-
-    /* header row: corner + months */
-    const header = document.createElement("div");
-    header.className = "gantt-header";
-
-    const corner = document.createElement("div");
-    corner.className = "corner";
-    corner.textContent = "Событие";
-    header.appendChild(corner);
-
-    const months = document.createElement("div");
-    months.className = "months";
+  /* ---------- render ---------- */
+  function useYears() {
+    let months = 0;
     let m = new Date(MIN.getFullYear(), MIN.getMonth(), 1);
     while (m <= MAX) {
-      const days = new Date(m.getFullYear(), m.getMonth() + 1, 0).getDate();
-      const cell = document.createElement("div");
-      cell.className = "month-cell";
-      cell.style.width = days * DAY_W + "px";
-      cell.textContent = MONTHS[m.getMonth()] + " " + String(m.getFullYear()).slice(2);
+      months++;
+      m = new Date(m.getFullYear(), m.getMonth() + 1, 1);
+    }
+    return months > 12 || DAY_W * 28 < 36;
+  }
+
+  function buildCells() {
+    const cells = [];
+    if (useYears()) {
+      let x = 0;
+      for (let y = MIN.getFullYear(); y <= MAX.getFullYear(); y++) {
+        const from = new Date(Math.max(new Date(y, 0, 1).getTime(), MIN.getTime()));
+        const to = new Date(Math.min(new Date(y + 1, 0, 1).getTime(), MAX.getTime() + MS_DAY));
+        const w = (to - from) / MS_DAY / TOTAL_DAYS * TIMELINE_W;
+        cells.push({ from: from, to: to, x: x, w: w, label: String(y) });
+        x += w;
+      }
+    } else {
+      let m = new Date(MIN.getFullYear(), MIN.getMonth(), 1);
+      while (m <= MAX) {
+        const next = new Date(m.getFullYear(), m.getMonth() + 1, 1);
+        cells.push({
+          from: m,
+          to: next,
+          x: Math.round((m - MIN) / MS_DAY) * DAY_W,
+          w: Math.round((next - m) / MS_DAY) * DAY_W,
+          label: MONTHS[m.getMonth()] + " " + String(m.getFullYear()).slice(2),
+        });
+        m = next;
+      }
+    }
+    return cells;
+  }
+
+  function xOf(date) {
+    if (!CELLS.length) return 0;
+    const t = date.getTime();
+    if (t <= CELLS[0].from.getTime()) return CELLS[0].x;
+    const last = CELLS[CELLS.length - 1];
+    if (t >= last.to.getTime()) return last.x + last.w;
+    for (const c of CELLS) {
+      if (t >= c.from.getTime() && t < c.to.getTime()) {
+        return c.x + (t - c.from.getTime()) / (c.to.getTime() - c.from.getTime()) * c.w;
+      }
+    }
+    return last.x + last.w;
+  }
+
+  function renderHeader() {
+    const header = el("div", "gantt-header");
+    const corner = el("div", "corner", "Событие");
+    const months = el("div", "months");
+    CELLS.forEach(c => {
+      const cell = el("div", "month-cell", c.label);
+      cell.style.width = c.w + "px";
       months.appendChild(cell);
-      m = new Date(m.getFullYear(), m.getMonth() + 1, 1);
-    }
-    header.appendChild(months);
-    ganttInner.appendChild(header);
+    });
+    header.append(corner, months);
+    return header;
+  }
 
-    /* body row: names + timeline */
-    const body = document.createElement("div");
-    body.className = "gantt-body";
+  function renderChips(h) {
+    const chips = el("div", "chips");
+    trackTags(h).forEach(t => chips.appendChild(el("span", "chip chip-track", t)));
+    const prize = prizeChip(h);
+    if (prize) chips.appendChild(el("span", "chip chip-prize", prize));
+    const fmt = formatChip(h);
+    if (fmt) chips.appendChild(el("span", "chip chip-fmt " + fmt.cls, fmt.cat));
+    const part = participationChip(h);
+    if (part) chips.appendChild(el("span", "chip chip-part", part));
+    return chips.childElementCount ? chips : null;
+  }
 
-    const names = document.createElement("div");
-    names.className = "names-col";
-    names.style.height = rows * ROW_H + "px";
+  function computeCornerWidth(availW) {
+    if (window.innerWidth <= 600) return 200;
+    const names = ganttInner.querySelector(".names-col");
+    const border = names ? parseFloat(getComputedStyle(names).borderRightWidth) || 0 : 0;
+    const cs = names ? getComputedStyle(names.querySelector(".name-row")) : null;
+    const chrome = cs
+      ? (parseFloat(cs.paddingLeft) || 0) + (parseFloat(cs.paddingRight) || 0) + border
+      : 28 + border;
+    let needed = 0;
+    ganttInner.querySelectorAll(".name-row .n-line").forEach(line => {
+      const gap = parseFloat(getComputedStyle(line).gap) || 0;
+      let w = 0, children = 0;
+      line.querySelectorAll(":scope > *").forEach(child => {
+        w += child.scrollWidth;
+        children++;
+      });
+      w += gap * Math.max(0, children - 1);
+      needed = Math.max(needed, w);
+    });
+    needed += chrome;
+    const cap = Math.max(320, availW - 260);
+    return Math.ceil(Math.max(320, Math.min(needed, cap)));
+  }
 
-    /* timeline */
-    const timeline = document.createElement("div");
-    timeline.className = "timeline";
+  function fitChips() {
+    ganttInner.querySelectorAll(".chips").forEach(chips => {
+      chips.style.fontSize = "";
+      const avail = chips.parentElement.clientWidth;
+      let natural = chips.getBoundingClientRect().width;
+      if (!avail || natural <= avail) return;
+      const base = parseFloat(getComputedStyle(chips).fontSize) || 10.5;
+      let size = base;
+      for (let i = 0; i < 8 && size > 7; i++) {
+        size = Math.max(7, size * avail / natural * 0.99);
+        chips.style.fontSize = size + "px";
+        natural = chips.getBoundingClientRect().width;
+        if (natural <= avail) break;
+      }
+    });
+  }
+
+  function bindRowHover(nameRow, track) {
+    const on = () => { nameRow.classList.add("is-hover"); track.classList.add("is-hover"); };
+    const off = () => { nameRow.classList.remove("is-hover"); track.classList.remove("is-hover"); };
+    nameRow.addEventListener("mouseenter", on);
+    nameRow.addEventListener("mouseleave", off);
+    track.addEventListener("mouseenter", on);
+    track.addEventListener("mouseleave", off);
+  }
+
+  function bindTip(node, h) {
+    node.addEventListener("mouseenter", e => showTip(e, h));
+    node.addEventListener("mousemove", moveTip);
+    node.addEventListener("mouseleave", hideTip);
+  }
+
+  function renderBody(items) {
+    const body = el("div", "gantt-body");
+    const names = el("div", "names-col");
+    const timeline = el("div", "timeline");
+    const rowsH = items.length * ROW_H;
+    names.style.height = rowsH + "px";
     timeline.style.width = TIMELINE_W + "px";
-    timeline.style.height = rows * ROW_H + "px";
+    timeline.style.height = rowsH + "px";
 
-    /* month boundary lines */
-    m = new Date(MIN.getFullYear(), MIN.getMonth() + 1, 1);
-    while (m <= MAX) {
-      const ln = document.createElement("div");
-      ln.style.cssText = `position:absolute;top:0;bottom:0;width:1px;background:rgba(37,48,74,.9);left:${dayIdx(m) * DAY_W}px;`;
-      timeline.appendChild(ln);
-      m = new Date(m.getFullYear(), m.getMonth() + 1, 1);
-    }
+    const bands = document.createDocumentFragment();
+    CELLS.forEach((c, i) => {
+      if (i % 2 === 0) return;
+      const band = el("div", "month-band");
+      band.style.left = c.x + "px";
+      band.style.width = c.w + "px";
+      bands.appendChild(band);
+    });
+    timeline.appendChild(bands);
+
+    const lines = document.createDocumentFragment();
+    CELLS.slice(1).forEach(c => {
+      const line = el("div", "month-line");
+      line.style.left = c.x + "px";
+      lines.appendChild(line);
+    });
+    timeline.appendChild(lines);
 
     items.forEach((h, i) => {
-      const y = i * ROW_H;
+      const nameRow = el("div", "name-row");
+      const info = el("div", "info");
+      const line = el("div", "n-line");
+      const nameEl = el("span", "n", h.name);
+      nameEl.title = h.name;
+      line.appendChild(nameEl);
+      if (h.url && /^https?:\/\//i.test(h.url)) {
+        const src = el("a", "src");
+        src.href = h.url;
+        src.target = "_blank";
+        src.rel = "noopener noreferrer";
+        src.setAttribute("aria-label", "Страница события: " + h.name);
+        src.innerHTML = LINK_SVG;
+        line.appendChild(src);
+      }
+      const gcal = el("a", "src cal");
+      gcal.href = googleUrl(h.name, h.start, h.end, detailsOf(h));
+      gcal.target = "_blank";
+      gcal.rel = "noopener noreferrer";
+      gcal.setAttribute("aria-label", "Добавить в Google Календарь: " + h.name);
+      gcal.title = "Добавить в Google Календарь";
+      gcal.innerHTML = CAL_SVG;
+      line.appendChild(gcal);
 
-      const nameRow = document.createElement("div");
-      nameRow.className = "name-row";
-      nameRow.innerHTML =
-        `<span class="tag ${h.type === "ХАК" ? "tag-hack" : "tag-sor"}">${h.type === "ХАК" ? "ХАК" : "СОР"}</span>` +
-        `<div class="info"><div class="n"></div></div>`;
-      nameRow.querySelector(".n").textContent = h.name;
+      const icsBtn = el("button", "src cal");
+      icsBtn.type = "button";
+      icsBtn.setAttribute("aria-label", "Скачать .ics: " + h.name);
+      icsBtn.title = "Скачать .ics";
+      icsBtn.innerHTML = ICS_SVG;
+      icsBtn.addEventListener("click", () => downloadICS(h));
+      line.appendChild(icsBtn);
+      info.appendChild(line);
+      const chips = renderChips(h);
+      if (chips) info.appendChild(chips);
+      nameEl.addEventListener("click", () => openModal(h));
+      nameRow.appendChild(info);
       names.appendChild(nameRow);
 
-      const track = document.createElement("div");
-      track.className = "bar-track";
-      track.style.top = y + "px";
+      const track = el("div", "bar-track");
+      track.style.top = i * ROW_H + "px";
       track.style.width = TIMELINE_W + "px";
+      bindRowHover(nameRow, track);
 
-      buildSegments(h).forEach(seg => {
-        const x0 = dayIdx(parseISO(seg.start)) * DAY_W;
-        const x1 = (dayIdx(parseISO(seg.end)) + 1) * DAY_W;
+      for (const seg of segmentsOf(h)) {
+        const x0 = xOf(parseISO(seg.start));
+        const x1 = xOf(new Date(parseISO(seg.end).getTime() + MS_DAY));
         const w = x1 - x0;
-        if (w <= 0) return;
-        const bar = document.createElement("div");
-        bar.className = "bar" + (seg.kind === "final" ? " final" : "") + (seg.start_approx ? " approx" : "");
+        if (w <= 0) continue;
+        const bar = el("div", "bar");
         bar.style.left = x0 + "px";
         bar.style.width = w + "px";
-        bar.addEventListener("mouseenter", e => showTip(e, h));
-        bar.addEventListener("mousemove", moveTip);
-        bar.addEventListener("mouseleave", hideTip);
+        bar.tabIndex = 0;
+        bar.setAttribute("aria-label", h.name);
+        bindTip(bar, h);
+        bar.addEventListener("click", () => openModal(h));
+        bar.addEventListener("keydown", e => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            openModal(h);
+          }
+        });
+        bar.addEventListener("focus", () => showTipAtRect(bar.getBoundingClientRect(), h));
+        bar.addEventListener("blur", hideTip);
         track.appendChild(bar);
-      });
+      }
 
-      if (h.registration && h.registration.startsWith("до ")) {
-        const dm = h.registration.slice(3);
-        const [d, mo] = dm.split(".").map(Number);
-        const x = dayIdx(new Date(MIN.getFullYear(), mo - 1, d)) * DAY_W;
+      const reg = regDeadline(h);
+      if (reg) {
+        const x = xOf(reg);
         if (x >= 0 && x <= TIMELINE_W) {
-          const mk = document.createElement("div");
-          mk.className = "reg-mark";
+          const mk = el("div", "reg-mark");
           mk.style.left = x + "px";
-          mk.addEventListener("mouseenter", e => showTip(e, h));
-          mk.addEventListener("mousemove", moveTip);
-          mk.addEventListener("mouseleave", hideTip);
+          mk.setAttribute("aria-label", "Регистрация: " + h.registration);
+          bindTip(mk, h);
+          mk.addEventListener("click", () => openModal(h));
           track.appendChild(mk);
         }
       }
       timeline.appendChild(track);
     });
 
-    body.appendChild(names);
-    body.appendChild(timeline);
-    ganttInner.appendChild(body);
-
-    /* today line */
-    const today = new Date();
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     if (today >= MIN && today <= MAX) {
-      const t = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-      const line = document.createElement("div");
-      line.className = "today-line";
-      line.style.left = dayIdx(t) * DAY_W + "px";
+      const line = el("div", "today-line");
+      line.style.left = xOf(today) + "px";
       timeline.appendChild(line);
     }
+
+    body.append(names, timeline);
+    return body;
   }
 
-  /* ---------- tooltip ---------- */
-  function showTip(e, h) {
-    const fmt = (iso, approx) => (approx ? "≈" : "") + fmtDate(iso);
-    let dateLine = fmt(h.start, h.start_approx) + " – " + fmt(h.end, false);
-    if (h.phases) dateLine = h.phases.map(p => fmt(p.start, p.start_approx) + " – " + fmt(p.end, false) + (p.label ? " (" + p.label + ")" : "")).join(" · ");
-    if (h.registration) dateLine += " · рег. " + h.registration;
+  function build() {
+    hideTip();
+    const base = baseEvents();
+    ganttInner.replaceChildren();
 
-    let html =
-      `<div class="tt-head"><span class="tag ${h.type === "ХАК" ? "tag-hack" : "tag-sor"}">${h.type === "ХАК" ? "ХАК" : "СОР"}</span>` +
-      `<span class="tt-name">${escapeHtml(h.name)}</span></div>` +
-      `<div class="tt-dates">${dateLine}</div>`;
-    if (h.prize) html += `<div class="tt-row"><span class="tt-label">💰 Приз:</span><span class="tt-prize">${escapeHtml(h.prize)}</span></div>`;
-    if (h.tasks.length) html += `<ul>${h.tasks.map(t => "<li>" + escapeHtml(t) + "</li>").join("")}</ul>`;
-    if (h.participation) html += `<div class="tt-row"><span class="tt-label">🏀 Участие:</span>${escapeHtml(h.participation)}</div>`;
-    if (h.format) html += `<div class="tt-row"><span class="tt-label">🌐 Формат:</span>${escapeHtml(h.format)}</div>`;
-    if (h.lang) html += `<div class="tt-row"><span class="tt-label">🖥️</span>${escapeHtml(h.lang)}</div>`;
-    tooltip.innerHTML = html;
+    if (!EVENTS.length) {
+      ganttInner.appendChild(el("div", "empty", "Нет данных о событиях"));
+      return null;
+    }
+    if (!base.length) {
+      const box = el("div", "empty");
+      box.append(el("span", null, "Нет событий за выбранный период"));
+      const all = el("button", "link", "показать все");
+      all.type = "button";
+      all.addEventListener("click", () => setRange(0));
+      box.appendChild(all);
+      ganttInner.appendChild(box);
+      return null;
+    }
+
+    computeRange(base);
+    const items = base.filter(matches);
+
+    if (!items.length) {
+      const box = el("div", "empty");
+      box.append(el("span", null, "Ничего не найдено"));
+      const reset = el("button", "link", "сбросить поиск");
+      reset.type = "button";
+      reset.addEventListener("click", () => {
+        searchInput.value = "";
+        state.query = "";
+        build();
+        searchInput.focus();
+      });
+      box.appendChild(reset);
+      ganttInner.appendChild(box);
+      return null;
+    }
+
+    layout(items);
+    return items;
+  }
+
+  function layout(items) {
+    const availW = ganttWrap.clientWidth || window.innerWidth || 1000;
+    ROW_H = parseFloat(getComputedStyle(ganttWrap).getPropertyValue("--row-h")) || 72;
+
+    TIMELINE_W = 1000;
+    DAY_W = TIMELINE_W / TOTAL_DAYS;
+    CELLS = buildCells();
+    ganttInner.append(renderHeader(), renderBody(items));
+
+    const cornerW = computeCornerWidth(availW);
+    const scrollbarW = ganttScroll.offsetWidth - ganttScroll.clientWidth;
+    ganttWrap.style.setProperty("--corner-w", cornerW + "px");
+    TIMELINE_W = Math.max(100, availW - scrollbarW - cornerW);
+    DAY_W = TIMELINE_W / TOTAL_DAYS;
+    CELLS = buildCells();
+    ganttInner.style.setProperty("--timeline-w", TIMELINE_W + "px");
+
+    ganttInner.replaceChildren(renderHeader(), renderBody(items));
+    fitChips();
+  }
+
+  /* ---------- tooltip & modal ---------- */
+  function ttRow(label, value, valueClass) {
+    const row = el("div", "tt-row");
+    row.append(el("span", "tt-label", label), el("span", valueClass, value));
+    return row;
+  }
+
+  function dateLineOf(h) {
+    const wY = MIN.getFullYear() !== MAX.getFullYear();
+    let line;
+    if (Array.isArray(h.phases) && h.phases.length) {
+      line = h.phases
+        .map(p => fmtRange(p.start, p.end, p.start_approx, wY) + (p.label ? " (" + p.label + ")" : ""))
+        .join(" · ");
+    } else {
+      line = fmtRange(h.start, h.end, h.start_approx, wY);
+    }
+    if (h.registration) {
+      line += " · рег. " + (wY && h.registration_iso
+        ? h.registration.split(" ")[0] + " " + fmtDate(h.registration_iso, true)
+        : h.registration);
+    }
+    return line;
+  }
+
+  function regLineOf(h) {
+    if (h.registration_iso) return "Рег. до " + fmtDate(h.registration_iso, MIN.getFullYear() !== MAX.getFullYear());
+    if (h.registration) return "Рег. " + h.registration;
+    return null;
+  }
+
+  function phaseLinesOf(h) {
+    const wY = MIN.getFullYear() !== MAX.getFullYear();
+    return (h.phases || []).map(p => {
+      const label = p.label ? p.label.charAt(0).toUpperCase() + p.label.slice(1) : "";
+      const icon = (p.label || "").toLowerCase().includes("финал") ? "🏁" : "🎯";
+      return { icon: icon, text: (label ? label + " " : "") + fmtRange(p.start, p.end, p.start_approx, wY) };
+    });
+  }
+
+  function whenRow(icon, text) {
+    const row = el("div", "tt-when");
+    row.append(el("span", "tt-ico", icon), el("span", "tt-when-text", text));
+    return row;
+  }
+
+  function renderTip(h) {
+    tooltip.replaceChildren();
+    const head = el("div", "tt-head");
+    head.appendChild(el("span", "tt-name", h.name));
+    tooltip.appendChild(head);
+    const wY = MIN.getFullYear() !== MAX.getFullYear();
+    const approx = h.start_approx ? "≈ " : "";
+    tooltip.appendChild(whenRow("📅", approx + "С " + fmtDate(h.start, wY) + " по " + fmtDate(h.end, wY)));
+    const reg = regLineOf(h);
+    if (reg) tooltip.appendChild(whenRow("⏳", reg));
+    phaseLinesOf(h).forEach(p => tooltip.appendChild(whenRow(p.icon, p.text)));
     tooltip.classList.remove("hidden");
-    moveTip(e);
+  }
+
+  function renderFull(container, h) {
+    container.replaceChildren();
+    const head = el("div", "tt-head");
+    head.appendChild(el("span", "tt-name", h.name));
+    container.append(head, el("div", "tt-dates", dateLineOf(h)));
+    const tags = trackTags(h);
+    if (tags.length) container.appendChild(ttRow("🏷️ Треки:", tags.join(", ")));
+    if (h.prize) container.appendChild(ttRow("💰 Приз:", stripLabel(h.prize), "tt-prize"));
+    if (h.tasks && h.tasks.length) {
+      const ul = el("ul", "tt-list");
+      h.tasks.forEach(t => ul.appendChild(el("li", null, t)));
+      container.appendChild(ul);
+    }
+    if (h.participation) container.appendChild(ttRow("🏀 Участие:", stripLabel(h.participation)));
+    if (h.format) container.appendChild(ttRow("🌐 Формат:", stripLabel(h.format)));
+    if (h.lang) container.appendChild(ttRow("🖥️ Язык:", h.lang));
+    if (h.url && /^https?:\/\//i.test(h.url)) {
+      const row = el("div", "tt-row");
+      const a = el("a", "tt-link", "Открыть страницу события");
+      a.href = h.url;
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+      row.append(el("span", "tt-label", "🔗"), a);
+      container.appendChild(row);
+    }
+    const calRow = el("div", "tt-row tt-cal");
+    calRow.appendChild(el("span", "tt-label", "📆 В календарь:"));
+    const google = el("a", "tt-link", "Google");
+    google.href = googleUrl(h.name, h.start, h.end, detailsOf(h));
+    google.target = "_blank";
+    google.rel = "noopener noreferrer";
+    calRow.appendChild(google);
+    if (h.registration_iso) {
+      const wY = MIN.getFullYear() !== MAX.getFullYear();
+      const regText = fmtDate(h.registration_iso, wY);
+      const googleReg = el("a", "tt-link", "Google (рег. до " + regText + ")");
+      googleReg.href = googleUrl(h.name + " — рег. до " + regText, h.registration_iso, h.registration_iso,
+        "Регистрация до " + regText + (h.url ? "\n" + h.url : ""));
+      googleReg.target = "_blank";
+      googleReg.rel = "noopener noreferrer";
+      calRow.appendChild(googleReg);
+    }
+    const ics = el("button", "tt-link", "Скачать .ics");
+    ics.type = "button";
+    ics.addEventListener("click", () => downloadICS(h));
+    calRow.appendChild(ics);
+    container.appendChild(calRow);
+  }
+
+  /* ---------- calendar export ---------- */
+  const pad2 = n => (n < 10 ? "0" : "") + n;
+  const compactDate = iso => iso.replace(/-/g, "");
+  function addDaysISO(iso, n) {
+    const d = parseISO(iso);
+    d.setDate(d.getDate() + n);
+    return d.getFullYear() + "-" + pad2(d.getMonth() + 1) + "-" + pad2(d.getDate());
+  }
+
+  function detailsOf(h) {
+    const wY = MIN.getFullYear() !== MAX.getFullYear();
+    const lines = ["Даты: " + fmtRange(h.start, h.end, h.start_approx, wY)];
+    (h.phases || []).forEach(p => {
+      lines.push((p.label ? p.label.charAt(0).toUpperCase() + p.label.slice(1) + ": " : "") +
+                 fmtRange(p.start, p.end, p.start_approx, wY));
+    });
+    if (h.registration) {
+      const reg = h.registration_iso ? fmtDate(h.registration_iso, wY) : h.registration.replace(/^до\s*/i, "");
+      lines.push("Рег. до: " + reg);
+    }
+    if (h.prize) lines.push(stripLabel(h.prize));
+    if (h.format) lines.push(stripLabel(h.format));
+    if (h.url) lines.push(h.url);
+    return lines.join("\n");
+  }
+
+  function googleUrl(text, start, end, details) {
+    return "https://calendar.google.com/calendar/render?action=TEMPLATE" +
+      "&text=" + encodeURIComponent(text) +
+      "&dates=" + compactDate(start) + "/" + compactDate(addDaysISO(end, 1)) +
+      (details ? "&details=" + encodeURIComponent(details) : "");
+  }
+
+  const TRANSLIT = {
+    а: "a", б: "b", в: "v", г: "g", д: "d", е: "e", ё: "e", ж: "zh", з: "z", и: "i",
+    й: "y", к: "k", л: "l", м: "m", н: "n", о: "o", п: "p", р: "r", с: "s", т: "t",
+    у: "u", ф: "f", х: "h", ц: "ts", ч: "ch", ш: "sh", щ: "sch", ъ: "", ы: "y",
+    ь: "", э: "e", ю: "yu", я: "ya",
+  };
+  function slugify(s) {
+    return s.toLowerCase().split("")
+      .map(ch => (TRANSLIT[ch] !== undefined ? TRANSLIT[ch] : ch))
+      .join("")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+      .slice(0, 60) || "event";
+  }
+
+  function icsEscape(s) {
+    return String(s)
+      .replace(/\\/g, "\\\\")
+      .replace(/;/g, "\\;")
+      .replace(/,/g, "\\,")
+      .replace(/\r?\n/g, "\\n");
+  }
+
+  function icsFold(line) {
+    const out = [];
+    let cur = "", len = 0;
+    for (const ch of line) {
+      const size = encodeURIComponent(ch).replace(/%[0-9A-F]{2}/g, "x").length;
+      if (len + size > 73) {
+        out.push(cur);
+        cur = " ";
+        len = 1;
+      }
+      cur += ch;
+      len += size;
+    }
+    out.push(cur);
+    return out.join("\r\n");
+  }
+
+  function utcStamp() {
+    const d = new Date();
+    return d.getUTCFullYear() + pad2(d.getUTCMonth() + 1) + pad2(d.getUTCDate()) +
+      "T" + pad2(d.getUTCHours()) + pad2(d.getUTCMinutes()) + pad2(d.getUTCSeconds()) + "Z";
+  }
+
+  function buildICS(h) {
+    const wY = MIN.getFullYear() !== MAX.getFullYear();
+    const stamp = utcStamp();
+    const uid = slugify(h.name) + "-" + compactDate(h.start);
+    const lines = [
+      "BEGIN:VCALENDAR",
+      "VERSION:2.0",
+      "PRODID:-//hack_calendar//events//RU",
+      "CALSCALE:GREGORIAN",
+      "BEGIN:VEVENT",
+      "UID:" + uid + "@hack-calendar",
+      "DTSTAMP:" + stamp,
+      "DTSTART;VALUE=DATE:" + compactDate(h.start),
+      "DTEND;VALUE=DATE:" + compactDate(addDaysISO(h.end, 1)),
+      "SUMMARY:" + icsEscape(h.name),
+      "DESCRIPTION:" + icsEscape(detailsOf(h)),
+    ];
+    if (h.url) lines.push("URL:" + h.url);
+    lines.push("END:VEVENT");
+    if (h.registration_iso) {
+      const reg = fmtDate(h.registration_iso, wY);
+      lines.push(
+        "BEGIN:VEVENT",
+        "UID:" + uid + "-reg@hack-calendar",
+        "DTSTAMP:" + stamp,
+        "DTSTART;VALUE=DATE:" + compactDate(h.registration_iso),
+        "DTEND;VALUE=DATE:" + compactDate(addDaysISO(h.registration_iso, 1)),
+        "SUMMARY:" + icsEscape(h.name + " — рег. до " + reg),
+        "DESCRIPTION:" + icsEscape("Дедлайн регистрации: " + reg + (h.url ? "\n" + h.url : "")),
+      );
+      if (h.url) lines.push("URL:" + h.url);
+      lines.push("END:VEVENT");
+    }
+    lines.push("END:VCALENDAR");
+    return lines.map(icsFold).join("\r\n") + "\r\n";
+  }
+
+  function downloadICS(h) {
+    const blob = new Blob([buildICS(h)], { type: "text/calendar;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = el("a");
+    a.href = url;
+    a.download = slugify(h.name) + ".ics";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
+  let modalLastFocus = null;
+  function openModal(h) {
+    hideTip();
+    modalLastFocus = document.activeElement;
+    renderFull(modalContent, h);
+    modalCard.setAttribute("aria-label", h.name);
+    modalBackdrop.classList.remove("hidden");
+    modalClose.focus();
+  }
+  function closeModal() {
+    if (modalBackdrop.classList.contains("hidden")) return;
+    modalBackdrop.classList.add("hidden");
+    modalContent.replaceChildren();
+    if (modalLastFocus && typeof modalLastFocus.focus === "function") modalLastFocus.focus();
+    modalLastFocus = null;
+  }
+  modalClose.addEventListener("click", closeModal);
+  modalBackdrop.addEventListener("click", e => {
+    if (e.target === modalBackdrop) closeModal();
+  });
+
+  function placeTip(x, y) {
+    const pad = 14, margin = 8;
+    const tw = tooltip.offsetWidth, th = tooltip.offsetHeight;
+    let left = x + pad, top = y + pad;
+    if (left + tw > window.innerWidth - margin) left = x - tw - pad;
+    if (top + th > window.innerHeight - margin) top = y - th - pad;
+    tooltip.style.left = Math.max(margin, left) + "px";
+    tooltip.style.top = Math.max(margin, top) + "px";
+  }
+
+  function showTip(e, h) {
+    renderTip(h);
+    placeTip(e.clientX, e.clientY);
+  }
+  function showTipAtRect(rect, h) {
+    renderTip(h);
+    placeTip(rect.right + 10, rect.top);
   }
   function moveTip(e) {
-    const pad = 14;
-    const tw = tooltip.offsetWidth, th = tooltip.offsetHeight;
-    let x = e.clientX + pad, y = e.clientY + pad;
-    if (x + tw > innerWidth - 8) x = e.clientX - tw - pad;
-    if (y + th > innerHeight - 8) y = innerHeight - th - 8;
-    tooltip.style.left = x + "px";
-    tooltip.style.top = y + "px";
+    placeTip(e.clientX, e.clientY);
   }
-  function hideTip() { tooltip.classList.add("hidden"); }
-  function escapeHtml(s) {
-    return s.replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  function hideTip() {
+    tooltip.classList.add("hidden");
   }
+
+  /* ---------- theme ---------- */
+  function applyTheme(theme, save) {
+    document.documentElement.dataset.theme = theme;
+    themeToggle.innerHTML = theme === "light" ? MOON_SVG : SUN_SVG;
+    const label = theme === "light" ? "Включить тёмную тему" : "Включить светлую тему";
+    themeToggle.setAttribute("aria-label", label);
+    themeToggle.title = label;
+    if (themeColor) themeColor.setAttribute("content", theme === "light" ? "#eef1f7" : "#0d1322");
+    if (save) {
+      try { localStorage.setItem("hc-theme", theme); } catch (err) {}
+    }
+  }
+  applyTheme(document.documentElement.dataset.theme === "light" ? "light" : "dark", false);
+  themeToggle.addEventListener("click", () => {
+    applyTheme(document.documentElement.dataset.theme === "light" ? "dark" : "light", true);
+  });
 
   /* ---------- controls ---------- */
-  search.addEventListener("input", () => { state.query = search.value.trim(); build(); });
-  scrollEl.addEventListener("scroll", hideTip);
+  function setRange(n) {
+    state.range = n;
+    rangeGroup.querySelectorAll(".seg-btn").forEach(btn => {
+      const active = Number(btn.dataset.range) === n;
+      btn.classList.toggle("is-active", active);
+      btn.setAttribute("aria-pressed", String(active));
+    });
+    build();
+  }
+  rangeGroup.addEventListener("click", e => {
+    const btn = e.target.closest(".seg-btn");
+    if (!btn) return;
+    const n = Number(btn.dataset.range);
+    if (Number.isFinite(n) && n !== state.range) setRange(n);
+  });
 
-  computeRange();
+  searchInput.addEventListener("input", () => {
+    state.query = searchInput.value.trim().toLowerCase();
+    build();
+  });
+  document.addEventListener("keydown", e => {
+    if (e.key === "/" && !e.ctrlKey && !e.metaKey && !e.altKey && document.activeElement !== searchInput) {
+      e.preventDefault();
+      searchInput.focus();
+    } else if (e.key === "Escape") {
+      if (!modalBackdrop.classList.contains("hidden")) {
+        closeModal();
+        return;
+      }
+      if (state.query) {
+        searchInput.value = "";
+        state.query = "";
+        build();
+      }
+      searchInput.blur();
+      hideTip();
+    }
+  });
+
+  let resizeTimer = null;
+  window.addEventListener("resize", () => {
+    hideTip();
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(build, 120);
+  });
+
   build();
 })();
 </script>
