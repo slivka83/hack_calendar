@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0d1322">
-<title>ML-соревнования и хакатоны — Гантт</title>
+<title>ML-Gantt</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta name="description" content="Диаграмма Ганта: ближайшие ML-соревнования и хакатоны. Даты, призы, форматы.">
 <script>
 (function () {
@@ -35,8 +36,8 @@
     --fmt-hybrid: #b18cff;
     --scroll-thumb: #2c3a63;
     --corner-w: 330px;
-    --header-h: 46px;
-    --row-h: 72px;
+    --header-h: 34px;
+    --row-h: 62px;
     --bar-h: 26px;
     --timeline-w: 0px;
   }
@@ -82,7 +83,8 @@
     transition: background-color .25s, border-color .25s;
   }
   .title-block { min-width: 0; margin-right: auto; }
-  .topbar h1 { font-size: 17px; font-weight: 700; letter-spacing: .2px; }
+  .topbar h1 { display: flex; align-items: center; gap: 9px; font-size: 17px; font-weight: 700; letter-spacing: .2px; }
+  .logo { flex: none; }
 
   .controls { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 
@@ -368,7 +370,11 @@
     width: 2px;
     z-index: 30;
     pointer-events: none;
-    background: var(--today);
+    background: repeating-linear-gradient(
+      to bottom,
+      var(--today) 0 4px,
+      transparent 4px 8px
+    );
   }
 
   .empty {
@@ -415,11 +421,13 @@
   .tooltip.hidden { display: none; }
   .tt-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
   .tt-name { font-size: 14px; font-weight: 700; }
+  .tt-fav { flex: none; width: 18px; height: 18px; border-radius: 4px; object-fit: contain; }
   .tt-dates { color: var(--muted); margin-bottom: 8px; font-size: 12px; }
   .tt-row { margin: 4px 0; }
   .tt-label { color: var(--muted); margin-right: 6px; }
   .tt-prize { font-weight: 700; color: var(--reg); }
-  .tt-list { margin: 4px 0 4px 18px; color: color-mix(in srgb, var(--text) 82%, var(--muted)); }
+  .tt-section { margin: 8px 0 2px; }
+  .tt-list { margin: 2px 0 8px 24px; color: color-mix(in srgb, var(--text) 82%, var(--muted)); }
   .tt-list li { margin: 3px 0; }
   .tt-when { color: var(--muted); margin: 3px 0; display: flex; gap: 7px; }
   .tt-when:last-child { margin-bottom: 0; }
@@ -429,6 +437,12 @@
   button.tt-link { background: none; border: none; padding: 0; font: inherit; font-weight: 600; cursor: pointer; }
   .tt-cal { display: flex; align-items: center; flex-wrap: wrap; gap: 2px 10px; }
   .tt-cal .tt-link { font-weight: 600; }
+  .tt-cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(200px, 300px); gap: 18px; align-items: start; }
+  .tt-col-side { border-left: 1px solid var(--border); padding-left: 18px; }
+  .tt-links .tt-label { display: block; margin: 8px 0 2px; }
+  .tt-links .tt-label:first-child { margin-top: 0; }
+  .tt-links .tt-list { margin: 0 0 0 20px; }
+  .tt-side-link { display: inline-block; margin: 2px 0 6px; font-weight: 600; }
 
   /* ---------- Modal ---------- */
   .modal-backdrop {
@@ -444,8 +458,8 @@
   .modal-backdrop.hidden { display: none; }
   .modal {
     position: relative;
-    width: min(480px, 100%);
-    max-height: min(72vh, 640px);
+    width: min(840px, 100%);
+    max-height: min(80vh, 720px);
     overflow: auto;
     background: var(--panel);
     border: 1px solid var(--border);
@@ -479,6 +493,10 @@
   @media (max-width: 900px) {
     :root { --corner-w: 300px; }
   }
+  @media (max-width: 700px) {
+    .tt-cols { grid-template-columns: 1fr; gap: 0; }
+    .tt-col-side { border-left: none; padding-left: 0; border-top: 1px solid var(--border); margin-top: 12px; padding-top: 10px; }
+  }
   @media (max-width: 600px) {
     :root { --corner-w: 200px; --row-h: 56px; }
     .chips { display: none; }
@@ -495,7 +513,7 @@
 
 <header class="topbar">
   <div class="title-block">
-    <h1>ML-соревнования и хакатоны</h1>
+    <h1><img class="logo" src="favicon.svg" alt="" width="26" height="26">ML-Gantt</h1>
   </div>
   <div class="controls">
     <div class="seg" id="rangeGroup" role="group" aria-label="Период отображения">
@@ -503,6 +521,12 @@
       <button type="button" class="seg-btn" data-range="12" aria-pressed="false">1 год</button>
       <button type="button" class="seg-btn" data-range="24" aria-pressed="false">2 года</button>
       <button type="button" class="seg-btn" data-range="0" aria-pressed="false">Все</button>
+    </div>
+    <div class="seg" id="filterGroup" role="group" aria-label="Фильтры событий">
+      <button type="button" class="seg-btn" data-filter="actual" aria-pressed="false"
+              title="Соревнование ещё не закончилось">Актуальные</button>
+      <button type="button" class="seg-btn" data-filter="signup" aria-pressed="false"
+              title="Регистрация ещё открыта">Записаться</button>
     </div>
     <input id="search" type="search" placeholder="Поиск по названию, задаче или типу…"
            aria-label="Поиск событий" title="Нажмите «/», чтобы перейти к поиску">
@@ -548,17 +572,18 @@
   const modalClose = document.getElementById("modalClose");
   const searchInput = document.getElementById("search");
   const rangeGroup = document.getElementById("rangeGroup");
+  const filterGroup = document.getElementById("filterGroup");
   const themeToggle = document.getElementById("themeToggle");
   const themeColor = document.querySelector('meta[name="theme-color"]');
 
   let DAY_W = 4;
-  let ROW_H = 72;
+  let ROW_H = 62;
 
   const EVENTS = (typeof HACKS !== "undefined" && Array.isArray(HACKS)
     ? HACKS.filter(h => h && h.start && h.end).reverse()
     : []);
 
-  const state = { query: "", range: 6 };
+  const state = { query: "", range: 6, actual: false, signup: false };
   let MIN, MAX, TOTAL_DAYS, TIMELINE_W;
   let CELLS = [];
 
@@ -580,6 +605,9 @@
   const fmtRange = (start, end, approx, withYear) =>
     (approx ? "≈" : "") + fmtDate(start, withYear) + " – " + fmtDate(end, withYear);
   const stripLabel = s => s.replace(/^(Приз(?:ы)?|Участие|Формат):\s*/, "");
+  const hostOf = url => {
+    try { return new URL(url).hostname; } catch (e) { return ""; }
+  };
 
   /* ---------- chips ---------- */
   function trackTags(h) {
@@ -728,7 +756,27 @@
     return true;
   }
 
+  function todayMidnight() {
+    const n = new Date();
+    return new Date(n.getFullYear(), n.getMonth(), n.getDate());
+  }
+
+  function isActual(h) {
+    const dates = [parseISO(h.start), parseISO(h.end)];
+    (h.phases || []).forEach(p => dates.push(parseISO(p.start), parseISO(p.end)));
+    let hi = dates[0];
+    dates.forEach(d => { if (d > hi) hi = d; });
+    return todayMidnight() <= hi;
+  }
+
+  function canSignup(h) {
+    const deadline = h.registration_iso ? parseISO(h.registration_iso) : parseISO(h.end);
+    return todayMidnight() <= deadline;
+  }
+
   function matches(h) {
+    if (state.actual && !isActual(h)) return false;
+    if (state.signup && !canSignup(h)) return false;
     if (!state.query) return true;
     return h.name.toLowerCase().includes(state.query) ||
            (h.type || "").toLowerCase().includes(state.query) ||
@@ -809,7 +857,7 @@
     const fmt = formatChip(h);
     if (fmt) chips.appendChild(el("span", "chip chip-fmt " + fmt.cls, fmt.cat));
     const part = participationChip(h);
-    if (part) chips.appendChild(el("span", "chip chip-part", part));
+    if (part) chips.appendChild(el("span", "chip", part));
     return chips.childElementCount ? chips : null;
   }
 
@@ -912,7 +960,7 @@
         src.innerHTML = LINK_SVG;
         line.appendChild(src);
       }
-      const gcal = el("a", "src cal");
+      const gcal = el("a", "src");
       gcal.href = googleUrl(h.name, h.start, h.end, detailsOf(h));
       gcal.target = "_blank";
       gcal.rel = "noopener noreferrer";
@@ -921,7 +969,7 @@
       gcal.innerHTML = CAL_SVG;
       line.appendChild(gcal);
 
-      const icsBtn = el("button", "src cal");
+      const icsBtn = el("button", "src");
       icsBtn.type = "button";
       icsBtn.setAttribute("aria-label", "Скачать .ics: " + h.name);
       icsBtn.title = "Скачать .ics";
@@ -978,8 +1026,7 @@
       timeline.appendChild(track);
     });
 
-    const now = new Date();
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const today = todayMidnight();
     if (today >= MIN && today <= MAX) {
       const line = el("div", "today-line");
       line.style.left = xOf(today) + "px";
@@ -1016,11 +1063,17 @@
     if (!items.length) {
       const box = el("div", "empty");
       box.append(el("span", null, "Ничего не найдено"));
-      const reset = el("button", "link", "сбросить поиск");
+      const reset = el("button", "link", "сбросить фильтры");
       reset.type = "button";
       reset.addEventListener("click", () => {
         searchInput.value = "";
         state.query = "";
+        state.actual = false;
+        state.signup = false;
+        filterGroup.querySelectorAll(".seg-btn").forEach(btn => {
+          btn.classList.remove("is-active");
+          btn.setAttribute("aria-pressed", "false");
+        });
         build();
         searchInput.focus();
       });
@@ -1035,7 +1088,7 @@
 
   function layout(items) {
     const availW = ganttWrap.clientWidth || window.innerWidth || 1000;
-    ROW_H = parseFloat(getComputedStyle(ganttWrap).getPropertyValue("--row-h")) || 72;
+    ROW_H = parseFloat(getComputedStyle(ganttWrap).getPropertyValue("--row-h")) || 62;
 
     TIMELINE_W = 1000;
     DAY_W = TIMELINE_W / TOTAL_DAYS;
@@ -1096,7 +1149,7 @@
 
   function whenRow(icon, text) {
     const row = el("div", "tt-when");
-    row.append(el("span", "tt-ico", icon), el("span", "tt-when-text", text));
+    row.append(el("span", "tt-ico", icon), el("span", null, text));
     return row;
   }
 
@@ -1117,28 +1170,64 @@
   function renderFull(container, h) {
     container.replaceChildren();
     const head = el("div", "tt-head");
+    const host = h.url ? hostOf(h.url) : "";
+    if (host) {
+      const exts = ["png", "svg"];
+      const img = el("img", "tt-fav");
+      img.alt = "";
+      img.addEventListener("error", () => {
+        if (exts.length) img.src = "icons/" + host + "." + exts.shift();
+        else img.remove();
+      });
+      img.src = "icons/" + host + "." + exts.shift();
+      head.appendChild(img);
+    }
     head.appendChild(el("span", "tt-name", h.name));
     container.append(head, el("div", "tt-dates", dateLineOf(h)));
-    const tags = trackTags(h);
-    if (tags.length) container.appendChild(ttRow("🏷️ Треки:", tags.join(", ")));
-    if (h.prize) container.appendChild(ttRow("💰 Приз:", stripLabel(h.prize), "tt-prize"));
-    if (h.tasks && h.tasks.length) {
+    const cols = el("div", "tt-cols");
+    const main = el("div");
+    const side = el("div", "tt-col-side tt-links");
+    cols.append(main, side);
+    container.appendChild(cols);
+
+    const tasks = h.tasks || [];
+    if (tasks.length) {
+      const section = el("div", "tt-section");
+      section.appendChild(el("span", "tt-label", "🏷️ Треки:"));
+      main.appendChild(section);
       const ul = el("ul", "tt-list");
-      h.tasks.forEach(t => ul.appendChild(el("li", null, t)));
-      container.appendChild(ul);
+      tasks.forEach(t => ul.appendChild(el("li", null, t)));
+      main.appendChild(ul);
     }
-    if (h.participation) container.appendChild(ttRow("🏀 Участие:", stripLabel(h.participation)));
-    if (h.format) container.appendChild(ttRow("🌐 Формат:", stripLabel(h.format)));
-    if (h.lang) container.appendChild(ttRow("🖥️ Язык:", h.lang));
+    if (h.prize) main.appendChild(ttRow("💰 Приз:", stripLabel(h.prize), "tt-prize"));
+    if (h.participation) main.appendChild(ttRow("🏀 Участие:", stripLabel(h.participation)));
+    if (h.format) main.appendChild(ttRow("🌐 Формат:", stripLabel(h.format)));
+    if (h.lang) main.appendChild(ttRow("🖥️ Язык:", h.lang));
+
     if (h.url && /^https?:\/\//i.test(h.url)) {
-      const row = el("div", "tt-row");
-      const a = el("a", "tt-link", "Открыть страницу события");
+      const a = el("a", "tt-link tt-side-link", "🔗 Открыть страницу события");
       a.href = h.url;
       a.target = "_blank";
       a.rel = "noopener noreferrer";
-      row.append(el("span", "tt-label", "🔗"), a);
-      container.appendChild(row);
+      side.appendChild(a);
     }
+    const links = h.links || [];
+    [["solutions", "📦 Решения:"], ["ceremony", "🎬 Церемонии:"], ["video", "📺 Видео:"], ["article", "📰 Статьи:"]]
+      .forEach(([kind, label]) => {
+        const items = links.filter(l => l.kind === kind);
+        if (!items.length) return;
+        side.appendChild(el("span", "tt-label", label));
+        const ul = el("ul", "tt-list");
+        items.forEach(l => {
+          const a = el("a", "tt-link", l.title);
+          a.href = l.url;
+          a.target = "_blank";
+          a.rel = "noopener noreferrer";
+          ul.appendChild(el("li")).appendChild(a);
+        });
+        side.appendChild(ul);
+      });
+
     const calRow = el("div", "tt-row tt-cal");
     calRow.appendChild(el("span", "tt-label", "📆 В календарь:"));
     const google = el("a", "tt-link", "Google");
@@ -1160,7 +1249,7 @@
     ics.type = "button";
     ics.addEventListener("click", () => downloadICS(h));
     calRow.appendChild(ics);
-    container.appendChild(calRow);
+    main.appendChild(calRow);
   }
 
   /* ---------- calendar export ---------- */
@@ -1369,6 +1458,17 @@
     if (!btn) return;
     const n = Number(btn.dataset.range);
     if (Number.isFinite(n) && n !== state.range) setRange(n);
+  });
+
+  filterGroup.addEventListener("click", e => {
+    const btn = e.target.closest(".seg-btn");
+    if (!btn) return;
+    const key = btn.dataset.filter;
+    if (key !== "actual" && key !== "signup") return;
+    state[key] = !state[key];
+    btn.classList.toggle("is-active", state[key]);
+    btn.setAttribute("aria-pressed", String(state[key]));
+    build();
   });
 
   searchInput.addEventListener("input", () => {
