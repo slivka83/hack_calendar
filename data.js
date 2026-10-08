@@ -2330,26 +2330,6 @@ const MEETUPS = [
     "start_approx": false
   },
   {
-    "type": "СЕМИНАР",
-    "name": "Агентно-усиленный метод разработки ПО",
-    "description": "Онлайн-семинар сообщества AGI-in-Russian (РуССИИ). Спикер: Егор Чурилов.",
-    "time": "17:00 мск",
-    "tasks": [],
-    "prize": null,
-    "participation": null,
-    "format": "Формат: онлайн",
-    "lang": null,
-    "url": "https://agirussia.org/workshops.html",
-    "registration": null,
-    "registration_iso": null,
-    "phases": null,
-    "talks": null,
-    "links": null,
-    "start": "2026-10-06",
-    "end": "2026-10-06",
-    "start_approx": false
-  },
-  {
     "type": "МИТАП",
     "name": "Avito DS meetup",
     "description": "Митап Avito для ML-сообщества: RL для Авито, AI-агенты и BidCorrection, нетворкинг. Офлайн в Москве и онлайн-трансляция.",
@@ -2831,26 +2811,6 @@ const MEETUPS = [
     "start_approx": false
   },
   {
-    "type": "СЕМИНАР",
-    "name": "Языки спецификации алгоритмов, инженерия требований и верификация в цифровых системах промышленной автоматизации",
-    "description": "Онлайн-семинар сообщества AGI-in-Russian (РуССИИ). Спикер: Владимир Зюбин.",
-    "time": "17:00 мск",
-    "tasks": [],
-    "prize": null,
-    "participation": null,
-    "format": "Формат: онлайн",
-    "lang": null,
-    "url": "https://agirussia.org/workshops.html",
-    "registration": null,
-    "registration_iso": null,
-    "phases": null,
-    "talks": null,
-    "links": null,
-    "start": "2026-10-15",
-    "end": "2026-10-15",
-    "start_approx": false
-  },
-  {
     "type": "КОНФ",
     "name": "GoCloud Tech 2026",
     "description": "Конференция Cloud.ru о технологиях и внедрении ИИ: треки «Инфраструктура», «Разработка», «Данные и ML», воркшопы.",
@@ -2993,6 +2953,172 @@ const MEETUPS = [
   },
   {
     "type": "КОНФ",
+    "name": "Orion Digital Day 2026 — Большая игра",
+    "description": "Ежегодная ИТ-конференция Orion soft: пленарная дискуссия, треки «Бизнес», «ИТ-инфра», «DevOps» и «zVirt Community», демо-стенды и лаборатории. Москва, AG LOFT и онлайн.",
+    "time": "10:00–18:00 мск",
+    "tasks": [],
+    "prize": null,
+    "participation": null,
+    "format": "Формат: офлайн в Москве и онлайн",
+    "lang": null,
+    "url": "https://digitalday.orionsoft.ru",
+    "registration": null,
+    "registration_iso": null,
+    "phases": null,
+    "talks": [
+      {
+        "time": "10:00",
+        "title": "Открытие и выступление Orion soft",
+        "speaker": "Александр Акишин, Максим Березин"
+      },
+      {
+        "time": "10:50",
+        "title": "Герои ИТ-инфраструктуры",
+        "speaker": "Максим Березин, Владимир Золотов, Светлана Старостина, Максим Маслов, Артем Новиков, Илья Кочнев, Евгений Шишков"
+      },
+      {
+        "time": "10:50",
+        "title": "Второй шанс для Standalone: построение отказоустойчивой архитектуры через DR",
+        "speaker": "Павел Князькин"
+      },
+      {
+        "time": "11:30",
+        "title": "GPU в zVirt или как сделать ИИшницу",
+        "speaker": "Михаил Якушин"
+      },
+      {
+        "time": "12:30",
+        "title": "Квест на выживание: какие стратегии выбирают ИТ-лидеры",
+        "speaker": null
+      },
+      {
+        "time": "12:30",
+        "title": "HCI на отечественном: level up до Инфраструктуры 2030",
+        "speaker": "Дмитрий Горохов"
+      },
+      {
+        "time": "12:30",
+        "title": "Как перестать управлять ИТ по частям: экосистема для инфраструктуры и ИИ",
+        "speaker": "Владимир Болвачев"
+      },
+      {
+        "time": "12:30",
+        "title": "Terraform-провайдер zVirt в деле: разворачиваем GoAD",
+        "speaker": "Антон Сомов"
+      },
+      {
+        "time": "13:00",
+        "title": "Резервное копирование zVirt с помощью аппаратных снапшотов в высоконагруженных средах",
+        "speaker": "Тимур Гусейнов"
+      },
+      {
+        "time": "13:00",
+        "title": "Press F: как Nova 10 попрощалась со старой архитектурой",
+        "speaker": "Семён Месилов"
+      },
+      {
+        "time": "13:20",
+        "title": "Распределенный МЭ и NGFW в виртуальной среде",
+        "speaker": "Юлия Белоконь, Азалия Дюсметова"
+      },
+      {
+        "time": "13:25",
+        "title": "Правила игры для LLM: как мы строим AI Gateway на базе Nova AI и StarGuard AI",
+        "speaker": "Дмитрий Матушкин"
+      },
+      {
+        "time": "14:45",
+        "title": "Чит-коды для ИТ-инфраструктуры: меняться, чтобы расти",
+        "speaker": "Василий Кокорев, Сергей Мерещенко, Дмитрий Деев, Алексей Захаров"
+      },
+      {
+        "time": "14:45",
+        "title": "Собери свою партию: компоненты и продукты экосистемы zVirt",
+        "speaker": "Алишер Камалов"
+      },
+      {
+        "time": "14:45",
+        "title": "Продолжить после сбоя: как работает DR-репликация StarVault",
+        "speaker": "Владислав Разов"
+      },
+      {
+        "time": "14:45",
+        "title": "Нажми Start: разворачиваем Kubernetes внутри виртуальной инфраструктуры zVirt",
+        "speaker": "Руслан Гайфутдинов"
+      },
+      {
+        "time": "15:10",
+        "title": "Speedrun до продакшена: быстрее и безопаснее",
+        "speaker": "Роберт Хакимов"
+      },
+      {
+        "time": "15:15",
+        "title": "zVirt: глубокая модернизация — от ядра до интерфейса",
+        "speaker": "Павел Князькин"
+      },
+      {
+        "time": "15:25",
+        "title": "Внедрение zVirt в инфраструктуру МГТУ им. Н.Э. Баумана и миграция с VMware",
+        "speaker": "Александр Костин, Александр Майборода"
+      },
+      {
+        "time": "15:30",
+        "title": "Deploy: Become AI-ready",
+        "speaker": "Юлия Крючкова, Никита Векессер, Валерий Ковальский, Леонид Потапов, Игорь Щербаков"
+      },
+      {
+        "time": "15:35",
+        "title": "Современный подход к комплексным проверкам безопасности в K8s",
+        "speaker": "Алексей Рыбалко"
+      },
+      {
+        "time": "15:45",
+        "title": "Новый уровень Termit: как мы собрали Enterprise-билд",
+        "speaker": "Константин Прокопьев"
+      },
+      {
+        "time": "15:45",
+        "title": "Открытый микрофон: zVirt без фильтров",
+        "speaker": "Павел Князькин"
+      },
+      {
+        "time": "16:05",
+        "title": "Хоумбрю: единый протокол Termit Pulsar вместо пяти рулбуков",
+        "speaker": "Александр Донин"
+      },
+      {
+        "time": "16:10",
+        "title": "Анонс нового продукта Orion soft для оценки экономической эффективности AI",
+        "speaker": "Никита Векессер"
+      },
+      {
+        "time": "16:15",
+        "title": "IT Defense: результативные ходы в кибербезопасности",
+        "speaker": "Илья Шабанов, Сергей Жидков, Алексей Новиков, Анна Лернер"
+      },
+      {
+        "time": "16:20",
+        "title": "Миссия 117: как zVirt и vGate защищают виртуальную инфраструктуру",
+        "speaker": "Александр Гавриленко, Евгений Тарелкин"
+      },
+      {
+        "time": "16:50",
+        "title": "Как интеллектуальные традиции встречаются с цифровыми платформами. Развитие интеллекта через шахматы в эпоху ИИ",
+        "speaker": "Антон Кузин"
+      },
+      {
+        "time": "17:00",
+        "title": "Специальный трек комьюнити СНОВА О КУБЕРЕ",
+        "speaker": null
+      }
+    ],
+    "links": null,
+    "start": "2026-10-15",
+    "end": "2026-10-15",
+    "start_approx": false
+  },
+  {
+    "type": "КОНФ",
     "name": "AI Driver & RecSys Темы",
     "description": "Конференция для экспертов по рекомендательным системам: исследования, индустриальные кейсы и новые данные от лидеров рынка. Москва.",
     "time": null,
@@ -3040,26 +3166,6 @@ const MEETUPS = [
     "links": null,
     "start": "2026-10-17",
     "end": "2026-10-17",
-    "start_approx": false
-  },
-  {
-    "type": "КОНФ",
-    "name": "НЕЙРОИНФОРМАТИКА 2026",
-    "description": "Конференция по нейроинформатике, машинному обучению и сильному искусственному интеллекту.",
-    "time": null,
-    "tasks": [],
-    "prize": null,
-    "participation": null,
-    "format": "Формат: офлайн в Долгопрудном (МФТИ)",
-    "lang": null,
-    "url": "https://neuroinfo.ru/index.php/ru/",
-    "registration": null,
-    "registration_iso": null,
-    "phases": null,
-    "talks": null,
-    "links": null,
-    "start": "2026-10-19",
-    "end": "2026-10-23",
     "start_approx": false
   },
   {
@@ -3311,6 +3417,37 @@ const MEETUPS = [
   },
   {
     "type": "МИТАП",
+    "name": "VTORNIK. Вечер #11",
+    "description": "Вечерний митап VTORNIK.Company о внедрении AI в организациях: доклады о RecSys-платформе в AI-эпоху и защите данных без единого периметра. Офлайн в Москве.",
+    "time": "19:00–21:00 мск",
+    "tasks": [],
+    "prize": null,
+    "participation": null,
+    "format": "Формат: офлайн в Москве",
+    "lang": null,
+    "url": "https://vtornik.company/events/vtornik-vecher-11",
+    "registration": null,
+    "registration_iso": null,
+    "phases": null,
+    "talks": [
+      {
+        "time": "19:10",
+        "title": "RecSys-платформа в AI-эпоху",
+        "speaker": "Сергей Кузнецов, МТС Web Services"
+      },
+      {
+        "time": "20:10",
+        "title": "Как защищать данные, когда единого периметра больше нет",
+        "speaker": "Константин Черняк, Wildberries & Russ"
+      }
+    ],
+    "links": null,
+    "start": "2026-10-20",
+    "end": "2026-10-20",
+    "start_approx": false
+  },
+  {
+    "type": "МИТАП",
     "name": "Data Dojo. Встреча ML-коммьюнити",
     "description": "Встреча ML-коммьюнити Яндекса: тренды, разбор реальных задач с соревнований и прикладные кейсы. Только офлайн, отбор по анкете и резюме.",
     "time": null,
@@ -3323,110 +3460,41 @@ const MEETUPS = [
     "registration": "до 14.10",
     "registration_iso": "2026-10-14",
     "phases": null,
-    "talks": null,
+    "talks": [
+      {
+        "time": "17:00",
+        "title": "Приветственное слово",
+        "speaker": "Владислав Офицеров, Пётр Ермаков"
+      },
+      {
+        "time": "17:10",
+        "title": "Агент — это не только модель: как устроены современные харнессы",
+        "speaker": "Иван Ершов"
+      },
+      {
+        "time": "17:30",
+        "title": "Вашим API теперь пользуется агент: как проектировать MCP",
+        "speaker": "Даниил Смирнов"
+      },
+      {
+        "time": "17:50",
+        "title": "Как LLM помогает оценивать предложения поставщиков в Яндекс Лавке",
+        "speaker": "Даниил Горнин"
+      },
+      {
+        "time": "18:10",
+        "title": "Управление кэшбэком в банке с помощью ML",
+        "speaker": "Анис Хамуш"
+      },
+      {
+        "time": "18:30",
+        "title": "Уложиться в 25 мс: как мы ускоряли языковую модель для рекламы",
+        "speaker": "Артём Фёдоров"
+      }
+    ],
     "links": null,
     "start": "2026-10-28",
     "end": "2026-10-28",
-    "start_approx": false
-  },
-  {
-    "type": "СЕМИНАР",
-    "name": "Спайковое обучение с подкреплением: от model-free к model-based",
-    "description": "Онлайн-семинар сообщества AGI-in-Russian (РуССИИ). Спикер: Михаил Киселёв.",
-    "time": "17:00 мск",
-    "tasks": [],
-    "prize": null,
-    "participation": null,
-    "format": "Формат: онлайн",
-    "lang": null,
-    "url": "https://agirussia.org/workshops.html",
-    "registration": null,
-    "registration_iso": null,
-    "phases": null,
-    "talks": null,
-    "links": null,
-    "start": "2026-10-29",
-    "end": "2026-10-29",
-    "start_approx": false
-  },
-  {
-    "type": "СЕМИНАР",
-    "name": "Многоагентный движок для моделирования мира, чтобы LLM могла логически рассуждать",
-    "description": "Онлайн-семинар сообщества AGI-in-Russian (РуССИИ). Спикер: Захар Понимаш.",
-    "time": "17:00 мск",
-    "tasks": [],
-    "prize": null,
-    "participation": null,
-    "format": "Формат: онлайн",
-    "lang": null,
-    "url": "https://agirussia.org/workshops.html",
-    "registration": null,
-    "registration_iso": null,
-    "phases": null,
-    "talks": null,
-    "links": null,
-    "start": "2026-11-05",
-    "end": "2026-11-05",
-    "start_approx": false
-  },
-  {
-    "type": "СЕМИНАР",
-    "name": "Исполняемые спецификации boldsea",
-    "description": "Онлайн-семинар сообщества AGI-in-Russian (РуССИИ). Спикер: Александр Болдачёв.",
-    "time": "17:00 мск",
-    "tasks": [],
-    "prize": null,
-    "participation": null,
-    "format": "Формат: онлайн",
-    "lang": null,
-    "url": "https://agirussia.org/workshops.html",
-    "registration": null,
-    "registration_iso": null,
-    "phases": null,
-    "talks": null,
-    "links": null,
-    "start": "2026-11-12",
-    "end": "2026-11-12",
-    "start_approx": false
-  },
-  {
-    "type": "СЕМИНАР",
-    "name": "Прикладная разработка с ИИ-агентами",
-    "description": "Онлайн-семинар сообщества AGI-in-Russian (РуССИИ). Спикер: Александр Каштанов.",
-    "time": "17:00 мск",
-    "tasks": [],
-    "prize": null,
-    "participation": null,
-    "format": "Формат: онлайн",
-    "lang": null,
-    "url": "https://agirussia.org/workshops.html",
-    "registration": null,
-    "registration_iso": null,
-    "phases": null,
-    "talks": null,
-    "links": null,
-    "start": "2026-11-19",
-    "end": "2026-11-19",
-    "start_approx": false
-  },
-  {
-    "type": "КОНФ",
-    "name": "DigiTec и OpenTalks.AI: deep-tech AI-трек",
-    "description": "Deep-tech AI-трек конференций DigiTec и OpenTalks.AI (Ереван).",
-    "time": null,
-    "tasks": [],
-    "prize": null,
-    "participation": null,
-    "format": "Формат: офлайн в Ереване",
-    "lang": null,
-    "url": "https://confhub.ru/rus/event/10634/",
-    "registration": null,
-    "registration_iso": null,
-    "phases": null,
-    "talks": null,
-    "links": null,
-    "start": "2026-11-20",
-    "end": "2026-11-22",
     "start_approx": false
   },
   {
@@ -3467,166 +3535,6 @@ const MEETUPS = [
     "links": null,
     "start": "2026-12-02",
     "end": "2026-12-02",
-    "start_approx": false
-  },
-  {
-    "type": "СЕМИНАР",
-    "name": "Мультиагентные системы 3.0 и генеративный ИИ",
-    "description": "Онлайн-семинар сообщества AGI-in-Russian (РуССИИ). Спикер: Алексей Незнанов.",
-    "time": "17:00 мск",
-    "tasks": [],
-    "prize": null,
-    "participation": null,
-    "format": "Формат: онлайн",
-    "lang": null,
-    "url": "https://agirussia.org/workshops.html",
-    "registration": null,
-    "registration_iso": null,
-    "phases": null,
-    "talks": null,
-    "links": null,
-    "start": "2026-12-03",
-    "end": "2026-12-03",
-    "start_approx": false
-  },
-  {
-    "type": "СЕМИНАР",
-    "name": "AI System Evaluation: оценка качества систем с недетерминированным ответом",
-    "description": "Онлайн-семинар сообщества AGI-in-Russian (РуССИИ). Спикер: Дмитрий Колодезев.",
-    "time": "17:00 мск",
-    "tasks": [],
-    "prize": null,
-    "participation": null,
-    "format": "Формат: онлайн",
-    "lang": null,
-    "url": "https://agirussia.org/workshops.html",
-    "registration": null,
-    "registration_iso": null,
-    "phases": null,
-    "talks": null,
-    "links": null,
-    "start": "2026-12-10",
-    "end": "2026-12-10",
-    "start_approx": false
-  },
-  {
-    "type": "СЕМИНАР",
-    "name": "Импортозамещение в ИИ: мы уже всё или всё ещё впереди? (круглый стол)",
-    "description": "Онлайн-семинар сообщества AGI-in-Russian (РуССИИ).",
-    "time": "17:00 мск",
-    "tasks": [],
-    "prize": null,
-    "participation": null,
-    "format": "Формат: онлайн",
-    "lang": null,
-    "url": "https://agirussia.org/workshops.html",
-    "registration": null,
-    "registration_iso": null,
-    "phases": null,
-    "talks": null,
-    "links": null,
-    "start": "2026-12-17",
-    "end": "2026-12-17",
-    "start_approx": false
-  },
-  {
-    "type": "СЕМИНАР",
-    "name": "Диагностирование AGI",
-    "description": "Онлайн-семинар сообщества AGI-in-Russian (РуССИИ). Спикер: Алексей Потапов.",
-    "time": "17:00 мск",
-    "tasks": [],
-    "prize": null,
-    "participation": null,
-    "format": "Формат: онлайн",
-    "lang": null,
-    "url": "https://agirussia.org/workshops.html",
-    "registration": null,
-    "registration_iso": null,
-    "phases": null,
-    "talks": null,
-    "links": null,
-    "start": "2026-12-24",
-    "end": "2026-12-24",
-    "start_approx": false
-  },
-  {
-    "type": "СЕМИНАР",
-    "name": "Описание и диагностика сложных иерархических связей: от проблематики к первому прототипу",
-    "description": "Онлайн-семинар сообщества AGI-in-Russian (РуССИИ). Спикер: Роман Строков.",
-    "time": "17:00 мск",
-    "tasks": [],
-    "prize": null,
-    "participation": null,
-    "format": "Формат: онлайн",
-    "lang": null,
-    "url": "https://agirussia.org/workshops.html",
-    "registration": null,
-    "registration_iso": null,
-    "phases": null,
-    "talks": null,
-    "links": null,
-    "start": "2027-01-14",
-    "end": "2027-01-14",
-    "start_approx": false
-  },
-  {
-    "type": "СЕМИНАР",
-    "name": "Обзор пути к AGI",
-    "description": "Онлайн-семинар сообщества AGI-in-Russian (РуССИИ). Спикер: Татьяна Шаврина.",
-    "time": "17:00 мск",
-    "tasks": [],
-    "prize": null,
-    "participation": null,
-    "format": "Формат: онлайн",
-    "lang": null,
-    "url": "https://agirussia.org/workshops.html",
-    "registration": null,
-    "registration_iso": null,
-    "phases": null,
-    "talks": null,
-    "links": null,
-    "start": "2027-01-21",
-    "end": "2027-01-21",
-    "start_approx": false
-  },
-  {
-    "type": "СЕМИНАР",
-    "name": "Мультиагентные технологии эмерджентного интеллекта для управления предприятиями и роботами",
-    "description": "Онлайн-семинар сообщества AGI-in-Russian (РуССИИ). Спикер: Пётр Скобелев.",
-    "time": "17:00 мск",
-    "tasks": [],
-    "prize": null,
-    "participation": null,
-    "format": "Формат: онлайн",
-    "lang": null,
-    "url": "https://agirussia.org/workshops.html",
-    "registration": null,
-    "registration_iso": null,
-    "phases": null,
-    "talks": null,
-    "links": null,
-    "start": "2027-02-18",
-    "end": "2027-02-18",
-    "start_approx": false
-  },
-  {
-    "type": "СЕМИНАР",
-    "name": "Универсальный трансформер с плавающей пространственной геометрией",
-    "description": "Онлайн-семинар сообщества AGI-in-Russian (РуССИИ). Спикер: Сергей Жигинас.",
-    "time": "17:00 мск",
-    "tasks": [],
-    "prize": null,
-    "participation": null,
-    "format": "Формат: онлайн",
-    "lang": null,
-    "url": "https://agirussia.org/workshops.html",
-    "registration": null,
-    "registration_iso": null,
-    "phases": null,
-    "talks": null,
-    "links": null,
-    "start": "2027-02-25",
-    "end": "2027-02-25",
     "start_approx": false
   }
 ];

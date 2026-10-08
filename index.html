@@ -501,7 +501,9 @@
   .cal-ev {
     --ev: var(--accent);
     appearance: none;
-    display: block;
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
     width: 100%;
     min-width: 0;
     text-align: left;
@@ -515,10 +517,19 @@
     background: color-mix(in srgb, var(--ev) 12%, var(--panel));
     color: var(--text);
     cursor: pointer;
+    transition: filter .15s;
+  }
+  .cal-ev-time {
+    flex: none;
+    font-variant-numeric: tabular-nums;
+    padding-right: 5px;
+    border-right: 1px solid color-mix(in srgb, currentColor 35%, transparent);
+  }
+  .cal-ev-name {
+    min-width: 0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    transition: filter .15s;
   }
   .cal-ev:hover { filter: brightness(1.15); }
   .cal-ev:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
@@ -574,7 +585,7 @@
   .tt-cal { display: flex; align-items: center; flex-wrap: wrap; gap: 2px 10px; }
   .tt-cal .tt-link { font-weight: 600; }
   .tt-cols { display: grid; grid-template-columns: 1fr; gap: 0; align-items: start; }
-  .tt-cols--split { grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); gap: 18px; }
+  .tt-cols--split { grid-template-columns: minmax(0, 35fr) minmax(0, 65fr); gap: 18px; }
   .tt-cols--split .tt-program { border-left: 1px solid var(--border); padding-left: 18px; }
   .tt-cols--side { grid-template-columns: minmax(0, 1fr) minmax(200px, 300px); gap: 18px; }
   .tt-cols--side .tt-col-side { margin-top: 0; border-left: 1px solid var(--border); padding-left: 18px; }
@@ -614,6 +625,7 @@
     line-height: 1.5;
   }
   .modal .tt-head { padding-right: 30px; }
+  .modal--wide { width: min(1000px, 100%); }
   .modal-close {
     position: absolute;
     top: 10px;
@@ -1392,7 +1404,10 @@
     calDow.classList.remove("is-hidden");
 
     const byDay = new Map();
+    const startInfo = new Map();
     items.forEach(h => {
+      const t = (timeOf(h) || "").match(/(\d{1,2}):(\d{2})/);
+      startInfo.set(h, t ? { label: t[0], min: +t[1] * 60 + +t[2] } : null);
       const end = parseISO(h.end);
       for (const d = parseISO(h.start); d <= end; d.setDate(d.getDate() + 1)) {
         const key = ymd(d);
@@ -1400,6 +1415,12 @@
         byDay.get(key).push(h);
       }
     });
+    byDay.forEach(arr => arr.sort((a, b) => {
+      const sa = startInfo.get(a), sb = startInfo.get(b);
+      if (!sa) return sb ? 1 : 0;
+      if (!sb) return -1;
+      return sa.min - sb.min;
+    }));
 
     const today = todayMidnight().getTime();
     const firstItem = items.reduce((a, h) => (parseISO(a.start) <= parseISO(h.start) ? a : h));
@@ -1458,7 +1479,10 @@
         cell.appendChild(el("div", "cal-day-num", String(d.getDate())));
         (byDay.get(ymd(d)) || []).forEach(h => {
           const fmt = fmtCls(h);
-          const btn = el("button", "cal-ev" + (fmt ? " cal-ev--" + fmt : ""), h.name);
+          const btn = el("button", "cal-ev" + (fmt ? " cal-ev--" + fmt : ""));
+          const si = startInfo.get(h);
+          if (si && ymd(d) === h.start) btn.appendChild(el("span", "cal-ev-time", si.label));
+          btn.appendChild(el("span", "cal-ev-name", h.name));
           btn.type = "button";
           btn.title = h.name;
           bindTip(btn, h);
@@ -1593,6 +1617,31 @@
     return row;
   }
 
+  function timeOf(h) {
+    const raw = (h.time || "").trim();
+    if (raw && /[–-]/.test(raw)) return raw;
+    const mins = (h.talks || [])
+      .map(t => ((t && t.time) || "").trim().match(/^(\d{1,2}):(\d{2})$/))
+      .filter(Boolean)
+      .map(m => +m[1] * 60 + +m[2]);
+    const hhmm = v => String(Math.floor(v / 60)).padStart(2, "0") + ":" + String(v % 60).padStart(2, "0");
+    let start = null, suffix = " мск";
+    if (raw) {
+      const m = raw.match(/(\d{1,2}:\d{2})/);
+      if (!m) return raw;
+      start = +m[1].split(":")[0] * 60 + +m[1].split(":")[1];
+      suffix = raw.slice(m.index + m[0].length);
+    } else if (mins.length) {
+      start = Math.min(...mins);
+    } else {
+      return null;
+    }
+    if (!mins.length) return raw || null;
+    const end = Math.max(...mins);
+    if (end <= start) return raw || hhmm(start) + suffix;
+    return hhmm(start) + "–" + hhmm(end) + suffix;
+  }
+
   function dateLineOf(h) {
     const wY = MIN.getFullYear() !== MAX.getFullYear();
     let line;
@@ -1605,7 +1654,8 @@
         ? (h.start_approx ? "≈" : "") + fmtDate(h.start, wY)
         : fmtRange(h.start, h.end, h.start_approx, wY);
     }
-    if (h.time) line += " · " + h.time;
+    const time = timeOf(h);
+    if (time) line += " · " + time;
     if (h.registration) {
       line += " · рег. " + (wY && h.registration_iso
         ? h.registration.split(" ")[0] + " " + fmtDate(h.registration_iso, true)
@@ -1646,7 +1696,8 @@
       ? approx + fmtDate(h.start, wY)
       : approx + "С " + fmtDate(h.start, wY) + " по " + fmtDate(h.end, wY);
     tooltip.appendChild(whenRow("📅", dates));
-    if (h.time) tooltip.appendChild(whenRow("🕒", h.time));
+    const time = timeOf(h);
+    if (time) tooltip.appendChild(whenRow("🕒", time));
     const reg = regLineOf(h);
     if (reg) tooltip.appendChild(whenRow("⏳", reg));
     phaseLinesOf(h).forEach(p => tooltip.appendChild(whenRow(p.icon, p.text)));
@@ -1902,6 +1953,7 @@
     hideTip();
     modalLastFocus = document.activeElement;
     renderFull(modalContent, h);
+    modalCard.classList.toggle("modal--wide", !!(h.talks && h.talks.length));
     modalCard.setAttribute("aria-label", h.name);
     modalBackdrop.classList.remove("hidden");
     modalClose.focus();
