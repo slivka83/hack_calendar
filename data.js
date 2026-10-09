@@ -2688,6 +2688,47 @@ const MEETUPS = [
     "start_approx": false
   },
   {
+    "type": "МИТАП",
+    "name": "Первая встреча сообщества физтешек",
+    "description": "Первая встреча сообщества «Фисташки» ко Дню Ады Лавлейс: доклады о науке и бизнесе и панельная дискуссия выпускниц МФТИ. Сбор гостей в 17:30, офлайн, клуб «Среди людей».",
+    "time": "17:30-21:00 мск",
+    "tasks": [],
+    "prize": null,
+    "participation": null,
+    "format": "Формат: офлайн",
+    "lang": null,
+    "url": "https://phystech-union.org/priglashaem-na-pervuyu-vstrechu-soobshhestva-fizteshek/",
+    "registration": null,
+    "registration_iso": null,
+    "phases": null,
+    "talks": [
+      {
+        "time": "18:00",
+        "title": "Приветственное слово организатора",
+        "speaker": null
+      },
+      {
+        "time": "18:10",
+        "title": "Оптимизм в условиях неопределенности: как принцип ML помогает и в науке, и в жизни",
+        "speaker": "Анастасия Макарова, Google DeepMind"
+      },
+      {
+        "time": "18:40",
+        "title": "Из академии в бизнес: как научное мышление помогает строить компании",
+        "speaker": "Валерия Коган, Finagra"
+      },
+      {
+        "time": "19:10",
+        "title": "Физтех и творчество — не соперники, а спутники? Личные истории выпускниц",
+        "speaker": "Сандаара Коваленко, Алёна Лазько, Анастасия Усманова, Дамира Гареева"
+      }
+    ],
+    "links": null,
+    "start": "2026-10-13",
+    "end": "2026-10-13",
+    "start_approx": false
+  },
+  {
     "type": "КОНФ",
     "name": "REKONFA 2026. Большая конференция Яндекс Рекламы",
     "description": "Конференция о технологиях персональной рекламы и ИИ: офлайн на ВТБ Арене и онлайн-трансляция, участие бесплатное.",
@@ -3076,6 +3117,26 @@ const MEETUPS = [
     "start_approx": false
   },
   {
+    "type": "МИТАП",
+    "name": "Митап «Учитель кода»",
+    "description": "Митап ко дню учителя о том, как учиться в эпоху ИИ: разбор курса «Искусственный интеллект: нулевой уровень» и панельная дискуссия о когнитивной разгрузке. Офлайн в Санкт-Петербурге (Ozon Банк), сбор гостей в 18:00, нужен паспорт.",
+    "time": "19:00 мск",
+    "tasks": [],
+    "prize": null,
+    "participation": null,
+    "format": "Формат: офлайн в Санкт-Петербурге (Ozon Банк)",
+    "lang": null,
+    "url": "https://ods.ai/events/coding-teacher-1610",
+    "registration": null,
+    "registration_iso": null,
+    "phases": null,
+    "talks": null,
+    "links": null,
+    "start": "2026-10-16",
+    "end": "2026-10-16",
+    "start_approx": false
+  },
+  {
     "type": "КОНФ",
     "name": "AI Driver & RecSys Темы",
     "description": "Конференция для экспертов по рекомендательным системам: исследования, индустриальные кейсы и новые данные от лидеров рынка. Москва.",
@@ -3402,6 +3463,26 @@ const MEETUPS = [
     "links": null,
     "start": "2026-10-20",
     "end": "2026-10-20",
+    "start_approx": false
+  },
+  {
+    "type": "МИТАП",
+    "name": "ИИшница: Сколько нужно агентов, чтобы вкрутить лампочку?",
+    "description": "Юбилейная «ИИшница» AIRI выходит в офлайн: шесть быстрых докладов о применении агентов на практике (Р-Фарм, Яндекс, Авито, Антиплагиат, Сбер, AIRI) и круглый стол. Офлайн в офисе AIRI в Сити (Москва), регистрация с подтверждением участия, мест мало.",
+    "time": "18:30 мск",
+    "tasks": [],
+    "prize": null,
+    "participation": null,
+    "format": "Формат: офлайн в Москве",
+    "lang": null,
+    "url": "https://airi.net/ru/events/iishnitsa-skolko-nuzhno-agentov/",
+    "registration": null,
+    "registration_iso": null,
+    "phases": null,
+    "talks": null,
+    "links": null,
+    "start": "2026-10-22",
+    "end": "2026-10-22",
     "start_approx": false
   },
   {
