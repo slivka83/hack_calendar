@@ -575,6 +575,8 @@
   .tt-list li { margin: 3px 0; }
   .tt-talks { list-style: none; margin: 4px 0 10px; padding: 0; }
   .tt-talks li { display: grid; grid-template-columns: 46px minmax(0, 1fr); gap: 0 10px; margin: 5px 0; }
+  .tt-talks--notime li { grid-template-columns: minmax(0, 1fr); }
+  .tt-talks--notime .tt-talk-time { display: none; }
   .tt-talk-time { color: var(--muted); font-variant-numeric: tabular-nums; }
   .tt-when { color: var(--muted); margin: 3px 0; display: flex; gap: 7px; }
   .tt-when:last-child { margin-bottom: 0; }
@@ -1732,7 +1734,7 @@
       const section = el("div", "tt-section");
       section.appendChild(el("span", "tt-label", "📋 Программа:"));
       program.appendChild(section);
-      const ul = el("ul", "tt-talks");
+      const ul = el("ul", "tt-talks" + (talks.some(t => t.time) ? "" : " tt-talks--notime"));
       talks.forEach(t => {
         const li = el("li");
         li.appendChild(el("span", "tt-talk-time", t.time || ""));

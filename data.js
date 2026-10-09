@@ -3130,7 +3130,18 @@ const MEETUPS = [
     "registration": null,
     "registration_iso": null,
     "phases": null,
-    "talks": null,
+    "talks": [
+      {
+        "time": null,
+        "title": "Искусственный интеллект: нулевой уровень",
+        "speaker": "Марк Паненко, CDS Ozon банк"
+      },
+      {
+        "time": null,
+        "title": "Когнитивная разгрузка: мы теряем мышление или открываем новый способ учиться?",
+        "speaker": null
+      }
+    ],
     "links": null,
     "start": "2026-10-16",
     "end": "2026-10-16",
@@ -3479,7 +3490,38 @@ const MEETUPS = [
     "registration": null,
     "registration_iso": null,
     "phases": null,
-    "talks": null,
+    "talks": [
+      {
+        "time": null,
+        "title": "Цифровой контур R&D: ИИ-агенты для работы с мишенями и базами экспериментов",
+        "speaker": "Артемий Сахаров, Р-Фарм"
+      },
+      {
+        "time": null,
+        "title": "Агент — это не только модель: как устроены современные харнессы",
+        "speaker": "Ваня Ершов, Яндекс"
+      },
+      {
+        "time": null,
+        "title": "AI Recruiter в Авито: агент, который проводит интервью",
+        "speaker": "Владимир Димитров, Авито"
+      },
+      {
+        "time": null,
+        "title": "ИИ-агенты в образовании",
+        "speaker": "Евгений Володин, Антиплагиат"
+      },
+      {
+        "time": null,
+        "title": "RL агенты в исполняемых средах: опыт обучения 9B-модели в харнессе GigaAgent",
+        "speaker": "Борис Заикин, Сбер"
+      },
+      {
+        "time": null,
+        "title": "Агент сказал „готово“. Проверяем",
+        "speaker": "Владимир Шапошников, AIRI"
+      }
+    ],
     "links": null,
     "start": "2026-10-22",
     "end": "2026-10-22",
