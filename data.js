@@ -2541,7 +2541,13 @@ const MEETUPS = [
         "speaker": "Андрей Савченко"
       }
     ],
-    "links": null,
+    "links": [
+      {
+        "kind": "stream",
+        "title": "Трансляция в VK Видео",
+        "url": "https://vkvideo.ru/live-229792778_456239040"
+      }
+    ],
     "start": "2026-10-10",
     "end": "2026-10-10",
     "start_approx": false
@@ -2682,6 +2688,26 @@ const MEETUPS = [
         "speaker": "Дмитрий Афонников"
       }
     ],
+    "links": null,
+    "start": "2026-10-10",
+    "end": "2026-10-10",
+    "start_approx": false
+  },
+  {
+    "type": "ВОРКШОП",
+    "name": "Как мне жить с ИИ-агентами",
+    "description": "Мастер-класс о том, что такое ИИ-агенты и как они эволюционировали с 1990-х: создание простейших агентов и применение агентов общего назначения в бытовых и рабочих задачах. Ведущий — Дмитрий Сошников (МАИ, Yandex Cloud).",
+    "time": "13:30-14:30 мск",
+    "tasks": [],
+    "prize": null,
+    "participation": null,
+    "format": "Формат: офлайн в Москве",
+    "lang": null,
+    "url": "https://festivalnauki.ru/program/kak-mne-zhit-s-agentami-i-yandex-ai-studio/",
+    "registration": null,
+    "registration_iso": null,
+    "phases": null,
+    "talks": null,
     "links": null,
     "start": "2026-10-10",
     "end": "2026-10-10",
