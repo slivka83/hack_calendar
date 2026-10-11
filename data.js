@@ -2756,6 +2756,241 @@ const MEETUPS = [
   },
   {
     "type": "КОНФ",
+    "name": "Интеллектуальное предприятие 2026",
+    "description": "Форум «Открытых систем» о внедрении ИИ в бизнес: экономика ИИ, защита ИИ-агентов, AI-ready данные, отраслевые кейсы и споры бизнеса, ИТ и ИБ о масштабировании.",
+    "time": "10:00–18:00 мск",
+    "tasks": [],
+    "prize": null,
+    "participation": null,
+    "format": "Формат: офлайн в Москве",
+    "lang": null,
+    "url": "https://www.osp.ru/lp/ai2026",
+    "registration": null,
+    "registration_iso": null,
+    "phases": null,
+    "talks": [
+      {
+        "time": null,
+        "title": "Пленарная сессия: баланс вложений, архитектуры и реального эффекта от ИИ",
+        "speaker": null
+      },
+      {
+        "time": null,
+        "title": "Пленарная сессия: защита ИИ-агентов и мультиагентных систем",
+        "speaker": null
+      },
+      {
+        "time": null,
+        "title": "Кейс-сессии по отраслям: ретейл, промышленность, финансы, агро",
+        "speaker": null
+      },
+      {
+        "time": null,
+        "title": "Дискуссия «Битва взглядов: Бизнес vs ИТ vs ИБ. Кто тормозит масштабирование ИИ»",
+        "speaker": null
+      },
+      {
+        "time": null,
+        "title": "Интерактивная сессия «Кто в ответе за агента? Доверие к ИИ»",
+        "speaker": null
+      }
+    ],
+    "links": null,
+    "start": "2026-10-14",
+    "end": "2026-10-14",
+    "start_approx": false
+  },
+  {
+    "type": "КОНФ",
+    "name": "PIX Day 2026",
+    "description": "Конференция PIX Robotics об интеллектуальной автоматизации: ИИ-агенты и RPA, PIX Оператор для бизнес-данных, ИИ в BI и мастер-классы по MLOps, RAG и LLM-агентам.",
+    "time": "10:00–18:00 мск",
+    "tasks": [],
+    "prize": null,
+    "participation": null,
+    "format": "Формат: офлайн в Москве",
+    "lang": null,
+    "url": "https://pix.ru/events/meropriyatiya/pix-day-2026/",
+    "registration": null,
+    "registration_iso": null,
+    "phases": null,
+    "talks": [
+      {
+        "time": null,
+        "title": "Эра интеллектуальной автоматизации: эволюция продуктов PIX через нативный ИИ",
+        "speaker": "Чекмарёв, PIX"
+      },
+      {
+        "time": null,
+        "title": "PIX Оператор: универсальный ИИ-агент для бизнес-данных",
+        "speaker": null
+      },
+      {
+        "time": null,
+        "title": "Панель «От хайпа к огранке: как извлекать ценность из ИИ-инициатив»",
+        "speaker": null
+      },
+      {
+        "time": null,
+        "title": "PIX BI: курс на самообслуживание и ИИ",
+        "speaker": null
+      },
+      {
+        "time": null,
+        "title": "IPA: от RPA до платформы интеллектуальной автоматизации",
+        "speaker": null
+      },
+      {
+        "time": null,
+        "title": "У нас уже есть RPA. Зачем нам ИИ? Практика БКС",
+        "speaker": null
+      },
+      {
+        "time": null,
+        "title": "Заменят ли ИИ-агенты RPA в Норникеле?",
+        "speaker": null
+      },
+      {
+        "time": null,
+        "title": "Мастер-класс «AI, MLOps, RAG, LLM-агенты»",
+        "speaker": null
+      },
+      {
+        "time": null,
+        "title": "Мастер-класс «Обратимая анонимизация данных»",
+        "speaker": null
+      }
+    ],
+    "links": null,
+    "start": "2026-10-14",
+    "end": "2026-10-14",
+    "start_approx": false
+  },
+  {
+    "type": "КОНФ",
+    "name": "РБК Tech 2026",
+    "description": "Форум РБК об инновациях и цифровом развитии: ИИ-агенты в бизнесе, генеративные модели и computer use, GenAI-персонализация в финтехе, роботизация. Два дня, участие бесплатное.",
+    "time": "10:00 мск",
+    "tasks": [],
+    "prize": null,
+    "participation": null,
+    "format": "Формат: офлайн в Москве",
+    "lang": null,
+    "url": "https://tech.rbc.ru/",
+    "registration": null,
+    "registration_iso": null,
+    "phases": null,
+    "talks": [
+      {
+        "time": "10:00",
+        "title": "ИИ — (не)секретный агент бизнеса",
+        "speaker": "Денис Голованов, MANGO OFFICE; Алексей Четыркин, «Магнит»; Дмитрий Марков, VisionLabs; Михаил Жарчев, MWS AI; Глеб Обломский, Just AI"
+      },
+      {
+        "time": "11:30",
+        "title": "Ключевая сессия. Цифровой вклад в ландшафт будущего",
+        "speaker": null
+      },
+      {
+        "time": "14:45",
+        "title": "Homo Artifisapiens: совершенствуя новый вид",
+        "speaker": "Валентин Малых, MWS AI; Армен Амирханян, Московская биржа; Ярослав Беспалов, AIRI"
+      },
+      {
+        "time": "16:15",
+        "title": "ИИ-познание: понимать пользователей лучше их самих",
+        "speaker": null
+      },
+      {
+        "time": "10:00",
+        "title": "Пленарная сессия. Новая модель роста: как роботизация меняет экономику (15 октября)",
+        "speaker": null
+      },
+      {
+        "time": "14:45",
+        "title": "Роботник будущего: ИИ в робототехнике (15 октября)",
+        "speaker": "Евгений Маслов, «Северсталь-инфоком»"
+      }
+    ],
+    "links": null,
+    "start": "2026-10-14",
+    "end": "2026-10-15",
+    "start_approx": false
+  },
+  {
+    "type": "МИТАП",
+    "name": "Platform Engineering Night",
+    "description": "Митап Т-Банка о платформенной инженерии: внутренние платформы и жизненный цикл систем, идентификация и доступы (в том числе для ИИ-агентов), демозона. СПб и онлайн.",
+    "time": "18:00 мск",
+    "tasks": [],
+    "prize": null,
+    "participation": null,
+    "format": "Формат: офлайн в Санкт-Петербурге и онлайн",
+    "lang": null,
+    "url": "https://meetup.tbank.ru/conference/platform-engineering-night/",
+    "registration": null,
+    "registration_iso": null,
+    "phases": null,
+    "talks": [
+      {
+        "time": null,
+        "title": "Трек Engineering Platforms: внутренние платформы, жизненный цикл систем, масштабирование процессов",
+        "speaker": "А. Кусургашев, Т-Банк"
+      },
+      {
+        "time": null,
+        "title": "Трек Identity & Access Management: идентификация и авторизация, в том числе при массовом внедрении ИИ-агентов",
+        "speaker": "А. Краснов, Т-Банк"
+      }
+    ],
+    "links": null,
+    "start": "2026-10-14",
+    "end": "2026-10-14",
+    "start_approx": false
+  },
+  {
+    "type": "МИТАП",
+    "name": "GEO Talks: честный разговор о нейровидимости",
+    "description": "Закрытая встреча о нейровидимости: как ИИ меняет поиск, «20 фактов о GEO», что влияет на позиции в нейросетях и вклад PR. Организаторы — АЙNET и Agenda.",
+    "time": "19:30 мск",
+    "tasks": [],
+    "prize": null,
+    "participation": null,
+    "format": "Формат: офлайн в Москве",
+    "lang": null,
+    "url": "https://inetstudio.ru/geotalks",
+    "registration": null,
+    "registration_iso": null,
+    "phases": null,
+    "talks": [
+      {
+        "time": null,
+        "title": "Что меняется в поиске с появлением ИИ",
+        "speaker": "В. Сюткин, «Все инструменты»"
+      },
+      {
+        "time": null,
+        "title": "Как потребитель изменился с приходом ИИ — что делать бизнесу?",
+        "speaker": "М. Зырянова, Lindaily"
+      },
+      {
+        "time": null,
+        "title": "20 фактов о GEO",
+        "speaker": "Я. Домбровский, АЙNET"
+      },
+      {
+        "time": null,
+        "title": "Что влияет на позиции в нейросетях и вклад PR",
+        "speaker": "Д. Павлова, Agenda"
+      }
+    ],
+    "links": null,
+    "start": "2026-10-14",
+    "end": "2026-10-14",
+    "start_approx": false
+  },
+  {
+    "type": "КОНФ",
     "name": "REKONFA 2026. Большая конференция Яндекс Рекламы",
     "description": "Конференция о технологиях персональной рекламы и ИИ: офлайн на ВТБ Арене и онлайн-трансляция, участие бесплатное.",
     "time": null,
@@ -3143,6 +3378,215 @@ const MEETUPS = [
     "start_approx": false
   },
   {
+    "type": "КОНФ",
+    "name": "Data & AI Talks 7.0",
+    "description": "Ежегодная конференция Ростелекома о данных и ИИ: экономика ИИ, безопасность данных, инфраструктура под ИИ, ИИ-агенты и корпоративные кейсы. 15 октября — очно и онлайн, 16 октября — только онлайн.",
+    "time": "10:00 мск",
+    "tasks": [],
+    "prize": null,
+    "participation": null,
+    "format": "Формат: офлайн в Москве и онлайн (16 октября — только онлайн)",
+    "lang": null,
+    "url": "https://datatalks.rt.ru/",
+    "registration": null,
+    "registration_iso": null,
+    "phases": null,
+    "talks": [
+      {
+        "time": "10:00",
+        "title": "Пленарная сессия: вызовы бизнеса в эпоху ИИ-преобразований",
+        "speaker": null
+      },
+      {
+        "time": null,
+        "title": "Отраслевой клуб ИИ в ИКТ",
+        "speaker": "Р. Хазеев, Ростелеком"
+      },
+      {
+        "time": null,
+        "title": "Презентация исследования оценки готовности внедрения ИИ",
+        "speaker": null
+      },
+      {
+        "time": null,
+        "title": "Дискуссия «Оценка финансовых эффектов от внедрения ИИ в ИКТ»",
+        "speaker": null
+      },
+      {
+        "time": null,
+        "title": "Безопасность данных в эпоху ИИ: новые угрозы и подходы",
+        "speaker": "ГК «Солар»"
+      },
+      {
+        "time": null,
+        "title": "Какую инфраструктуру выбрать для ИИ, чтобы не переделывать через год",
+        "speaker": "Турбо Облако"
+      },
+      {
+        "time": null,
+        "title": "Дискуссия «Наука и кадры для ИИ»",
+        "speaker": null
+      },
+      {
+        "time": null,
+        "title": "Дискуссия с CDO «Что происходит с управлением данными в России»",
+        "speaker": null
+      },
+      {
+        "time": null,
+        "title": "Доверенный семантический слой для ИИ-агентов",
+        "speaker": "Беркут"
+      },
+      {
+        "time": null,
+        "title": "Корпоративные AI-агенты 2026: данные, безопасность и архитектура закрытого контура",
+        "speaker": "Круги Громова"
+      },
+      {
+        "time": null,
+        "title": "ИИ как новый стандарт современного продукта",
+        "speaker": "TData"
+      },
+      {
+        "time": null,
+        "title": "Качество для ИИ и ИИ для качества",
+        "speaker": "Т2"
+      }
+    ],
+    "links": null,
+    "start": "2026-10-15",
+    "end": "2026-10-16",
+    "start_approx": false
+  },
+  {
+    "type": "КОНФ",
+    "name": "Разработка будущего",
+    "description": "Отдельный день конференции Joker о том, как ИИ меняет разработку: harness и оркестрация агентов, MCP, spec-driven development и ревью кода, который пишут агенты.",
+    "time": null,
+    "tasks": [],
+    "prize": null,
+    "participation": null,
+    "format": "Формат: офлайн в Санкт-Петербурге и онлайн",
+    "lang": null,
+    "url": "https://future.jokerconf.com/",
+    "registration": null,
+    "registration_iso": null,
+    "phases": null,
+    "talks": [
+      {
+        "time": null,
+        "title": "Eval как зеркало намерения: почему нельзя оценить агента, пока не сформулировал, чего от него хочешь",
+        "speaker": null
+      },
+      {
+        "time": null,
+        "title": "Как спроектировать harness, чтобы агент работал предсказуемо, а не галлюцинировал",
+        "speaker": null
+      },
+      {
+        "time": null,
+        "title": "Контекст через MCP: как подключить агента к своему окружению",
+        "speaker": null
+      },
+      {
+        "time": null,
+        "title": "Spec-Driven Development: генерация кода по спеке",
+        "speaker": null
+      },
+      {
+        "time": null,
+        "title": "Как меняется процесс ревью кода, когда код пишет агент?",
+        "speaker": null
+      },
+      {
+        "time": null,
+        "title": "Оркестрация сложной системы агентов",
+        "speaker": null
+      },
+      {
+        "time": null,
+        "title": "Сколько на самом деле стоит один запрос в деньгах, энергии и чипах",
+        "speaker": null
+      }
+    ],
+    "links": null,
+    "start": "2026-10-15",
+    "end": "2026-10-15",
+    "start_approx": false
+  },
+  {
+    "type": "ВЕБИНАР",
+    "name": "Не только анализы: как INVITRO расширяет продуктовую линейку и перестраивает цифровые продукты",
+    "description": "Вебинар-разбор кейса INVITRO: как перестраивали цифровые продукты, почему переписали сайт и приложение, как нейросети меняют поведение пациентов и что даёт МИС с речевой аналитикой.",
+    "time": "14:00–15:00 мск",
+    "tasks": [],
+    "prize": null,
+    "participation": null,
+    "format": "Формат: онлайн",
+    "lang": null,
+    "url": "https://www.purrweb.com/ru/invitro-webinar/",
+    "registration": null,
+    "registration_iso": null,
+    "phases": null,
+    "talks": null,
+    "links": null,
+    "start": "2026-10-15",
+    "end": "2026-10-15",
+    "start_approx": false
+  },
+  {
+    "type": "ВОРКШОП",
+    "name": "ИИ-разработка на платформе SimpleOne",
+    "description": "Практический онлайн-воркшоп по ИИ-разработке с SimpleGen: подъём проекта с нуля в прямом эфире, типичные ошибки, расход токенов и ограничения контекста. Продолжение — 29 октября.",
+    "time": "15:00 мск",
+    "tasks": [],
+    "prize": null,
+    "participation": null,
+    "format": "Формат: онлайн",
+    "lang": null,
+    "url": "https://simpleone.ru/events/ai-development-at-simpleone",
+    "registration": null,
+    "registration_iso": null,
+    "phases": null,
+    "talks": [
+      {
+        "time": "15:00",
+        "title": "ИИ-разработка на платформе SimpleOne: практический воркшоп с SimpleGen",
+        "speaker": "Али Акмуллаев, SimpleOne"
+      }
+    ],
+    "links": null,
+    "start": "2026-10-15",
+    "end": "2026-10-15",
+    "start_approx": false
+  },
+  {
+    "type": "ВЕБИНАР",
+    "name": "ИИ-эволюция интерфейсов: тренды 2026",
+    "description": "Вебинар Т1 о трендах UX/UI и о том, как ИИ меняет интерфейсы: от функций к результату, эволюция терминалов и банкоматов, 3D-печать.",
+    "time": "18:00 мск",
+    "tasks": [],
+    "prize": null,
+    "participation": null,
+    "format": "Формат: онлайн",
+    "lang": null,
+    "url": "https://pro.t1.ru/event/PnaIfEQX",
+    "registration": null,
+    "registration_iso": null,
+    "phases": null,
+    "talks": [
+      {
+        "time": "18:00",
+        "title": "ИИ-эволюция интерфейсов: тренды 2026",
+        "speaker": "Анастасия Брузгина, Михаил Манокин, Т1"
+      }
+    ],
+    "links": null,
+    "start": "2026-10-15",
+    "end": "2026-10-15",
+    "start_approx": false
+  },
+  {
     "type": "МИТАП",
     "name": "Митап «Учитель кода»",
     "description": "Митап ко дню учителя о том, как учиться в эпоху ИИ: разбор курса «Искусственный интеллект: нулевой уровень» и панельная дискуссия о когнитивной разгрузке. Офлайн в Санкт-Петербурге (Ozon Банк), сбор гостей в 18:00, нужен паспорт.",
@@ -3171,6 +3615,169 @@ const MEETUPS = [
     "links": null,
     "start": "2026-10-16",
     "end": "2026-10-16",
+    "start_approx": false
+  },
+  {
+    "type": "КОНФ",
+    "name": "ГигаКонф 2026. Открытый инженерный день",
+    "description": "Открытый инженерный день Сбера про агентный ИИ и AI-native разработку: GigaAgent, GigaCode и AI PDLC, GigaStudio, агентная фабрика в GitVerse, LLM-модели как сервис.",
+    "time": "12:00 мск",
+    "tasks": [],
+    "prize": null,
+    "participation": null,
+    "format": "Формат: офлайн в Москве",
+    "lang": null,
+    "url": "https://gigaconf.ru/",
+    "registration": null,
+    "registration_iso": null,
+    "phases": null,
+    "talks": [
+      {
+        "time": null,
+        "title": "ГигаАгент: архитектура и функциональные возможности",
+        "speaker": "А. Кузнецов, Сбер"
+      },
+      {
+        "time": null,
+        "title": "GigaCode как драйвер AI PDLC",
+        "speaker": "Д. Зуйков, Сбер"
+      },
+      {
+        "time": null,
+        "title": "GigaStudio: облачная платформа для AI-first разработки продукта",
+        "speaker": "Ф. Тельнов, СберТех"
+      },
+      {
+        "time": null,
+        "title": "От ассистента к автономной системе: агентная фабрика разработки в GitVerse",
+        "speaker": "А. Шипов, СберТех"
+      },
+      {
+        "time": null,
+        "title": "Evolution Foundation Models — LLM и AI-модели как сервис",
+        "speaker": "А. Мазаев, Cloud.ru"
+      }
+    ],
+    "links": null,
+    "start": "2026-10-16",
+    "end": "2026-10-16",
+    "start_approx": false
+  },
+  {
+    "type": "КОНФ",
+    "name": "Avito Action!",
+    "description": "Конференция Avito о продукте и дизайне: как рождаются сильные продукты, креативность в эпоху ИИ, доклады и воркшопы про ИИ-инструменты и контекст для агентов.",
+    "time": "15:00 мск",
+    "tasks": [],
+    "prize": null,
+    "participation": null,
+    "format": "Формат: офлайн в Москве и онлайн",
+    "lang": null,
+    "url": "https://avito.tech/avitoactionconf",
+    "registration": null,
+    "registration_iso": null,
+    "phases": null,
+    "talks": [
+      {
+        "time": null,
+        "title": "Схема или чутьё: как на самом деле рождаются сильные продукты",
+        "speaker": "Андрей Тарасов, Ирина Вареник"
+      },
+      {
+        "time": null,
+        "title": "Мозг, интеллект и креативность в эпоху ИИ",
+        "speaker": "Владимир Алипов"
+      },
+      {
+        "time": null,
+        "title": "Прикрутили AI — пришлось переделать весь процесс",
+        "speaker": "Никита Алексейчук, RWB"
+      },
+      {
+        "time": null,
+        "title": "От потребности к вещи",
+        "speaker": "Яндекс, промдизайн Tuvio Semble"
+      },
+      {
+        "time": null,
+        "title": "Всё работает. Что строить дальше?",
+        "speaker": "Илья Еременко, Авито"
+      },
+      {
+        "time": null,
+        "title": "Воркшоп «Вкус не генерируется: собираем красивое с ИИ»",
+        "speaker": "Ксения Гаврилова, Авито"
+      },
+      {
+        "time": null,
+        "title": "Воркшоп «Контекст решает: как устроить документы, чтобы агент понимал продукт»",
+        "speaker": "Ксения Шимук, AI SpeechLab"
+      }
+    ],
+    "links": null,
+    "start": "2026-10-16",
+    "end": "2026-10-16",
+    "start_approx": false
+  },
+  {
+    "type": "КОНФ",
+    "name": "Heisenbug 2026 Autumn",
+    "description": "Конференция по тестированию: GenAI в QA, тестирование AI-агентов, генерация тест-кейсов с LLM и качество систем. Два дня, Санкт-Петербург и онлайн.",
+    "time": null,
+    "tasks": [],
+    "prize": null,
+    "participation": null,
+    "format": "Формат: офлайн в Санкт-Петербурге и онлайн",
+    "lang": null,
+    "url": "https://heisenbug.ru/",
+    "registration": null,
+    "registration_iso": null,
+    "phases": null,
+    "talks": [
+      {
+        "time": null,
+        "title": "Как не пропустить рак из-за сломанного конфига: тестирование и мониторинг медицинского ИИ",
+        "speaker": "Евгений Никитин, Цельс"
+      },
+      {
+        "time": null,
+        "title": "LangFuse для LLM-агентов: как съесть кактус тестирования, не уколовшись",
+        "speaker": "Артем Самойлов, Сбер"
+      },
+      {
+        "time": null,
+        "title": "AI-агенты для Auto QA: от хаотичных запросов к системной работе с навыками",
+        "speaker": "Никита Осипов"
+      },
+      {
+        "time": null,
+        "title": "UI-тесты с AI: сравниваем подходы и считаем токены",
+        "speaker": "Алексей Тюрин"
+      },
+      {
+        "time": null,
+        "title": "Token FinOps: как инженеры перестают быть расходной статьей",
+        "speaker": "Евгений Гребенщиков, Сбер"
+      },
+      {
+        "time": null,
+        "title": "Воркшоп «Как собрать своего QAI-агента»",
+        "speaker": "Александр Волков, cloud.ru"
+      },
+      {
+        "time": null,
+        "title": "Воркшоп «Учимся взламывать ИИ-агентов на практике»",
+        "speaker": "Александр Князев, AMA"
+      },
+      {
+        "time": null,
+        "title": "Дискуссия «Кто отвечает за качество, когда код пишут агенты?»",
+        "speaker": null
+      }
+    ],
+    "links": null,
+    "start": "2026-10-16",
+    "end": "2026-10-17",
     "start_approx": false
   },
   {
@@ -3217,6 +3824,62 @@ const MEETUPS = [
         "time": "17:00",
         "title": "Секретный гость",
         "speaker": null
+      }
+    ],
+    "links": null,
+    "start": "2026-10-17",
+    "end": "2026-10-17",
+    "start_approx": false
+  },
+  {
+    "type": "КОНФ",
+    "name": "HardFest 2026",
+    "description": "Конференция CodeFest про системы под реальной нагрузкой: треки разработки, AI/ML, эксплуатации и железа — агентный SDLC, GPU-планировщики, feature store и LLM-инференс.",
+    "time": "09:00 мск",
+    "tasks": [],
+    "prize": null,
+    "participation": null,
+    "format": "Формат: офлайн в Екатеринбурге",
+    "lang": null,
+    "url": "https://2026.hardfest.ru/",
+    "registration": null,
+    "registration_iso": null,
+    "phases": null,
+    "talks": [
+      {
+        "time": "09:00",
+        "title": "От контекст-инженера к оркестратору агентов: как выжать максимум из агентного SDLC и не переплатить",
+        "speaker": "Владимир Гриненко"
+      },
+      {
+        "time": "10:00",
+        "title": "Как превратить inference-сервис в production-систему",
+        "speaker": "Кирилл Веловатый, Cloud.ru"
+      },
+      {
+        "time": "11:00",
+        "title": "Почему Kubernetes не справляется с AI-задачами: продвинутый GPU-планировщик на базе Volcano",
+        "speaker": "Дмитрий Матушкин, Orion soft"
+      },
+      {
+        "time": "11:00",
+        "title": "Мастер-класс «Смотри, как думает агент: Observability AI-агентов с Langfuse»",
+        "speaker": "Филипп Бочаров, МТС Web Services"
+      },
+      {
+        "time": "12:00",
+        "title": "Online feature store — от фасада до платформы материализации",
+        "speaker": "Дмитрий Салахутдинов, RWB"
+      },
+      {
+        "time": "12:00",
+        "title": "295 FLOP/byte: почему пиксель и токен стоят одинаково дорого",
+        "speaker": "Илья Макаров"
+      },
+      {
+        "time": "13:00",
+        "title": "Мастер-класс «Инференс без простоя GPU: чиним LLM-сервис руками и делим карту на живом кластере»",
+        "speaker": "Александр Подмосковный, Флант"
       }
     ],
     "links": null,
