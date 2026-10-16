@@ -4521,6 +4521,26 @@ const MEETUPS = [
     "start_approx": false
   },
   {
+    "type": "МИТАП",
+    "name": "IT_ONE: Между кодом и продом",
+    "description": "Онлайн-митап для DevOps-инженеров от IT_ONE. Эксперты компании разберут тестирование Helm-чартов, helm-unittest и валидацию параметров. Каждый участник получит записи и презентации выступлений.",
+    "time": "18:00–21:00 мск",
+    "tasks": [],
+    "prize": null,
+    "participation": null,
+    "format": "Формат: онлайн",
+    "lang": null,
+    "url": "https://codenrock.com/contests/it-one-mezhdu-kodom-i-prodom",
+    "registration": "до 04.11",
+    "registration_iso": "2026-11-04",
+    "phases": null,
+    "talks": [],
+    "links": null,
+    "start": "2026-11-05",
+    "end": "2026-11-05",
+    "start_approx": false
+  },
+  {
     "type": "КОНФ",
     "name": "AI Journey 2026",
     "description": "Международная конференция по искусственному интеллекту от Сбера: Москва и онлайн.",
