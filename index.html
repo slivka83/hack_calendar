@@ -1569,7 +1569,7 @@
           const fmt = fmtCls(h);
           const btn = el("button", "cal-ev" + (fmt ? " cal-ev--" + fmt : ""));
           const si = startInfo.get(h);
-          if (si && ymd(d) === h.start) btn.appendChild(el("span", "cal-ev-time", si.label));
+          if (si) btn.appendChild(el("span", "cal-ev-time", si.label));
           btn.appendChild(el("span", "cal-ev-name", h.name));
           btn.type = "button";
           btn.title = h.name;
