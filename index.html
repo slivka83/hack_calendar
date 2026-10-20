@@ -567,11 +567,39 @@
   }
   .cal-empty.is-active { display: flex; }
 
+  /* ---------- Calendar agenda (mobile) ---------- */
+  .cal-agenda { display: block; background: var(--panel); padding: 0 12px 24px; }
+  .cal-agenda-month {
+    position: sticky;
+    top: 0;
+    z-index: 6;
+    margin: 0 -12px;
+    padding: 9px 12px;
+    background: var(--panel-2);
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .6px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .cal-agenda-day {
+    margin: 14px 0 6px;
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: .3px;
+    color: var(--muted);
+  }
+  .cal-agenda-day.is-today { color: var(--accent); }
+  .cal-agenda-ev { margin-bottom: 5px; padding: 7px 9px; font-size: 12.5px; }
+  .cal-agenda-ev .cal-ev-name { flex: 1 1 auto; white-space: normal; overflow: visible; text-overflow: clip; }
+  .cal-agenda-until { flex: none; color: var(--muted); font-size: 11px; }
+
   /* ---------- Tooltip ---------- */
   .tooltip {
     position: fixed;
     z-index: 100;
-    max-width: 420px;
+    max-width: min(420px, calc(100vw - 16px));
     background: var(--panel);
     border: 1px solid var(--border);
     border-radius: 12px;
@@ -620,6 +648,8 @@
   @media (max-width: 700px) {
     .tt-cols--side { grid-template-columns: 1fr; gap: 0; }
     .tt-cols--side .tt-col-side { border-left: none; padding-left: 0; border-top: 1px solid var(--border); margin-top: 12px; padding-top: 10px; }
+    .tt-cols--split { grid-template-columns: 1fr; gap: 0; }
+    .tt-cols--split .tt-program { border-left: none; padding-left: 0; border-top: 1px solid var(--border); margin-top: 12px; padding-top: 10px; }
   }
 
   /* ---------- Modal ---------- */
@@ -714,11 +744,51 @@
     :root { --corner-w: 300px; }
   }
   @media (max-width: 600px) {
-    :root { --corner-w: 200px; --row-h: 56px; }
+    :root { --corner-w: 180px; --row-h: 56px; }
     .chips { display: none; }
-    .topbar { padding: 10px 12px; gap: 12px; }
-    .controls { width: 100%; }
-    .controls input[type="search"] { width: 100%; }
+    .topbar {
+      position: relative;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 8px 12px;
+    }
+    .topbar h1 { font-size: 14.5px; gap: 7px; }
+    .logo { width: 20px; height: 20px; }
+    .tabs { margin-left: auto; margin-right: 40px; padding: 3px; }
+    .tabs .seg-btn { font-size: 11.5px; padding: 5px 6px; }
+    .controls { width: 100%; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+    .controls .seg { padding: 2px; }
+    .controls .seg-btn { font-size: 11px; padding: 5px 6px; }
+    .cal-nav .seg-btn { padding: 5px 8px; }
+    .cal-nav #calPrev, .cal-nav #calNext { font-size: 14px; padding: 2px 8px; }
+    #rangeGroup, #calNav { order: 1; }
+    #filterGroup, #fmtGroup { order: 2; }
+    .controls input[type="search"] {
+      order: 3;
+      flex: 1 1 150px;
+      width: auto;
+      min-width: 0;
+      font-size: 16px;
+      padding: 6px 10px;
+    }
+    #suggestBtn { order: 4; font-size: 12px; padding: 7px 10px; }
+    #themeToggle {
+      order: 5;
+      position: absolute;
+      top: 8px;
+      right: 12px;
+      width: 32px;
+      height: 32px;
+    }
+
+    .gantt-scroll { overflow-x: auto; overscroll-behavior-x: contain; }
+    .gantt-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
+    .corner { padding: 0 10px; }
+    .corner, .names-col { box-shadow: 8px 0 14px -10px rgba(0, 0, 0, .5); }
+    .name-row { padding: 0 10px; cursor: pointer; }
+    .name-row .src { display: none; }
+    .n-line .n { font-size: 12.5px; }
+
     .cal-dow { padding: 6px 4px; font-size: 10px; }
     .cal-day { min-height: 64px; padding: 3px; }
     .cal-months { grid-template-columns: 32px repeat(7, minmax(0, 1fr)); grid-auto-rows: minmax(64px, 1fr); }
@@ -726,7 +796,40 @@
     .cal-rail span { font-size: 11px; }
     .cal-dow-row { grid-template-columns: 32px repeat(7, minmax(0, 1fr)); }
     .cal-ev { font-size: 10px; padding: 2px 4px; border-left-width: 2px; }
+    .cal-agenda { padding: 0 10px 24px; }
+    .cal-agenda-month { margin: 0 -10px; }
+    .cal-agenda-ev { font-size: 12.5px; padding: 7px 9px; border-left-width: 3px; }
     .cal-title { min-width: 104px; }
+
+    .modal-backdrop { padding: 0; align-items: stretch; }
+    .modal, .modal--wide, .modal--suggest {
+      width: 100%;
+      max-width: none;
+      height: 100%;
+      max-height: none;
+      border: none;
+      border-radius: 0;
+      padding: 16px 14px calc(24px + env(safe-area-inset-bottom));
+    }
+    .modal .tt-head { padding-right: 38px; }
+    .modal-close {
+      position: fixed;
+      top: calc(8px + env(safe-area-inset-top));
+      right: 12px;
+      z-index: 250;
+      width: 36px;
+      height: 36px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, .15);
+    }
+    .suggest-field { font-size: 16px; }
+  }
+  @media (max-width: 359px) {
+    :root { --corner-w: 160px; }
+    .topbar h1 { font-size: 0; gap: 0; }
+    .controls .seg-btn { font-size: 10px; padding: 4px 4px; }
   }
   @media (prefers-reduced-motion: reduce) {
     * { transition: none !important; }
@@ -830,6 +933,10 @@
   const MONTHS = ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"];
   const MONTHS_FULL = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь",
     "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
+  const MONTHS_GEN = ["января", "февраля", "марта", "апреля", "мая", "июня",
+    "июля", "августа", "сентября", "октября", "ноября", "декабря"];
+  const DOW_SHORT = ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"];
+  const isMobile = () => window.innerWidth <= 600;
   const fmtCls = h => {
     const f = (h.format || "").toLowerCase();
     const online = f.includes("онлайн");
@@ -890,7 +997,7 @@
       : []),
   };
 
-  const state = { query: "", range: 6, actual: false, signup: false, fmt: "", tab: "comp", calInit: false };
+  const state = { query: "", range: 6, actual: false, signup: false, fmt: "", tab: "comp", calInit: false, ganttInit: false };
   try {
     const savedTab = localStorage.getItem("hc-tab");
     if (savedTab === "event" || savedTab === "comp") state.tab = savedTab;
@@ -1185,7 +1292,7 @@
   }
 
   function computeCornerWidth(availW) {
-    if (window.innerWidth <= 600) return 200;
+    if (isMobile()) return window.innerWidth <= 359 ? 160 : 180;
     const names = ganttInner.querySelector(".names-col");
     const border = names ? parseFloat(getComputedStyle(names).borderRightWidth) || 0 : 0;
     const cs = names ? getComputedStyle(names.querySelector(".name-row")) : null;
@@ -1303,6 +1410,10 @@
       const chips = renderChips(h);
       if (chips) info.appendChild(chips);
       nameEl.addEventListener("click", () => openModal(h));
+      nameRow.addEventListener("click", e => {
+        if (!isMobile() || e.target.closest("a, button, .n")) return;
+        openModal(h);
+      });
       nameRow.appendChild(info);
       names.appendChild(nameRow);
 
@@ -1402,7 +1513,7 @@
   }
 
   function calFirstCell(ym) {
-    return calGrid.querySelector('.cal-day[data-ym="' + ym + '"]');
+    return calGrid.querySelector('[data-ym="' + ym + '"]');
   }
 
   function calMonthStart(ym) {
@@ -1419,9 +1530,19 @@
     return true;
   }
 
+  function calScrollToDay(dateKey, smooth) {
+    const cell = calGrid.querySelector('[data-date="' + dateKey + '"]');
+    if (!cell) return false;
+    const mh = calGrid.querySelector(".cal-agenda-month");
+    const top = Math.max(0, cell.offsetTop - (mh ? mh.offsetHeight : 0));
+    if (smooth) calendarScroll.scrollTo({ top, behavior: "smooth" });
+    else calendarScroll.scrollTop = top;
+    return true;
+  }
+
   function calMonthList() {
     const list = [];
-    calGrid.querySelectorAll(".cal-day[data-ym]").forEach(c => {
+    calGrid.querySelectorAll("[data-ym]").forEach(c => {
       const ym = c.dataset.ym;
       if (list[list.length - 1] !== ym) list.push(ym);
     });
@@ -1449,17 +1570,78 @@
 
   function calJumpToResults() {
     if (state.tab !== "event") return;
+    if (!state.query && !state.fmt) return;
     const items = EVENTS.filter(matches);
     if (!items.length) return;
     const h = items.reduce((a, b) => (parseISO(a.start) <= parseISO(b.start) ? a : b));
-    const ym = ymOf(parseISO(h.start));
-    const cell = calFirstCell(ym);
+    const start = parseISO(h.start);
+    const ym = ymOf(start);
+    const dayKey = ymd(start);
+    const cell = (isMobile() && calGrid.querySelector('[data-date="' + dayKey + '"]')) || calFirstCell(ym);
     if (!cell) return;
     const scRect = calendarScroll.getBoundingClientRect();
     const cRect = cell.getBoundingClientRect();
     const topEdge = scRect.top + calHeaderH();
     if (cRect.bottom > topEdge && cRect.top < scRect.bottom) return;
-    calScrollToMonth(ym, true);
+    if (cell.dataset.date) calScrollToDay(dayKey, true);
+    else calScrollToMonth(ym, true);
+  }
+
+  function startMinutes(h) {
+    const t = (timeOf(h) || "").match(/(\d{1,2}):(\d{2})/);
+    return t ? +t[1] * 60 + +t[2] : 24 * 60 + 1;
+  }
+
+  function buildAgenda(items) {
+    calGrid.replaceChildren();
+    const sorted = items.slice().sort((a, b) => {
+      const d = parseISO(a.start) - parseISO(b.start);
+      if (d) return d;
+      return startMinutes(a) - startMinutes(b);
+    });
+    const today = ymd(todayMidnight());
+    const frag = document.createDocumentFragment();
+    let curMonth = "", curDay = "";
+    sorted.forEach(h => {
+      const d = parseISO(h.start);
+      const ym = ymOf(d);
+      if (ym !== curMonth) {
+        curMonth = ym;
+        curDay = "";
+        const mh = el("div", "cal-agenda-month", MONTHS_FULL[d.getMonth()] + " " + d.getFullYear());
+        mh.dataset.ym = ym;
+        frag.appendChild(mh);
+      }
+      const key = ymd(d);
+      if (key !== curDay) {
+        curDay = key;
+        const dh = el("div", "cal-agenda-day" + (key === today ? " is-today" : ""),
+          DOW_SHORT[d.getDay()] + ", " + d.getDate() + " " + MONTHS_GEN[d.getMonth()] +
+          (key === today ? " · сегодня" : ""));
+        dh.dataset.date = key;
+        frag.appendChild(dh);
+      }
+      const fmt = fmtCls(h);
+      const btn = el("button", "cal-ev cal-agenda-ev" + (fmt ? " cal-ev--" + fmt : ""));
+      const t = (timeOf(h) || "").match(/(\d{1,2}):(\d{2})/);
+      if (t) btn.appendChild(el("span", "cal-ev-time", t[0]));
+      btn.appendChild(el("span", "cal-ev-name", h.name));
+      if (h.end !== h.start) btn.appendChild(el("span", "cal-agenda-until", "до " + fmtDate(h.end)));
+      btn.type = "button";
+      btn.title = h.name;
+      bindTip(btn, h);
+      btn.addEventListener("click", () => openModal(h));
+      frag.appendChild(btn);
+    });
+    calGrid.appendChild(frag);
+    if (!state.calInit) {
+      state.calInit = true;
+      const todayKey = ymd(todayMidnight());
+      if (!calScrollToDay(todayKey, false) && !calScrollToMonth(ymOf(todayMidnight()), false)) {
+        const first = calGrid.querySelector("[data-ym]");
+        if (first) calScrollToMonth(first.dataset.ym, false);
+      }
+    }
   }
 
   function buildCalendar() {
@@ -1490,6 +1672,15 @@
     calEmpty.replaceChildren();
     calGrid.classList.remove("is-hidden");
     calDow.classList.remove("is-hidden");
+
+    const mobileCal = isMobile();
+    calGrid.classList.toggle("cal-agenda", mobileCal);
+    calDow.classList.toggle("is-hidden", mobileCal);
+    if (mobileCal) {
+      buildAgenda(items);
+      return;
+    }
+    calGrid.classList.remove("cal-agenda");
 
     const byDay = new Map();
     const startInfo = new Map();
@@ -1630,6 +1821,7 @@
 
   function build() {
     hideTip();
+    searchInput.placeholder = isMobile() ? "Поиск событий…" : "Поиск по названию, задаче или типу…";
     const isCal = state.tab === "event";
     ganttWrap.classList.toggle("is-hidden", isCal);
     calendarWrap.classList.toggle("is-active", isCal);
@@ -1677,6 +1869,16 @@
     return items;
   }
 
+  function scrollGanttToToday() {
+    const cornerW = parseFloat(getComputedStyle(ganttWrap).getPropertyValue("--corner-w")) || 0;
+    const visible = Math.max(0, ganttScroll.clientWidth - cornerW);
+    const today = todayMidnight();
+    const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
+    const x = xOf(monthStart);
+    const max = Math.max(0, TIMELINE_W - visible);
+    ganttScroll.scrollLeft = Math.max(0, Math.min(max, x - 2));
+  }
+
   function layout(items) {
     const availW = ganttWrap.clientWidth || window.innerWidth || 1000;
     ROW_H = parseFloat(getComputedStyle(ganttWrap).getPropertyValue("--row-h")) || 62;
@@ -1689,13 +1891,24 @@
     const cornerW = computeCornerWidth(availW);
     const scrollbarW = ganttScroll.offsetWidth - ganttScroll.clientWidth;
     ganttWrap.style.setProperty("--corner-w", cornerW + "px");
-    TIMELINE_W = Math.max(100, availW - scrollbarW - cornerW);
+    const fitW = Math.max(100, availW - scrollbarW - cornerW);
+    TIMELINE_W = isMobile() ? Math.max(fitW, Math.ceil(TOTAL_DAYS * 3)) : fitW;
     DAY_W = TIMELINE_W / TOTAL_DAYS;
     CELLS = buildCells();
     ganttInner.style.setProperty("--timeline-w", TIMELINE_W + "px");
 
     ganttInner.replaceChildren(renderHeader(), renderBody(items));
     fitChips();
+
+    if (isMobile()) {
+      if (!state.ganttInit) {
+        state.ganttInit = true;
+        scrollGanttToToday();
+      }
+    } else {
+      state.ganttInit = false;
+      ganttScroll.scrollLeft = 0;
+    }
   }
 
   /* ---------- tooltip & modal ---------- */
@@ -2179,6 +2392,7 @@
   /* ---------- controls ---------- */
   function setRange(n) {
     state.range = n;
+    state.ganttInit = false;
     rangeGroup.querySelectorAll(".seg-btn").forEach(btn => {
       const active = Number(btn.dataset.range) === n;
       btn.classList.toggle("is-active", active);
@@ -2232,6 +2446,7 @@
     EVENTS = DATASETS[tab];
     try { localStorage.setItem("hc-tab", tab); } catch (err) {}
     ganttScroll.scrollTop = 0;
+    state.ganttInit = false;
     build();
     calJumpToResults();
   });
@@ -2239,8 +2454,10 @@
   calPrev.addEventListener("click", () => calShift(-1));
   calNext.addEventListener("click", () => calShift(1));
   calToday.addEventListener("click", () => {
-    if (!calScrollToMonth(ymOf(todayMidnight()), true)) {
-      const first = calGrid.querySelector(".cal-day[data-ym]");
+    const todayDate = todayMidnight();
+    if (isMobile() && calScrollToDay(ymd(todayDate), true)) return;
+    if (!calScrollToMonth(ymOf(todayDate), true)) {
+      const first = calGrid.querySelector("[data-ym]");
       if (first) calScrollToMonth(first.dataset.ym, true);
     }
   });
@@ -2278,6 +2495,15 @@
       hideTip();
     }
   });
+
+  const mobileMQ = window.matchMedia("(max-width: 600px)");
+  const onBreakpoint = () => {
+    state.calInit = false;
+    state.ganttInit = false;
+    build();
+  };
+  if (mobileMQ.addEventListener) mobileMQ.addEventListener("change", onBreakpoint);
+  else if (mobileMQ.addListener) mobileMQ.addListener(onBreakpoint);
 
   let resizeTimer = null;
   window.addEventListener("resize", () => {
