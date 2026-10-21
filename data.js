@@ -4522,6 +4522,57 @@ const MEETUPS = [
     "start_approx": false
   },
   {
+    "type": "МИТАП",
+    "name": "Код аналитика: митап про системный анализ",
+    "description": "Митап ЮMoney про системный анализ: как работать с меняющимися требованиями, довести ИИ-агента до промышленного решения, автоматизировать архитектуру as Code и применять ИИ-практики в команде аналитики.",
+    "time": "19:00 мск",
+    "tasks": [],
+    "prize": null,
+    "participation": null,
+    "format": "Формат: офлайн в Санкт-Петербурге и онлайн",
+    "lang": null,
+    "url": "https://events.yoomoney.ru/analytics-code-2026",
+    "registration": null,
+    "registration_iso": null,
+    "phases": null,
+    "talks": [
+      {
+        "time": "19:00",
+        "title": "Открытие митапа",
+        "speaker": null
+      },
+      {
+        "time": "19:05",
+        "title": "Вечно-меняющиеся требования и как с ними работать",
+        "speaker": "Георгий Королёв, старший системный аналитик ЮMoney"
+      },
+      {
+        "time": "19:40",
+        "title": "Готовый прототип — ещё не продукт: как ИИ-агент становится промышленным решением",
+        "speaker": "Дмитрий Неверов, владелец продукта в Сбере"
+      },
+      {
+        "time": "20:20",
+        "title": "Перерыв",
+        "speaker": null
+      },
+      {
+        "time": "20:35",
+        "title": "Автоматизация работы с архитектурой as Code",
+        "speaker": "Руслан Сафин, технический директор Бындюсофт"
+      },
+      {
+        "time": "21:15",
+        "title": "ИИ-практики в команде системного анализа",
+        "speaker": "Арина Ерофеева, старший системный аналитик ЮMoney"
+      }
+    ],
+    "links": null,
+    "start": "2026-10-22",
+    "end": "2026-10-22",
+    "start_approx": false
+  },
+  {
     "type": "КОНФ",
     "name": "FineDay 2026",
     "description": "Ежегодная конференция GlowByte по FineBI: из self-service в AI-Native — ИИ-агенты в аналитике, готовность данных и команд, миграция отчётов из Qlik и Power BI, классы задач BI и LLM. Демо-зоны FineBI 7.0 и ИИ-агента Dora.",
@@ -4707,6 +4758,47 @@ const MEETUPS = [
     "links": null,
     "start": "2026-11-05",
     "end": "2026-11-05",
+    "start_approx": false
+  },
+  {
+    "type": "МИТАП",
+    "name": "ODS:AI Meetup #1",
+    "description": "Офлайн-митап ODS в Красноярске: LLM-агенты в Data Science, ИИ в исследованиях, персональный ИИ-ассистент и MCP для корпоративных агентов. Сбор с 14:00, начало в 14:30 мск; обязательна регистрация на Leader-ID.",
+    "time": "14:30–17:00 мск",
+    "tasks": [],
+    "prize": null,
+    "participation": null,
+    "format": "Формат: офлайн в Красноярске",
+    "lang": null,
+    "url": "https://ods.ai/events/ai-meet-up-1311",
+    "registration": "до 20.11",
+    "registration_iso": "2026-11-20",
+    "phases": null,
+    "talks": [
+      {
+        "time": null,
+        "title": "LLM-агенты в Data Science: автоматизируем полный цикл ML",
+        "speaker": "Machuka Mendosa Kristian Rodrigo, Teamlead/MLOps, Русал ИТЦ"
+      },
+      {
+        "time": null,
+        "title": "ИИ-инструменты в работе исследователя: практические кейсы и опыт обучения аспирантов",
+        "speaker": "Павел Шерстнев, заведующий лабораторией центра ИИ, СФУ"
+      },
+      {
+        "time": null,
+        "title": "Галочка, что у нас сегодня? Decision models, Omni models, Harness: что делает персонального ИИ-ассистента возможным",
+        "speaker": "Алексей Гучко, руководитель ML-отдела, KozhinDev"
+      },
+      {
+        "time": null,
+        "title": "MCP для корпоративных AI-агентов: как проектировать инструменты, которые агент реально использует",
+        "speaker": "Алексей Раптев, Т-Банк"
+      }
+    ],
+    "links": null,
+    "start": "2026-11-20",
+    "end": "2026-11-20",
     "start_approx": false
   },
   {
