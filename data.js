@@ -5650,6 +5650,188 @@ const MEETUPS = [
     "start_approx": false
   },
   {
+    "type": "ВЕБИНАР",
+    "name": "Diffusion Week 2026: Модели генерации видео",
+    "description": "Один день серии Diffusion Week от DLS — серия онлайн-лекций о диффузионных моделях от спикеров Kandinsky и AIRI. Все лекции проходят по вечерам в онлайн-формате; как участвовать (чат, расписание) — на странице события. Тема: модели генерации видео — зачем нужны, история развития, как устроены современные модели, какие перспективы развития и актуальные проблемы. Спикер — Константин Соболев (руководитель группы Video Generative AI, FusionBrain, AIRI).",
+    "time": "19:30 мск",
+    "tasks": [],
+    "prize": null,
+    "participation": null,
+    "format": "Формат: онлайн",
+    "lang": null,
+    "url": "https://dls.samcs.ru/diffusionweek",
+    "registration": null,
+    "registration_iso": null,
+    "phases": null,
+    "talks": [
+      {
+        "time": "19:30",
+        "title": "Модели генерации видео: зачем нужны, история развития, как устроены современные модели, перспективы и актуальные проблемы",
+        "speaker": "Константин Соболев"
+      }
+    ],
+    "links": null,
+    "start": "2026-10-29",
+    "end": "2026-10-29",
+    "start_approx": false
+  },
+  {
+    "type": "ВЕБИНАР",
+    "name": "Diffusion Week 2026: Диффузионные модели в 3D",
+    "description": "Один день серии Diffusion Week от DLS — серия онлайн-лекций о диффузионных моделях от спикеров Kandinsky и AIRI. Все лекции проходят по вечерам в онлайн-формате; как участвовать (чат, расписание) — на странице события. Тема: как диффузионные модели применяются в задачах 3D и какой 3D мир зашит в генеративных моделях. Спикер — Нина Коновалова (руководитель DLS, MBZUAI PhD).",
+    "time": "19:00 мск",
+    "tasks": [],
+    "prize": null,
+    "participation": null,
+    "format": "Формат: онлайн",
+    "lang": null,
+    "url": "https://dls.samcs.ru/diffusionweek",
+    "registration": null,
+    "registration_iso": null,
+    "phases": null,
+    "talks": [
+      {
+        "time": "19:00",
+        "title": "Диффузионные модели в задачах 3D: какой 3D мир зашит в генеративных моделях",
+        "speaker": "Нина Коновалова"
+      }
+    ],
+    "links": null,
+    "start": "2026-10-30",
+    "end": "2026-10-30",
+    "start_approx": false
+  },
+  {
+    "type": "ВЕБИНАР",
+    "name": "Diffusion Week 2026: Миллиардный датасет для редактирования изображений",
+    "description": "Один день серии Diffusion Week от DLS — серия онлайн-лекций о диффузионных моделях от спикеров Kandinsky и AIRI. Все лекции проходят по вечерам в онлайн-формате; как участвовать (чат, расписание) — на странице события. Тема: как собрать миллиардный датасет для редактирования изображений. Спикер — Владимир Архипкин (отвечает за pretrain Kandinsky, руководил разработкой Kandinsky 3 и Kandinsky 5).",
+    "time": "18:00 мск",
+    "tasks": [],
+    "prize": null,
+    "participation": null,
+    "format": "Формат: онлайн",
+    "lang": null,
+    "url": "https://dls.samcs.ru/diffusionweek",
+    "registration": null,
+    "registration_iso": null,
+    "phases": null,
+    "talks": [
+      {
+        "time": "18:00",
+        "title": "Как собрать миллиардный датасет для редактирования изображений",
+        "speaker": "Владимир Архипкин"
+      }
+    ],
+    "links": null,
+    "start": "2026-11-02",
+    "end": "2026-11-02",
+    "start_approx": false
+  },
+  {
+    "type": "ВЕБИНАР",
+    "name": "Diffusion Week 2026: Интерпретируемость диффузионных моделей",
+    "description": "Один день серии Diffusion Week от DLS — серия онлайн-лекций о диффузионных моделях от спикеров Kandinsky и AIRI. Все лекции проходят по вечерам в онлайн-формате; как участвовать (чат, расписание) — на странице события. Тема: интерпретируемость диффузионных моделей. Спикер — Нина Коновалова (руководитель DLS, MBZUAI PhD).",
+    "time": "20:00 мск",
+    "tasks": [],
+    "prize": null,
+    "participation": null,
+    "format": "Формат: онлайн",
+    "lang": null,
+    "url": "https://dls.samcs.ru/diffusionweek",
+    "registration": null,
+    "registration_iso": null,
+    "phases": null,
+    "talks": [
+      {
+        "time": "20:00",
+        "title": "Интерпретируемость диффузионных моделей",
+        "speaker": "Нина Коновалова"
+      }
+    ],
+    "links": null,
+    "start": "2026-11-02",
+    "end": "2026-11-02",
+    "start_approx": false
+  },
+  {
+    "type": "ВЕБИНАР",
+    "name": "Diffusion Week 2026: Алайнмент диффузионных моделей",
+    "description": "Один день серии Diffusion Week от DLS — серия онлайн-лекций о диффузионных моделях от спикеров Kandinsky и AIRI. Все лекции проходят по вечерам в онлайн-формате; как участвовать (чат, расписание) — на странице события. Тема: алайнмент диффузионных моделей — постановка задачи, подходы и SOTA-подходы. Спикер — Лев Новицкий (руководитель команды Video Posttrain, Kandinsky Lab).",
+    "time": "18:00 мск",
+    "tasks": [],
+    "prize": null,
+    "participation": null,
+    "format": "Формат: онлайн",
+    "lang": null,
+    "url": "https://dls.samcs.ru/diffusionweek",
+    "registration": null,
+    "registration_iso": null,
+    "phases": null,
+    "talks": [
+      {
+        "time": "18:00",
+        "title": "Алайнмент диффузионных моделей: постановка задачи, подходы и SOTA",
+        "speaker": "Лев Новицкий"
+      }
+    ],
+    "links": null,
+    "start": "2026-11-03",
+    "end": "2026-11-03",
+    "start_approx": false
+  },
+  {
+    "type": "ВЕБИНАР",
+    "name": "Diffusion Week 2026: Рассуждения в диффузионных моделях",
+    "description": "Один день серии Diffusion Week от DLS — серия онлайн-лекций о диффузионных моделях от спикеров Kandinsky и AIRI. Все лекции проходят по вечерам в онлайн-формате; как участвовать (чат, расписание) — на странице события. Тема: рассуждения во время инференса — история подходов в языковых моделях и свежие идеи для диффузионной генерации картинок. Спикер — Сергей Карпухин (FusionBrain, AIRI).",
+    "time": "20:00 мск",
+    "tasks": [],
+    "prize": null,
+    "participation": null,
+    "format": "Формат: онлайн",
+    "lang": null,
+    "url": "https://dls.samcs.ru/diffusionweek",
+    "registration": null,
+    "registration_iso": null,
+    "phases": null,
+    "talks": [
+      {
+        "time": "20:00",
+        "title": "Рассуждения во время инференса: от языковых моделей к генерации картинок",
+        "speaker": "Сергей Карпухин"
+      }
+    ],
+    "links": null,
+    "start": "2026-11-03",
+    "end": "2026-11-03",
+    "start_approx": false
+  },
+  {
+    "type": "ВЕБИНАР",
+    "name": "Diffusion Week 2026: Персонализированная генерация в эпоху in-context моделей",
+    "description": "Один день серии Diffusion Week от DLS — серия онлайн-лекций о диффузионных моделях от спикеров Kandinsky и AIRI. Все лекции проходят по вечерам в онлайн-формате; как участвовать (чат, расписание) — на странице события. Тема: персонализированная генерация в эпоху in-context моделей — устройство in-context моделей, как решается задача сейчас, научные челленджи и трудности в продуктовых кейсах (на людях и объектах). Спикер — Вера Соболева (научный сотрудник AIRI).",
+    "time": "18:00 мск",
+    "tasks": [],
+    "prize": null,
+    "participation": null,
+    "format": "Формат: онлайн",
+    "lang": null,
+    "url": "https://dls.samcs.ru/diffusionweek",
+    "registration": null,
+    "registration_iso": null,
+    "phases": null,
+    "talks": [
+      {
+        "time": "18:00",
+        "title": "Персонализированная генерация в эпоху in-context моделей",
+        "speaker": "Вера Соболева"
+      }
+    ],
+    "links": null,
+    "start": "2026-11-04",
+    "end": "2026-11-04",
+    "start_approx": false
+  },
+  {
     "type": "МИТАП",
     "name": "IT_ONE: Между кодом и продом",
     "description": "Онлайн-митап для DevOps-инженеров от IT_ONE. Эксперты компании разберут тестирование Helm-чартов, helm-unittest и валидацию параметров. Каждый участник получит записи и презентации выступлений.",
@@ -5667,6 +5849,84 @@ const MEETUPS = [
     "links": null,
     "start": "2026-11-05",
     "end": "2026-11-05",
+    "start_approx": false
+  },
+  {
+    "type": "ВЕБИНАР",
+    "name": "Diffusion Week 2026: Дистилляция диффузионных моделей",
+    "description": "Один день серии Diffusion Week от DLS — серия онлайн-лекций о диффузионных моделях от спикеров Kandinsky и AIRI. Все лекции проходят по вечерам в онлайн-формате; как участвовать (чат, расписание) — на странице события. Тема: дистилляция диффузионных моделей — постановка задачи, подходы и SOTA-подходы. Спикер — Лев Новицкий (руководитель команды Video Posttrain, Kandinsky Lab).",
+    "time": "18:00 мск",
+    "tasks": [],
+    "prize": null,
+    "participation": null,
+    "format": "Формат: онлайн",
+    "lang": null,
+    "url": "https://dls.samcs.ru/diffusionweek",
+    "registration": null,
+    "registration_iso": null,
+    "phases": null,
+    "talks": [
+      {
+        "time": "18:00",
+        "title": "Дистилляция диффузионных моделей: постановка задачи, подходы и SOTA",
+        "speaker": "Лев Новицкий"
+      }
+    ],
+    "links": null,
+    "start": "2026-11-05",
+    "end": "2026-11-05",
+    "start_approx": false
+  },
+  {
+    "type": "ВЕБИНАР",
+    "name": "Diffusion Week 2026: Модели Мира",
+    "description": "Один день серии Diffusion Week от DLS — серия онлайн-лекций о диффузионных моделях от спикеров Kandinsky и AIRI. Все лекции проходят по вечерам в онлайн-формате; как участвовать (чат, расписание) — на странице события. Тема: модели Мира — зачем нужны, какие бывают, какие новые требования и челленджи возникают и как в эту сторону копает Kandinsky. Спикер — Андрей Иванюта (руководитель команды World Model, Kandinsky Lab).",
+    "time": "20:00 мск",
+    "tasks": [],
+    "prize": null,
+    "participation": null,
+    "format": "Формат: онлайн",
+    "lang": null,
+    "url": "https://dls.samcs.ru/diffusionweek",
+    "registration": null,
+    "registration_iso": null,
+    "phases": null,
+    "talks": [
+      {
+        "time": "20:00",
+        "title": "Модели Мира: зачем нужны, какие бывают и что с ними делают в Kandinsky",
+        "speaker": "Андрей Иванюта"
+      }
+    ],
+    "links": null,
+    "start": "2026-11-05",
+    "end": "2026-11-05",
+    "start_approx": false
+  },
+  {
+    "type": "ВЕБИНАР",
+    "name": "Diffusion Week 2026: закрытие и подведение итогов",
+    "description": "Один день серии Diffusion Week от DLS — серия онлайн-лекций о диффузионных моделях от спикеров Kandinsky и AIRI. Все лекции проходят по вечерам в онлайн-формате; как участвовать (чат, расписание) — на странице события. Завершение серии: закрытие и подведение итогов. Параллельно проходит соревнование по мультиконцептной персонализации диффусионных моделей (подробности появляются на странице события).",
+    "time": "18:30 мск",
+    "tasks": [],
+    "prize": null,
+    "participation": null,
+    "format": "Формат: онлайн",
+    "lang": null,
+    "url": "https://dls.samcs.ru/diffusionweek",
+    "registration": null,
+    "registration_iso": null,
+    "phases": null,
+    "talks": [
+      {
+        "time": "18:30",
+        "title": "Закрытие и подведение итогов",
+        "speaker": null
+      }
+    ],
+    "links": null,
+    "start": "2026-11-06",
+    "end": "2026-11-06",
     "start_approx": false
   },
   {
