@@ -5630,6 +5630,26 @@ const MEETUPS = [
     "start_approx": false
   },
   {
+    "type": "СЕМИНАР",
+    "name": "Неожиданные способности LLM в химии",
+    "description": "Семинар AIRI Seminars: доклад Михаила Медведева (советник директора ЦИТиС, руководитель группы теоретической химии ИОХ РАН) — какие неожиданные способности в области химии появились у передовых больших языковых моделей за последний год: от оценки энергий молекул до few-shot предсказания их свойств и способности быть полноценным участником научного проекта. Оппонент — Кузьма Храбров (AIRI).",
+    "time": "17:00 мск",
+    "tasks": [],
+    "prize": null,
+    "participation": null,
+    "format": "Формат: онлайн",
+    "lang": null,
+    "url": "https://airi.net/ru/events/neozhidannye-sposobnosti-llm-v-khimii/",
+    "registration": null,
+    "registration_iso": null,
+    "phases": null,
+    "talks": null,
+    "links": null,
+    "start": "2026-10-28",
+    "end": "2026-10-28",
+    "start_approx": false
+  },
+  {
     "type": "МИТАП",
     "name": "IT_ONE: Между кодом и продом",
     "description": "Онлайн-митап для DevOps-инженеров от IT_ONE. Эксперты компании разберут тестирование Helm-чартов, helm-unittest и валидацию параметров. Каждый участник получит записи и презентации выступлений.",
