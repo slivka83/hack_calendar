@@ -5608,18 +5608,29 @@ const MEETUPS = [
     "type": "ВЕБИНАР",
     "name": "Agima × Флаувау: как ИИ изменит маркетплейсы",
     "description": "Прямой эфир-подкаст AGIMA и Флаувау с Димой Шестерниным (CTO Флаувау), 14:00–15:00 мск. Как компания внедряет ИИ в рабочие процессы, как сотрудники без технического образования создают приложения и какие изменения ИИ приносит на рынок маркетплейсов: как ИИ меняет путь пользователя от поиска товара до покупки; становится ли ИИ конкурентом маркетплейсов или открывает новые каналы продаж; зрелая ИИ-инфраструктура; роли тимлидов, CTO и менеджеров. Ведущие — Сергей Кожемякин (исполнительный директор AGIMA) и Андрей Непряхин (CTO AGIMA), вопросы в эфире.",
-    "time": "14:00 мск",
+    "time": "14:00–15:00 мск",
     "tasks": [],
     "prize": null,
     "participation": null,
     "format": "Формат: онлайн",
     "lang": null,
-    "url": "https://habr.com/ru/companies/agima/news/1094598/",
+    "url": "https://www.agima.ru/events/podcasts/",
     "registration": null,
     "registration_iso": null,
     "phases": null,
     "talks": null,
-    "links": null,
+    "links": [
+      {
+        "kind": "stream",
+        "title": "Трансляция в VK Видео",
+        "url": "https://vkvideo.ru/video-16901973_456239528"
+      },
+      {
+        "kind": "stream",
+        "title": "Трансляция на YouTube",
+        "url": "https://www.youtube.com/watch?v=P7XD_gBNg_g"
+      }
+    ],
     "start": "2026-10-26",
     "end": "2026-10-26",
     "start_approx": false
