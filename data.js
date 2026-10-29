@@ -3134,7 +3134,13 @@ const MEETUPS = [
         "speaker": "Александр Черников, Бит.Цифра (Первый Бит)"
       }
     ],
-    "links": null,
+    "links": [
+      {
+        "kind": "video",
+        "title": "Запись выступлений PIX Day 2026 (VK Видео, плейлист из 15 докладов)",
+        "url": "https://vkvideo.ru/playlist/-211254793_37"
+      }
+    ],
     "start": "2026-10-14",
     "end": "2026-10-14",
     "start_approx": false
@@ -3631,7 +3637,13 @@ const MEETUPS = [
         "speaker": "Антон Кузин"
       }
     ],
-    "links": null,
+    "links": [
+      {
+        "kind": "video",
+        "title": "Запись конференции «Большая игра 2026» (VK Видео, плейлист)",
+        "url": "https://vkvideo.ru/playlist/-227330239_8"
+      }
+    ],
     "start": "2026-10-15",
     "end": "2026-10-15",
     "start_approx": false
@@ -4671,7 +4683,13 @@ const MEETUPS = [
         "speaker": "Ольга Конарева, Just AI; Антон Исанин, «АльфаСтрахование»; Наталья Михайлова, Just AI"
       }
     ],
-    "links": null,
+    "links": [
+      {
+        "kind": "video",
+        "title": "«GenAI в бизнесе: от проверки гипотез к масштабированию проектов» (VK Видео)",
+        "url": "https://vkvideo.ru/video-170374042_456239110"
+      }
+    ],
     "start": "2026-10-20",
     "end": "2026-10-20",
     "start_approx": false
@@ -4780,7 +4798,13 @@ const MEETUPS = [
         "speaker": "Станислав Моисеев, гендиректор платформы «Агент Атом»; Юрий Войнилов, управляющий партнёр агентства «Горизонт»"
       }
     ],
-    "links": null,
+    "links": [
+      {
+        "kind": "video",
+        "title": "«ИИ в исследованиях: где этика не успевает за технологиями» (VK Видео)",
+        "url": "https://vkvideo.ru/video-205251660_456239101"
+      }
+    ],
     "start": "2026-10-20",
     "end": "2026-10-20",
     "start_approx": false
