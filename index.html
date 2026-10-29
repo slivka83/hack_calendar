@@ -2107,7 +2107,11 @@
     const links = h.links || [];
     [["stream", "📡 Трансляции:"], ["solutions", "📦 Решения:"], ["ceremony", "🎬 Церемонии:"], ["video", "📺 Видео:"], ["article", "📰 Статьи:"]]
       .forEach(([kind, label]) => {
-        const items = links.filter(l => l.kind === kind);
+        let items = links.filter(l => l.kind === kind);
+        if (state.tab === "event" && kind === "video" && items.length > 1 &&
+            (h.talks || []).some(t => t.video_url)) {
+          items = items.slice(0, 1);
+        }
         if (!items.length) return;
         side.appendChild(el("span", "tt-label", label));
         const ul = el("ul", "tt-list");
