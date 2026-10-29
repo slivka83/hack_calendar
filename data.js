@@ -2311,112 +2311,134 @@ const MEETUPS = [
       {
         "time": "12:00",
         "title": "Как меняется разработка на серверной стороне AI-технологий",
-        "speaker": "Антон Полднев, Рекламные технологии Яндекса"
+        "speaker": "Антон Полднев, Рекламные технологии Яндекса",
+        "video_url": "https://www.youtube.com/watch?v=45vP8GMEg4Y"
       },
       {
         "time": "12:30",
         "title": "Как мы делали агентную платформу надежной (дважды)",
-        "speaker": "Алексей Логинов, Алиса AI и умные устройства"
+        "speaker": "Алексей Логинов, Алиса AI и умные устройства",
+        "video_url": "https://www.youtube.com/watch?v=45vP8GMEg4Y"
       },
       {
         "time": "12:30",
         "title": "Как устроен поиск в кодовых агентах и почему это важно",
-        "speaker": "Дмитрий Антипов, Сбер/АБТ"
+        "speaker": "Дмитрий Антипов, Сбер/АБТ",
+        "video_url": "https://www.youtube.com/watch?v=I19jmnvKqMk"
       },
       {
         "time": "12:30",
         "title": "Как надежно раздавать конфиги на 200к хостов при отказе [n-1] ДЦ",
-        "speaker": "Владислав Тюльбашев, Поисковые сервисы и ИИ Яндекса"
+        "speaker": "Владислав Тюльбашев, Поисковые сервисы и ИИ Яндекса",
+        "video_url": "https://www.youtube.com/watch?v=cKSPRBmOGGo"
       },
       {
         "time": "13:15",
         "title": "Миллиард предсказаний в секунду: инфраструктура ML сервисов под нагрузкой",
-        "speaker": "Александр Лашкевич, Рекламные технологии Яндекса"
+        "speaker": "Александр Лашкевич, Рекламные технологии Яндекса",
+        "video_url": "https://www.youtube.com/watch?v=45vP8GMEg4Y"
       },
       {
         "time": "13:15",
         "title": "Прокачка LLM-агентов: как улучшать быстро, безопасно и измеримо",
-        "speaker": "Наталья Плотникова, Алиса AI и умные устройства"
+        "speaker": "Наталья Плотникова, Алиса AI и умные устройства",
+        "video_url": "https://www.youtube.com/watch?v=I19jmnvKqMk"
       },
       {
         "time": "13:15",
         "title": "Вердикт за минуту: ML-фильтр и LLM на потоке 40+к событий в секунду",
-        "speaker": "Алина Шестакова, Positive Technologies"
+        "speaker": "Алина Шестакова, Positive Technologies",
+        "video_url": "https://www.youtube.com/watch?v=cKSPRBmOGGo"
       },
       {
         "time": "14:45",
         "title": "YTsaurus Flow: как распределённо обрабатывать более 100 ГБ/с в реальном времени без потерь и дублей",
-        "speaker": "Егор Хайруллин, Рекламные технологии Яндекса"
+        "speaker": "Егор Хайруллин, Рекламные технологии Яндекса",
+        "video_url": "https://www.youtube.com/watch?v=45vP8GMEg4Y"
       },
       {
         "time": "14:45",
         "title": "Что нам стоит дом построить: инфраструктурный квест по созданию Remote IDE на рельсах ML-кластера",
-        "speaker": "Никита Томчик, Т-Банк"
+        "speaker": "Никита Томчик, Т-Банк",
+        "video_url": "https://www.youtube.com/watch?v=I19jmnvKqMk"
       },
       {
         "time": "14:45",
         "title": "LLM и краудсорсинг для оценки качества поиска — инфраструктура авторазметки",
-        "speaker": "Михаил Городов, Ozon Tech"
+        "speaker": "Михаил Городов, Ozon Tech",
+        "video_url": "https://www.youtube.com/watch?v=cKSPRBmOGGo"
       },
       {
         "time": "15:30",
         "title": "База векторных баз",
-        "speaker": "Андрей Аксёнов, Авито"
+        "speaker": "Андрей Аксёнов, Авито",
+        "video_url": "https://www.youtube.com/watch?v=45vP8GMEg4Y"
       },
       {
         "time": "15:30",
         "title": "AI Sandboxes: инфраструктура для запуска RL‑окружений и агентов",
-        "speaker": "Даниил Зубакин, Алиса AI и умные устройства"
+        "speaker": "Даниил Зубакин, Алиса AI и умные устройства",
+        "video_url": "https://www.youtube.com/watch?v=I19jmnvKqMk"
       },
       {
         "time": "15:30",
         "title": "Автоматическая детекция аномалий в метриках мониторинга: от исследования до прода",
-        "speaker": "Дмитрий Успенский, Техплатформа Городских сервисов"
+        "speaker": "Дмитрий Успенский, Техплатформа Городских сервисов",
+        "video_url": "https://www.youtube.com/watch?v=cKSPRBmOGGo"
       },
       {
         "time": "16:15",
         "title": "RuntimeNodes — как поделиться разработкой рантайма с ML-командами",
-        "speaker": "Ильнур Хузиев, Алиса AI и умные устройства"
+        "speaker": "Ильнур Хузиев, Алиса AI и умные устройства",
+        "video_url": "https://www.youtube.com/watch?v=45vP8GMEg4Y"
       },
       {
         "time": "16:15",
         "title": "Granularity Loss: как правильно умножать нули на GPU",
-        "speaker": "Андрей Шукшов, Яндекс R&D"
+        "speaker": "Андрей Шукшов, Яндекс R&D",
+        "video_url": "https://www.youtube.com/watch?v=I19jmnvKqMk"
       },
       {
         "time": "16:15",
         "title": "Парсеры на автопилоте: как с помощью агентов пройти путь от страницы в интернете до данных в поисковой базе",
-        "speaker": "Николай Изюмов, Независимый ecom (Transactional AI)"
+        "speaker": "Николай Изюмов, Независимый ecom (Transactional AI)",
+        "video_url": "https://www.youtube.com/watch?v=cKSPRBmOGGo"
       },
       {
         "time": "17:35",
         "title": "AI, который понимает город: бэкенд пешеходных маршрутов Карт",
-        "speaker": "Антон Овчинкин, Яндекс Карты"
+        "speaker": "Антон Овчинкин, Яндекс Карты",
+        "video_url": "https://www.youtube.com/watch?v=45vP8GMEg4Y"
       },
       {
         "time": "17:35",
         "title": "Как устроен инференс генеративных ответов Алисы в Поиске",
-        "speaker": "Михаил Цветков, Алиса AI и умные устройства"
+        "speaker": "Михаил Цветков, Алиса AI и умные устройства",
+        "video_url": "https://www.youtube.com/watch?v=I19jmnvKqMk"
       },
       {
         "time": "17:35",
         "title": "Эволюция архитектуры поиска лекарств в Яндекс Еде с ростом нагрузки",
-        "speaker": "Сергей Синягин, Яндекс Еда"
+        "speaker": "Сергей Синягин, Яндекс Еда",
+        "video_url": "https://www.youtube.com/watch?v=cKSPRBmOGGo"
       },
       {
         "time": "18:20",
         "title": "Что в чёрном ящике? Как надежно упаковывать терабайты данных под капотом автономного транспорта",
-        "speaker": "Максим Антонов, Автономный транспорт и роботы"
+        "speaker": "Максим Антонов, Автономный транспорт и роботы",
+        "video_url": "https://www.youtube.com/watch?v=45vP8GMEg4Y"
       },
       {
         "time": "18:20",
         "title": "DOOM не должен запускаться внутри eBPF. Но вечер был слишком свободным",
-        "speaker": "Александр Селезнёв, Поиск с Алисой AI"
+        "speaker": "Александр Селезнёв, Поиск с Алисой AI",
+        "video_url": "https://www.youtube.com/watch?v=I19jmnvKqMk"
       },
       {
         "time": "18:20",
         "title": "Одно кольцо, чтоб править всеми? Как мы переписали распределённый персистентный кеш",
-        "speaker": "Сергей Акимов, Поиск с Алисой AI"
+        "speaker": "Сергей Акимов, Поиск с Алисой AI",
+        "video_url": "https://www.youtube.com/watch?v=cKSPRBmOGGo"
       }
     ],
     "links": [
@@ -2478,17 +2500,20 @@ const MEETUPS = [
       {
         "time": "19:10",
         "title": "BidCorrection: как повысить качество трафика для продавцов, которые платят за клики",
-        "speaker": "Владислав Воробьёв"
+        "speaker": "Владислав Воробьёв",
+        "video_url": "https://vkvideo.ru/live-152990965_456240469"
       },
       {
         "time": "19:35",
         "title": "Пост-трейн для A-vibe",
-        "speaker": "Булат Шарипов"
+        "speaker": "Булат Шарипов",
+        "video_url": "https://vkvideo.ru/live-152990965_456240469"
       },
       {
         "time": "20:00",
         "title": "Что на самом деле нужно делать AI-инженеру, чтобы автоматизировать агентами",
-        "speaker": "Всеволод Викулин"
+        "speaker": "Всеволод Викулин",
+        "video_url": "https://vkvideo.ru/live-152990965_456240469"
       }
     ],
     "links": [
@@ -2787,92 +2812,110 @@ const MEETUPS = [
       {
         "time": "11:00",
         "title": "Вступительное слово",
-        "speaker": "Николай Тиден, Андрей Савченко"
+        "speaker": "Николай Тиден, Андрей Савченко",
+        "video_url": "https://vkvideo.ru/live-229792778_456239040"
       },
       {
         "time": "11:10",
         "title": "Заимствуй творчески: развитие методов генерации и распознавания транзакционных данных",
-        "speaker": "Иван Карпухин"
+        "speaker": "Иван Карпухин",
+        "video_url": "https://vkvideo.ru/live-229792778_456239040"
       },
       {
         "time": "11:25",
         "title": "Детекция галлюцинаций в ответах LLM",
-        "speaker": "Юлия Беликова"
+        "speaker": "Юлия Беликова",
+        "video_url": "https://vkvideo.ru/live-229792778_456239040"
       },
       {
         "time": "11:40",
         "title": "Мультиагентный ИИ-рисерчер — как автоматизировать труд учёного и ML-инженера",
-        "speaker": "Илья Макаров"
+        "speaker": "Илья Макаров",
+        "video_url": "https://vkvideo.ru/live-229792778_456239040"
       },
       {
         "time": "12:05",
         "title": "Дискуссия «От науки к бизнес-внедрению»",
-        "speaker": "Николай Тиден, Алексей Наумов, Александр Безносиков, Евгений Бурнаев, Даниил Гаврилов, Алексей Масютин, Олег Травкин"
+        "speaker": "Николай Тиден, Алексей Наумов, Александр Безносиков, Евгений Бурнаев, Даниил Гаврилов, Алексей Масютин, Олег Травкин",
+        "video_url": "https://vkvideo.ru/live-229792778_456239040"
       },
       {
         "time": "14:00",
         "title": "Эффективный инференс и сжатие больших моделей",
-        "speaker": "Александр Безносиков"
+        "speaker": "Александр Безносиков",
+        "video_url": "https://vkvideo.ru/live-229792778_456239040"
       },
       {
         "time": "14:20",
         "title": "Сжатие контекста в RAG системах",
-        "speaker": "Артём Сахно"
+        "speaker": "Артём Сахно",
+        "video_url": "https://vkvideo.ru/live-229792778_456239040"
       },
       {
         "time": "14:40",
         "title": "Автоматическая генерация и оценка MAS LLM",
-        "speaker": "Николай Никитин"
+        "speaker": "Николай Никитин",
+        "video_url": "https://vkvideo.ru/live-229792778_456239040"
       },
       {
         "time": "15:00",
         "title": "Повышение эффективности MoE-моделей с помощью гибридных методов сжатия",
-        "speaker": "Илья Ревин"
+        "speaker": "Илья Ревин",
+        "video_url": "https://vkvideo.ru/live-229792778_456239040"
       },
       {
         "time": "15:20",
         "title": "Можно ли доверять ИИ?",
-        "speaker": "Алексей Зайцев"
+        "speaker": "Алексей Зайцев",
+        "video_url": "https://vkvideo.ru/live-229792778_456239040"
       },
       {
         "time": "15:40",
         "title": "Securing the AI Continuum: Data, Models, and Agents (онлайн)",
-        "speaker": "Zhaoxia Yin"
+        "speaker": "Zhaoxia Yin",
+        "video_url": "https://vkvideo.ru/live-229792778_456239040"
       },
       {
         "time": "16:30",
         "title": "Маленькая модель в большом репозитории: как устроен SAGE",
-        "speaker": "Дарья Лютова"
+        "speaker": "Дарья Лютова",
+        "video_url": "https://vkvideo.ru/live-229792778_456239040"
       },
       {
         "time": "16:45",
         "title": "Не генерировать с нуля: как построить фабрику LLM-агентов",
-        "speaker": "Виталий Белов"
+        "speaker": "Виталий Белов",
+        "video_url": "https://vkvideo.ru/live-229792778_456239040"
       },
       {
         "time": "17:00",
         "title": "Whydra: Causal Discovery библиотека для анализа причинно-следственных связей",
-        "speaker": "Вадим Порватов"
+        "speaker": "Вадим Порватов",
+        "video_url": "https://vkvideo.ru/live-229792778_456239040"
       },
       {
         "time": "17:15",
         "title": "LLM Knowledge Governance: автоматическая фабрика контроля качества знаний для AI-агентов",
-        "speaker": "Денис Вязовцев"
+        "speaker": "Денис Вязовцев",
+        "video_url": "https://vkvideo.ru/live-229792778_456239040"
       },
       {
         "time": "17:30",
         "title": "LLM-as-Judge как внутренний ML-продукт",
-        "speaker": "Ульяна Исаева"
+        "speaker": "Ульяна Исаева",
+        "video_url": "https://vkvideo.ru/live-229792778_456239040"
       },
       {
         "time": "17:50",
         "title": "Эволюционные агенты на практике: open-source и реальные задачи",
-        "speaker": "Никита Шалагин"
+        "speaker": "Никита Шалагин",
+        "video_url": "https://vkvideo.ru/live-229792778_456239040"
       },
       {
         "time": "18:10",
         "title": "Заключительное слово",
-        "speaker": "Андрей Савченко"
+        "speaker": "Андрей Савченко",
+        "video_url": "https://vkvideo.ru/live-229792778_456239040"
       }
     ],
     "links": [
@@ -3046,7 +3089,8 @@ const MEETUPS = [
       {
         "time": "10:00",
         "title": "Эра интеллектуальной автоматизации: эволюция продуктов PIX через нативный ИИ",
-        "speaker": "Чекмарёв, PIX"
+        "speaker": "Чекмарёв, PIX",
+        "video_url": "https://vkvideo.ru/playlist/-211254793_37"
       },
       {
         "time": "10:20",
@@ -3069,7 +3113,8 @@ const MEETUPS = [
       {
         "time": "12:30",
         "title": "Мастер-класс «Почему ничего не работает? AI, MLOps, RAG, LLM-агенты»",
-        "speaker": "Юрий Алексеев, компания Деплой"
+        "speaker": "Юрий Алексеев, компания Деплой",
+        "video_url": "https://vkvideo.ru/playlist/-211254793_37"
       },
       {
         "time": "12:50",
@@ -3104,12 +3149,14 @@ const MEETUPS = [
       {
         "time": "14:40",
         "title": "Мастер-класс «IPA: интеллектуальная автоматизация на практике: разбираем бизнес-кейсы»",
-        "speaker": "Антон Игнатов, PIX Robotics"
+        "speaker": "Антон Игнатов, PIX Robotics",
+        "video_url": "https://vkvideo.ru/playlist/-211254793_37"
       },
       {
         "time": "14:40",
         "title": "Мастер-класс «BI: готовые решения в поставке PIX BI»",
-        "speaker": "Арсений Билецкий, Анна Климкова, PIX Robotics"
+        "speaker": "Арсений Билецкий, Анна Климкова, PIX Robotics",
+        "video_url": "https://vkvideo.ru/playlist/-211254793_37"
       },
       {
         "time": "15:00",
@@ -3132,17 +3179,20 @@ const MEETUPS = [
       {
         "time": "15:40",
         "title": "Мастер-класс «Графики рисуют все. Считать правильно умеют единицы»",
-        "speaker": "Виктория Рамейкина, «Круги Громова»"
+        "speaker": "Виктория Рамейкина, «Круги Громова»",
+        "video_url": "https://vkvideo.ru/playlist/-211254793_37"
       },
       {
         "time": "16:00",
         "title": "От успешной аналитики в PIX BI к единому контуру управления",
-        "speaker": "Максим Буянов, Светогорский ЦБК"
+        "speaker": "Максим Буянов, Светогорский ЦБК",
+        "video_url": "https://vkvideo.ru/playlist/-211254793_37"
       },
       {
         "time": "16:00",
         "title": "Мастер-класс «Обратимая анонимизация конфиденциальных данных»",
-        "speaker": "Александр Черников, Бит.Цифра (Первый Бит)"
+        "speaker": "Александр Черников, Бит.Цифра (Первый Бит)",
+        "video_url": "https://vkvideo.ru/playlist/-211254793_37"
       }
     ],
     "links": [
@@ -3509,32 +3559,38 @@ const MEETUPS = [
       {
         "time": "10:50",
         "title": "Второй шанс для Standalone: построение отказоустойчивой архитектуры через DR",
-        "speaker": "Павел Князькин"
+        "speaker": "Павел Князькин",
+        "video_url": "https://vkvideo.ru/playlist/-227330239_8"
       },
       {
         "time": "11:30",
         "title": "GPU в zVirt или как сделать ИИшницу",
-        "speaker": "Михаил Якушин"
+        "speaker": "Михаил Якушин",
+        "video_url": "https://vkvideo.ru/playlist/-227330239_8"
       },
       {
         "time": "12:30",
         "title": "Квест на выживание: какие стратегии выбирают ИТ-лидеры",
-        "speaker": null
+        "speaker": null,
+        "video_url": "https://vkvideo.ru/playlist/-227330239_8"
       },
       {
         "time": "12:30",
         "title": "Виртуализация zVirt для масштабных задач: сегодня и завтра",
-        "speaker": "Павел Мещеряков, Альфа-Банк"
+        "speaker": "Павел Мещеряков, Альфа-Банк",
+        "video_url": "https://vkvideo.ru/playlist/-227330239_8"
       },
       {
         "time": "12:30",
         "title": "Новый уровень: внедрение zVirt с SDN за 2 недели",
-        "speaker": "Сергей Коняшкин, независимый эксперт; Михаил Фучко, Orion soft"
+        "speaker": "Сергей Коняшкин, независимый эксперт; Михаил Фучко, Orion soft",
+        "video_url": "https://vkvideo.ru/playlist/-227330239_8"
       },
       {
         "time": "12:30",
         "title": "Квест DC Manager и миссия Termit: опыт Газпром нефти",
-        "speaker": "Кирилл Носков, Газпромнефть ИТО; Иван Елисеев, Газпром нефть; Альберт Тимербаев, Orion soft"
+        "speaker": "Кирилл Носков, Газпромнефть ИТО; Иван Елисеев, Газпром нефть; Альберт Тимербаев, Orion soft",
+        "video_url": "https://vkvideo.ru/playlist/-227330239_8"
       },
       {
         "time": "12:30",
@@ -3551,7 +3607,8 @@ const MEETUPS = [
       {
         "time": "12:30",
         "title": "Terraform-провайдер zVirt в деле: разворачиваем GoAD",
-        "speaker": "Антон Сомов"
+        "speaker": "Антон Сомов",
+        "video_url": "https://vkvideo.ru/playlist/-227330239_8"
       },
       {
         "time": "13:00",
@@ -3598,7 +3655,8 @@ const MEETUPS = [
       {
         "time": "14:45",
         "title": "Нажми Start: разворачиваем Kubernetes внутри виртуальной инфраструктуры zVirt",
-        "speaker": "Руслан Гайфутдинов"
+        "speaker": "Руслан Гайфутдинов",
+        "video_url": "https://vkvideo.ru/playlist/-227330239_8"
       },
       {
         "time": "15:10",
@@ -3609,12 +3667,14 @@ const MEETUPS = [
       {
         "time": "15:15",
         "title": "zVirt: глубокая модернизация — от ядра до интерфейса",
-        "speaker": "Павел Князькин"
+        "speaker": "Павел Князькин",
+        "video_url": "https://vkvideo.ru/playlist/-227330239_8"
       },
       {
         "time": "15:25",
         "title": "Внедрение zVirt в инфраструктуру МГТУ им. Н.Э. Баумана и миграция с VMware",
-        "speaker": "Александр Костин, Александр Майборода"
+        "speaker": "Александр Костин, Александр Майборода",
+        "video_url": "https://vkvideo.ru/playlist/-227330239_8"
       },
       {
         "time": "15:30",
@@ -3637,7 +3697,8 @@ const MEETUPS = [
       {
         "time": "15:45",
         "title": "Открытый микрофон: zVirt без фильтров",
-        "speaker": "Павел Князькин"
+        "speaker": "Павел Князькин",
+        "video_url": "https://vkvideo.ru/playlist/-227330239_8"
       },
       {
         "time": "16:05",
@@ -3666,7 +3727,8 @@ const MEETUPS = [
       {
         "time": "16:30",
         "title": "Специальный трек комьюнити СНОВА О КУБЕРЕ",
-        "speaker": null
+        "speaker": null,
+        "video_url": "https://vkvideo.ru/playlist/-227330239_8"
       },
       {
         "time": "16:50",
@@ -4149,42 +4211,50 @@ const MEETUPS = [
       {
         "time": "16:10",
         "title": "II USER",
-        "speaker": "Ирина Вареник, Авито Недвижимость; Андрей Тарасов, Авито"
+        "speaker": "Ирина Вареник, Авито Недвижимость; Андрей Тарасов, Авито",
+        "video_url": "https://www.youtube.com/watch?v=H8BZnbjoUzk"
       },
       {
         "time": "17:00",
         "title": "Мозг, интеллект и креативность в эпоху ИИ",
-        "speaker": "Владимир Алипов, нейробиолог"
+        "speaker": "Владимир Алипов, нейробиолог",
+        "video_url": "https://www.youtube.com/watch?v=H8BZnbjoUzk"
       },
       {
         "time": "17:00",
         "title": "Воркшоп «Вкус не генерируется: собираем красивое с ИИ»",
-        "speaker": "Ксения Гаврилова, Авито"
+        "speaker": "Ксения Гаврилова, Авито",
+        "video_url": "https://www.youtube.com/watch?v=_mjtQexnqxA"
       },
       {
         "time": "17:30",
         "title": "Прикрутили AI — пришлось переделать весь процесс",
-        "speaker": "Никита Алексейчук, RWB"
+        "speaker": "Никита Алексейчук, RWB",
+        "video_url": "https://www.youtube.com/watch?v=H8BZnbjoUzk"
       },
       {
         "time": "18:00",
         "title": "Тема доклада будет опубликована позже",
-        "speaker": "Митя Осадчук, Сбер"
+        "speaker": "Митя Осадчук, Сбер",
+        "video_url": "https://www.youtube.com/watch?v=H8BZnbjoUzk"
       },
       {
         "time": "18:00",
         "title": "Воркшоп «Контекст решает: как устроить документы, чтобы агент понимал продукт»",
-        "speaker": "Ксения Шимук, AI SpeechLab"
+        "speaker": "Ксения Шимук, AI SpeechLab",
+        "video_url": "https://www.youtube.com/watch?v=_mjtQexnqxA"
       },
       {
         "time": "19:00",
         "title": "Всё работает. Что строить дальше? Как выбирать и пересматривать продуктовую стратегию",
-        "speaker": "Илья Еременко, Авито"
+        "speaker": "Илья Еременко, Авито",
+        "video_url": "https://www.youtube.com/watch?v=H8BZnbjoUzk"
       },
       {
         "time": "19:30",
         "title": "Публичный разговор «Усилители вкуса»: когда производить может каждый",
-        "speaker": "Дима Салливан, Авито; Олег Трофим, кинорежиссёр"
+        "speaker": "Дима Салливан, Авито; Олег Трофим, кинорежиссёр",
+        "video_url": "https://www.youtube.com/watch?v=H8BZnbjoUzk"
       }
     ],
     "links": [
@@ -4475,104 +4545,123 @@ const MEETUPS = [
       {
         "time": "10:15",
         "title": "Открытие конференции",
-        "speaker": null
+        "speaker": null,
+        "video_url": "https://rutube.ru/video/a34f679b6bc0bd7a192e42e53c5ac886/"
       },
       {
         "time": "10:30",
         "title": "ИИ начинается не с ИИ: как мы пересобираем компанию, чтобы он стал её частью",
-        "speaker": "Рэшад Бакиров, Headcorn"
+        "speaker": "Рэшад Бакиров, Headcorn",
+        "video_url": "https://rutube.ru/video/a34f679b6bc0bd7a192e42e53c5ac886/"
       },
       {
         "time": "10:30",
         "title": "Как HR-директор собрала систему найма с ИИ: от профиля вакансии до адаптации сотрудника",
-        "speaker": "Дарья Баркова, A3 Payment Service"
+        "speaker": "Дарья Баркова, A3 Payment Service",
+        "video_url": "https://rutube.ru/video/a34f679b6bc0bd7a192e42e53c5ac886/"
       },
       {
         "time": "10:30",
         "title": "Анализ витрины в пекарне",
-        "speaker": "Артём Рыбин, Буше"
+        "speaker": "Артём Рыбин, Буше",
+        "video_url": "https://rutube.ru/video/a34f679b6bc0bd7a192e42e53c5ac886/"
       },
       {
         "time": "11:30",
         "title": "Первая линия поддержки без людей: как мы сократили время реакции HelpDesk с часа до минуты",
-        "speaker": "Юрий Юшкевич, AB_Digital"
+        "speaker": "Юрий Юшкевич, AB_Digital",
+        "video_url": "https://rutube.ru/video/a34f679b6bc0bd7a192e42e53c5ac886/"
       },
       {
         "time": "11:30",
         "title": "Из 0,1% прослушанных звонков в 99,6%: своя речевая аналитика за 6 недель вместо вендора за 120 тысяч в месяц",
-        "speaker": "Игорь Кузнецов, Кабель.РФ"
+        "speaker": "Игорь Кузнецов, Кабель.РФ",
+        "video_url": "https://rutube.ru/video/a34f679b6bc0bd7a192e42e53c5ac886/"
       },
       {
         "time": "11:30",
         "title": "Как маркетинг «Пачки» развивает сайт и запускает собственные проекты с AI-агентами",
-        "speaker": "Григорий Любачев, «Пачка»"
+        "speaker": "Григорий Любачев, «Пачка»",
+        "video_url": "https://rutube.ru/video/a34f679b6bc0bd7a192e42e53c5ac886/"
       },
       {
         "time": "12:30",
         "title": "Круглый стол «Данные, деньги, два завода: как ИИ внедряют в производстве и промышленности»",
-        "speaker": "Константин Андреев, Глобус-ИТ"
+        "speaker": "Константин Андреев, Глобус-ИТ",
+        "video_url": "https://rutube.ru/video/a34f679b6bc0bd7a192e42e53c5ac886/"
       },
       {
         "time": "12:30",
         "title": "Как мы калибровали AI-бота и возвращали управляемость рекрутменту",
-        "speaker": "Дарина Нескоромная, Rossko IT"
+        "speaker": "Дарина Нескоромная, Rossko IT",
+        "video_url": "https://rutube.ru/video/a34f679b6bc0bd7a192e42e53c5ac886/"
       },
       {
         "time": "14:15",
         "title": "Управление длинными B2G-сделками на основе данных: подготовка встреч и разбор переговоров с ИИ",
-        "speaker": "Алексей Дударев, ГК GEMS"
+        "speaker": "Алексей Дударев, ГК GEMS",
+        "video_url": "https://rutube.ru/video/a34f679b6bc0bd7a192e42e53c5ac886/"
       },
       {
         "time": "14:15",
         "title": "Автоматизация новостной редакции: как убрать рутину и оставить финальное решение человеку",
-        "speaker": "Ксения Афанасьева, Агентство потребительской информации"
+        "speaker": "Ксения Афанасьева, Агентство потребительской информации",
+        "video_url": "https://rutube.ru/video/a34f679b6bc0bd7a192e42e53c5ac886/"
       },
       {
         "time": "14:15",
         "title": "Рендеры частных домов: как «Бор Строй» готовит пакет для клиента за один день с помощью ИИ",
-        "speaker": "Мария Тургеневская, Бор Строй"
+        "speaker": "Мария Тургеневская, Бор Строй",
+        "video_url": "https://rutube.ru/video/a34f679b6bc0bd7a192e42e53c5ac886/"
       },
       {
         "time": "15:15",
         "title": "Как мы увеличили прибыль доставки пиццы на 30% с помощью AI COO",
-        "speaker": "Денис Кузнецов, Пицца Синица"
+        "speaker": "Денис Кузнецов, Пицца Синица",
+        "video_url": "https://rutube.ru/video/a34f679b6bc0bd7a192e42e53c5ac886/"
       },
       {
         "time": "15:15",
         "title": "Как Европлан сократил подбор транспорта с часов до минут с помощью ИИ",
-        "speaker": "Александр Шатилов, Европлан"
+        "speaker": "Александр Шатилов, Европлан",
+        "video_url": "https://rutube.ru/video/a34f679b6bc0bd7a192e42e53c5ac886/"
       },
       {
         "time": "15:15",
         "title": "Как мы использовали ИИ для нормализации корпоративного НСИ и сделали его основой для цифровых документов в строительстве",
-        "speaker": "Алексей Титов, ФСК"
+        "speaker": "Алексей Титов, ФСК",
+        "video_url": "https://rutube.ru/video/a34f679b6bc0bd7a192e42e53c5ac886/"
       },
       {
         "time": "16:15",
         "title": "«Спроси свою 1С»: как операционный директор получает управленческие ответы из рабочих данных",
-        "speaker": "Андрей Ефимов, «Простые решения»"
+        "speaker": "Андрей Ефимов, «Простые решения»",
+        "video_url": "https://rutube.ru/video/a34f679b6bc0bd7a192e42e53c5ac886/"
       },
       {
         "time": "16:15",
         "title": "Два месяца в один день: подготовка регистрационного досье медизделия с ИИ и обязательной экспертной проверкой",
-        "speaker": "Егор Кашка, Кредо"
+        "speaker": "Егор Кашка, Кредо",
+        "video_url": "https://rutube.ru/video/a34f679b6bc0bd7a192e42e53c5ac886/"
       },
       {
         "time": "17:15",
         "title": "Деньги-деньги, дребеденьки или как считать косты агентов?",
-        "speaker": "Эдгар Сипки, SIPKI Technologies"
+        "speaker": "Эдгар Сипки, SIPKI Technologies",
+        "video_url": "https://rutube.ru/video/a34f679b6bc0bd7a192e42e53c5ac886/"
       },
       {
         "time": "17:15",
         "title": "Забота на масштабе: как Yappi упаковала экспертизу в ИИ-поддержку без потери доверия",
-        "speaker": "Елена Вовик, Yappi food; Георгий Никаноров, Strikt.ai"
+        "speaker": "Елена Вовик, Yappi food; Георгий Никаноров, Strikt.ai",
+        "video_url": "https://rutube.ru/video/a34f679b6bc0bd7a192e42e53c5ac886/"
       }
     ],
     "links": [
       {
         "kind": "video",
-        "title": "https://rutube.ru/video/a34f679b6bc0bd7a192e42e53c5ac886/",
-        "url": "Запись конференции AI Cases Conf 2026, часть 2 (RuTube)"
+        "title": "Запись конференции AI Cases Conf 2026, часть 2 (RuTube)",
+        "url": "https://rutube.ru/video/a34f679b6bc0bd7a192e42e53c5ac886/"
       }
     ],
     "start": "2026-10-19",
@@ -5219,32 +5308,38 @@ const MEETUPS = [
       {
         "time": "11:00",
         "title": "Как ИИ навсегда изменил бизнес и работу",
-        "speaker": "Сергей Рыжиков, Битрикс24"
+        "speaker": "Сергей Рыжиков, Битрикс24",
+        "video_url": "https://www.youtube.com/watch?v=Yl-LQPBUhiQ"
       },
       {
         "time": "11:50",
         "title": "Новый формат работы: человек вместе с ИИ-помощником",
-        "speaker": "Екатерина Шеленкова, Битрикс24"
+        "speaker": "Екатерина Шеленкова, Битрикс24",
+        "video_url": "https://www.youtube.com/watch?v=Yl-LQPBUhiQ"
       },
       {
         "time": "12:10",
         "title": "Вайбкодинг: создание приложений под свои требования без программистов",
-        "speaker": "Михаил Беляев, Битрикс24"
+        "speaker": "Михаил Беляев, Битрикс24",
+        "video_url": "https://www.youtube.com/watch?v=Yl-LQPBUhiQ"
       },
       {
         "time": "12:30",
         "title": "Практический блок: как за 15 минут создать приложение без единой строчки кода",
-        "speaker": "Роман Глушаков, Битрикс24"
+        "speaker": "Роман Глушаков, Битрикс24",
+        "video_url": "https://www.youtube.com/watch?v=Yl-LQPBUhiQ"
       },
       {
         "time": "12:50",
         "title": "3 кейса повышения эффективности бизнеса с помощью вайбкодинга",
-        "speaker": "Владимир Бурков, Business Upgrade"
+        "speaker": "Владимир Бурков, Business Upgrade",
+        "video_url": "https://www.youtube.com/watch?v=Yl-LQPBUhiQ"
       },
       {
         "time": "13:15",
         "title": "ИИ-инструменты для сотрудников и домашнее задание практикума",
-        "speaker": "Михаил Беляев, Битрикс24"
+        "speaker": "Михаил Беляев, Битрикс24",
+        "video_url": "https://www.youtube.com/watch?v=Yl-LQPBUhiQ"
       }
     ],
     "links": [
@@ -5362,32 +5457,38 @@ const MEETUPS = [
       {
         "time": null,
         "title": "Цифровой контур R&D: ИИ-агенты для работы с мишенями и базами экспериментов",
-        "speaker": "Артемий Сахаров, Р-Фарм"
+        "speaker": "Артемий Сахаров, Р-Фарм",
+        "video_url": "https://www.youtube.com/watch?v=JmU4BsIzyDY"
       },
       {
         "time": null,
         "title": "Агент — это не только модель: как устроены современные харнессы",
-        "speaker": "Ваня Ершов, Яндекс"
+        "speaker": "Ваня Ершов, Яндекс",
+        "video_url": "https://www.youtube.com/watch?v=JmU4BsIzyDY"
       },
       {
         "time": null,
         "title": "AI Recruiter в Авито: агент, который проводит интервью",
-        "speaker": "Владимир Димитров, Авито"
+        "speaker": "Владимир Димитров, Авито",
+        "video_url": "https://www.youtube.com/watch?v=JmU4BsIzyDY"
       },
       {
         "time": null,
         "title": "ИИ-агенты в образовании",
-        "speaker": "Евгений Володин, Антиплагиат"
+        "speaker": "Евгений Володин, Антиплагиат",
+        "video_url": "https://www.youtube.com/watch?v=JmU4BsIzyDY"
       },
       {
         "time": null,
         "title": "RL агенты в исполняемых средах: опыт обучения 9B-модели в харнессе GigaAgent",
-        "speaker": "Борис Заикин, Сбер"
+        "speaker": "Борис Заикин, Сбер",
+        "video_url": "https://www.youtube.com/watch?v=JmU4BsIzyDY"
       },
       {
         "time": null,
         "title": "Агент сказал „готово“. Проверяем",
-        "speaker": "Владимир Шапошников, AIRI"
+        "speaker": "Владимир Шапошников, AIRI",
+        "video_url": "https://www.youtube.com/watch?v=JmU4BsIzyDY"
       }
     ],
     "links": [
