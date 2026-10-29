@@ -3185,7 +3185,38 @@ const MEETUPS = [
         "speaker": "Евгений Маслов, «Северсталь-инфоком»"
       }
     ],
-    "links": null,
+    "links": [
+      {
+        "kind": "video",
+        "title": "Пленарная сессия «Новая модель роста: как роботизация меняет экономику» (VK Видео)",
+        "url": "https://vkvideo.ru/video-25232578_456337924"
+      },
+      {
+        "kind": "video",
+        "title": "«ИИ – (не)секретный агент бизнеса» (VK Видео)",
+        "url": "https://vkvideo.ru/video-25232578_456337925"
+      },
+      {
+        "kind": "video",
+        "title": "Пленарная сессия «Цифровой вклад в ландшафт будущего» (VK Видео)",
+        "url": "https://vkvideo.ru/video-25232578_456337926"
+      },
+      {
+        "kind": "video",
+        "title": "Сессия МегаФона ПроБизнес «Индустрия без пауз: время реагировать мгновенно» (VK Видео)",
+        "url": "https://vkvideo.ru/video-25232578_456337927"
+      },
+      {
+        "kind": "video",
+        "title": "«Homo Artifisapiens: совершенствуя новый вид» (VK Видео)",
+        "url": "https://vkvideo.ru/video-25232578_456337928"
+      },
+      {
+        "kind": "video",
+        "title": "«ИИ-познание: понимать пользователей лучше их самих» (VK Видео)",
+        "url": "https://vkvideo.ru/video-25232578_456337929"
+      }
+    ],
     "start": "2026-10-14",
     "end": "2026-10-15",
     "start_approx": false
@@ -3722,7 +3753,13 @@ const MEETUPS = [
         "speaker": "Али Акмуллаев, SimpleOne"
       }
     ],
-    "links": null,
+    "links": [
+      {
+        "kind": "video",
+        "title": "«SimpleGen — как в разы ускорить разработку с помощью ИИ» (RuTube)",
+        "url": "https://rutube.ru/video/fddedca5d3ca5b75840bb683cbe79640/"
+      }
+    ],
     "start": "2026-10-15",
     "end": "2026-10-15",
     "start_approx": false
@@ -3977,7 +4014,18 @@ const MEETUPS = [
         "speaker": "Дима Салливан, Авито; Олег Трофим, кинорежиссёр"
       }
     ],
-    "links": null,
+    "links": [
+      {
+        "kind": "video",
+        "title": "«Avito Action! Доклады. Зал 1» (YouTube)",
+        "url": "https://www.youtube.com/watch?v=H8BZnbjoUzk"
+      },
+      {
+        "kind": "video",
+        "title": "«Avito Action! Воркшопы. Зал 2» (YouTube)",
+        "url": "https://www.youtube.com/watch?v=_mjtQexnqxA"
+      }
+    ],
     "start": "2026-10-16",
     "end": "2026-10-16",
     "start_approx": false
@@ -4799,7 +4847,13 @@ const MEETUPS = [
         "speaker": "Никита Финченко, VK Tech"
       }
     ],
-    "links": null,
+    "links": [
+      {
+        "kind": "video",
+        "title": "Вебинар «Навыки: как автоматизировать компанию, а не отдельного сотрудника» (VK Видео)",
+        "url": "https://vkvideo.ru/video-164978780_456239846"
+      }
+    ],
     "start": "2026-10-21",
     "end": "2026-10-21",
     "start_approx": false
@@ -5972,7 +6026,13 @@ const MEETUPS = [
     "registration_iso": null,
     "phases": null,
     "talks": null,
-    "links": null,
+    "links": [
+      {
+        "kind": "video",
+        "title": "«Джедай и его агенты: ИИ в личной продуктивности» (YouTube)",
+        "url": "https://www.youtube.com/watch?v=oAiO9SpSUQ0"
+      }
+    ],
     "start": "2026-10-27",
     "end": "2026-10-27",
     "start_approx": false
