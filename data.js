@@ -3247,7 +3247,18 @@ const MEETUPS = [
         "speaker": "А. Краснов, Т-Банк"
       }
     ],
-    "links": null,
+    "links": [
+      {
+        "kind": "video",
+        "title": "Трек Engineering Platforms (YouTube)",
+        "url": "https://www.youtube.com/watch?v=l3VuAuNrsDY"
+      },
+      {
+        "kind": "video",
+        "title": "Трек Identity & Access Management (YouTube)",
+        "url": "https://www.youtube.com/watch?v=VsgjKdVU6Ek"
+      }
+    ],
     "start": "2026-10-14",
     "end": "2026-10-14",
     "start_approx": false
@@ -5053,7 +5064,18 @@ const MEETUPS = [
         "speaker": "Михаил Беляев, Битрикс24"
       }
     ],
-    "links": null,
+    "links": [
+      {
+        "kind": "video",
+        "title": "Онлайн-практикум «Вайбкодим 2026» — 22 октября (YouTube)",
+        "url": "https://www.youtube.com/watch?v=Yl-LQPBUhiQ"
+      },
+      {
+        "kind": "video",
+        "title": "Онлайн-практикум «Вайбкодим 2026» — 22 октября (RuTube)",
+        "url": "https://rutube.ru/video/9a5032752309cbaba129ce0b04d742dc/"
+      }
+    ],
     "start": "2026-10-22",
     "end": "2026-10-22",
     "start_approx": false
@@ -5185,7 +5207,13 @@ const MEETUPS = [
         "speaker": "Владимир Шапошников, AIRI"
       }
     ],
-    "links": null,
+    "links": [
+      {
+        "kind": "video",
+        "title": "«ИИшница | Сколько нужно агентов, чтобы вкрутить лампочку?» (YouTube)",
+        "url": "https://www.youtube.com/watch?v=JmU4BsIzyDY"
+      }
+    ],
     "start": "2026-10-22",
     "end": "2026-10-22",
     "start_approx": false
@@ -5379,7 +5407,13 @@ const MEETUPS = [
     "registration_iso": null,
     "phases": null,
     "talks": null,
-    "links": null,
+    "links": [
+      {
+        "kind": "video",
+        "title": "«Как Apache Nessie меняет работу с Data Lakehouse» (YouTube)",
+        "url": "https://www.youtube.com/watch?v=Mo2eUbAY_cg"
+      }
+    ],
     "start": "2026-10-22",
     "end": "2026-10-22",
     "start_approx": false
@@ -6104,7 +6138,13 @@ const MEETUPS = [
     "registration_iso": null,
     "phases": null,
     "talks": null,
-    "links": null,
+    "links": [
+      {
+        "kind": "video",
+        "title": "«AIRI Seminars | Неожиданные способности LLM в химии» (YouTube)",
+        "url": "https://www.youtube.com/watch?v=h7kyOxCHMM4"
+      }
+    ],
     "start": "2026-10-28",
     "end": "2026-10-28",
     "start_approx": false
