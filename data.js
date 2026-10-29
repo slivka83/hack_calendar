@@ -1437,6 +1437,16 @@ const HACKS = [
         "kind": "solutions",
         "title": "Neural RecSys решение (GitHub)",
         "url": "https://github.com/zoli801/avito-neural-recsys"
+      },
+      {
+        "kind": "video",
+        "title": "Как подступиться к задаче про рекомендательную систему (YouTube)",
+        "url": "https://www.youtube.com/watch?v=cCXjxPGUFG4"
+      },
+      {
+        "kind": "article",
+        "title": "Разбор решения победителя на Data Fest 2026 (ODS)",
+        "url": "https://ods.ai/tracks/df26_avitotech_mlcup2026"
       }
     ],
     "start": "2026-04-27",
@@ -1477,6 +1487,21 @@ const HACKS = [
         "kind": "article",
         "title": "Анонс хакатона (Хабр, Lenta Tech)",
         "url": "https://habr.com/ru/companies/lentatech/news/1028430/"
+      },
+      {
+        "kind": "solutions",
+        "title": "Распознавание ценников с видео робота (GitHub)",
+        "url": "https://github.com/lefukuro/lenta-hack-2026"
+      },
+      {
+        "kind": "solutions",
+        "title": "Контроль полки по видео (GitHub)",
+        "url": "https://github.com/letmly/lenta-shelf-control"
+      },
+      {
+        "kind": "article",
+        "title": "Как устроена ML-задача с движущейся камеры (Хабр)",
+        "url": "https://habr.com/ru/companies/lentatech/articles/1059038/"
       }
     ],
     "start": "2026-05-12",
@@ -1527,6 +1552,21 @@ const HACKS = [
         "kind": "article",
         "title": "Торговля ИИ-агентов на Мосбирже (Plusworld)",
         "url": "https://plusworld.ru/articles/72271/"
+      },
+      {
+        "kind": "solutions",
+        "title": "Техническое ядро торгового агента (GitHub)",
+        "url": "https://github.com/Vladislav585/AI-Trading-Agent-Trading-Core"
+      },
+      {
+        "kind": "article",
+        "title": "MOEX и полное непонимание AI (vc.ru)",
+        "url": "https://vc.ru/ai/2957603-problemy-ai-na-moskovskoj-birzhe-i-hakaton-moex"
+      },
+      {
+        "kind": "article",
+        "title": "Тесты ИИ-агентов обгоняют индекс IMOEX (Braintools)",
+        "url": "https://www.braintools.ru/article/31286"
       }
     ],
     "start": "2026-05-13",
@@ -1547,7 +1587,33 @@ const HACKS = [
     "registration": "до 19.05",
     "registration_iso": "2026-05-19",
     "phases": null,
-    "links": null,
+    "links": [
+      {
+        "kind": "article",
+        "title": "Кейс хакатона: 165 разработчиков и ИИ-навигатор (Codenrock)",
+        "url": "https://codenrock.com/blog/kak-165-razrabotchikov-sozdavali-ii-navigator-dlya-obrazovaniya-kejs-hakatona-sistema-hak-tomsk-2026/"
+      },
+      {
+        "kind": "article",
+        "title": "Как студенты разработали решения для экосистемы МТС (Codenrock)",
+        "url": "https://codenrock.com/blog/kejs-sistema-hak-tomsk-kak-studenty-razrabotali-resheniya-dlya-ekosistemy-mts/"
+      },
+      {
+        "kind": "article",
+        "title": "Команда ТУСУРа — победитель хакатона (ТУСУР)",
+        "url": "https://tusur.ru/ru/novosti-i-meropriyatiya/novosti/prosmotr/-/novost-komanda-tusura-stala-pobeditelem-hakatona-sistema-hak-tomsk"
+      },
+      {
+        "kind": "article",
+        "title": "Участники предложили решения для цифровых продуктов (Tomsk.ru)",
+        "url": "https://www.tomsk.ru/news/biznes/uchastniki-it-hakatona-mts-i-bf-sistema-v-tomske-predlozhili-unikalnye-resheniya-dlya-razvitiya-tsifrovyh-produktov"
+      },
+      {
+        "kind": "article",
+        "title": "Победители получили 150 тыс. руб. за первое место (AKM.RU)",
+        "url": "https://www.akm.ru/news/mts_pobediteli_it_khakatona_poluchili_150_tys_rub_za_pervoe_mesto/"
+      }
+    ],
     "start": "2026-05-19",
     "end": "2026-05-22",
     "start_approx": false
@@ -1581,6 +1647,16 @@ const HACKS = [
         "kind": "solutions",
         "title": "Решение Tender Hack СПб (GitHub)",
         "url": "https://github.com/Deci1337/TenderHack-SPB"
+      },
+      {
+        "kind": "article",
+        "title": "Определён победитель хакатона в Санкт-Петербурге (Госзаказ.ТВ)",
+        "url": "https://goszakaz.tv/news/details/8656-opredelen-pobeditelj-hakatona-tender-hac"
+      },
+      {
+        "kind": "article",
+        "title": "Прототип ИИ-сервиса для Портала поставщиков (Рамблер)",
+        "url": "https://news.rambler.ru/tech/57087356-prototip-ii-servisa-dlya-portala-postavschikov-sozdali-na-hakatone-tender-hack/"
       }
     ],
     "start": "2026-05-22",
@@ -1621,6 +1697,16 @@ const HACKS = [
         "kind": "article",
         "title": "Опыт участия в «Финам Арене»: AI-агенты на Мосбирже (vc.ru)",
         "url": "https://vc.ru/ai/3081928-ai-agenty-na-mosbirzhe"
+      },
+      {
+        "kind": "solutions",
+        "title": "Арбитражный бот на Финам Arena (GitHub)",
+        "url": "https://github.com/Alexander-Panov/Arbitrage-bot"
+      },
+      {
+        "kind": "video",
+        "title": "Стрим о конкурсе ИИ-трейдеров «Финам Арена» (RuTube)",
+        "url": "https://rutube.ru/video/3af1a57b373b0fe4d25beed911e6c0b8/"
       }
     ],
     "start": "2026-06-01",
@@ -1663,6 +1749,21 @@ const HACKS = [
         "kind": "article",
         "title": "Итоги хакатона: 1879 участников (vc.ru)",
         "url": "https://vc.ru/dev/3115211-nornikel-ai-science-hack-privlechenie-uchastnikov"
+      },
+      {
+        "kind": "solutions",
+        "title": "«Научный клубок»: карта знаний R&D (GitHub)",
+        "url": "https://github.com/CatPawsCoder/Nornickel_aI_science_hack"
+      },
+      {
+        "kind": "solutions",
+        "title": "«Научный клубок», решение (GitHub)",
+        "url": "https://github.com/Smoke52ru/NorNickel_Hackathon_2026"
+      },
+      {
+        "kind": "solutions",
+        "title": "Анализ микроструктуры материалов (GitHub)",
+        "url": "https://github.com/Fraggy-gpu/microstructure-hack"
       }
     ],
     "start": "2026-07-03",
@@ -1703,6 +1804,21 @@ const HACKS = [
         "kind": "article",
         "title": "Итоги хакатона: зачем Туту открыли MCP (Хабр)",
         "url": "https://habr.com/ru/articles/1081246/"
+      },
+      {
+        "kind": "solutions",
+        "title": "MCP-прокси для mcp.tutu.ru (GitHub)",
+        "url": "https://github.com/Trum-ok/tutu-mcp-hackathon"
+      },
+      {
+        "kind": "solutions",
+        "title": "Проверка доступности поездки (GitHub)",
+        "url": "https://github.com/aidafonda/tutu-mozhno"
+      },
+      {
+        "kind": "solutions",
+        "title": "Виджет Bleaisure для OTT-команды (GitHub)",
+        "url": "https://github.com/rumiantsev/tutu-hackathon-2026"
       }
     ],
     "start": "2026-08-19",
@@ -1882,6 +1998,26 @@ const HACKS = [
         "kind": "article",
         "title": "«Фалькон Тех» — партнёр хакатона ЛЦТ (Хабр)",
         "url": "https://habr.com/ru/articles/1077254/"
+      },
+      {
+        "kind": "solutions",
+        "title": "«Питомец Финни»: приложение по финграмотности (GitHub)",
+        "url": "https://github.com/puPAKA/pet-finny-lct2026"
+      },
+      {
+        "kind": "solutions",
+        "title": "«Своё вино»: решение трека РСХБ (GitHub)",
+        "url": "https://github.com/Slavuntik/lct2026_rshb_svoe_vino"
+      },
+      {
+        "kind": "solutions",
+        "title": "Решение хакатона ЛЦТ 2026 (GitHub)",
+        "url": "https://github.com/gestitech/hackaton_LDT2026"
+      },
+      {
+        "kind": "solutions",
+        "title": "Оптимизация маршрутов инженеров (GitHub)",
+        "url": "https://github.com/korhenon/engineers-routes-optimization"
       }
     ],
     "start": "2026-09-15",
@@ -1935,6 +2071,21 @@ const HACKS = [
         "kind": "ceremony",
         "title": "Сюжет о старте хакатона (RuTube)",
         "url": "https://rutube.ru/video/4a666cf9730102217babb1b823c40a96/"
+      },
+      {
+        "kind": "article",
+        "title": "В столице определили победителей хакатона (mos.ru)",
+        "url": "https://www.mos.ru/news/item/176697073/"
+      },
+      {
+        "kind": "article",
+        "title": "Ликсутов: в столице прошёл финал хакатона (АиФ)",
+        "url": "https://aif.ru/society/liksutov-v-stolice-proshel-final-hakatona-moskovskogo-transporta"
+      },
+      {
+        "kind": "article",
+        "title": "В Москве оценили ИТ-решения для городского транспорта (За рулём)",
+        "url": "https://www.zr.ru/content/news/986520-moskva-vybrala-luchshie-it-reshen/"
       }
     ],
     "start": "2026-09-25",
@@ -2089,7 +2240,13 @@ const HACKS = [
         "start_approx": false
       }
     ],
-    "links": null,
+    "links": [
+      {
+        "kind": "solutions",
+        "title": "Официальные baseline-решения Yandex Cup ML (GitHub)",
+        "url": "https://github.com/yandex/mlcup"
+      }
+    ],
     "start": "2026-10-23",
     "end": "2026-11-29",
     "start_approx": false
@@ -2112,7 +2269,23 @@ const HACKS = [
     "registration": "до 21.10",
     "registration_iso": "2026-10-21",
     "phases": null,
-    "links": null,
+    "links": [
+      {
+        "kind": "article",
+        "title": "Участники разработали решения для предприятий (mos.ru)",
+        "url": "https://www.mos.ru/news/item/177674073/"
+      },
+      {
+        "kind": "article",
+        "title": "Почти 500 команд предложили решения (RITM)",
+        "url": "https://ritm-magazine.com/ru/news/novosti-redakcii/hakaton-otkroymosprom-pochti-500-komand-predlozhili-svoi-resheniya-dlya"
+      },
+      {
+        "kind": "article",
+        "title": "На МИПФ-2026 наградили победителей (РБК)",
+        "url": "https://amp.rbc.ru/rbcnews/rbcfreenews/6adf50a09a7947bc784b8156"
+      }
+    ],
     "start": "2026-10-23",
     "end": "2026-10-25",
     "start_approx": false
