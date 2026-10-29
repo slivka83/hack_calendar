@@ -634,6 +634,18 @@
   .tt-talks--notime li { grid-template-columns: minmax(0, 1fr); }
   .tt-talks--notime .tt-talk-time { display: none; }
   .tt-talk-time { color: var(--muted); font-variant-numeric: tabular-nums; }
+  .tt-talk-link {
+    color: inherit;
+    text-decoration: underline dotted color-mix(in srgb, var(--muted) 60%, transparent);
+    text-underline-offset: 3px;
+  }
+  .tt-talk-link:hover, .tt-talk-link:focus-visible {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .tt-talk-video { display: inline-flex; margin-right: 5px; opacity: .55; vertical-align: -1px; }
+  .tt-talk-link:hover .tt-talk-video, .tt-talk-link:focus-visible .tt-talk-video { opacity: 1; }
   .tt-when { color: var(--muted); margin: 3px 0; display: flex; gap: 7px; }
   .tt-when:last-child { margin-bottom: 0; }
   .tt-ico { flex: none; }
@@ -2059,7 +2071,19 @@
         const li = el("li");
         li.appendChild(el("span", "tt-talk-time", t.time || ""));
         const body = el("span", "tt-talk-body");
-        body.appendChild(el("span", "tt-talk-title", t.title));
+        if (t.video_url && /^https?:\/\//i.test(t.video_url)) {
+          const a = el("a", "tt-talk-title tt-talk-link", t.title);
+          a.href = t.video_url;
+          a.target = "_blank";
+          a.rel = "noopener noreferrer";
+          a.title = "Открыть запись доклада";
+          const cam = el("span", "tt-talk-video");
+          cam.innerHTML = VIDEO_SVG;
+          a.insertBefore(cam, a.firstChild);
+          body.appendChild(a);
+        } else {
+          body.appendChild(el("span", "tt-talk-title", t.title));
+        }
         li.appendChild(body);
         ul.appendChild(li);
       });
