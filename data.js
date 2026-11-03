@@ -7435,6 +7435,52 @@ const MEETUPS = [
   },
   {
     "type": "МИТАП",
+    "name": "AI AppSec Night Альфа-Банка",
+    "description": "Встреча AppSec-сообщества Альфа-Банка: ИИ-ток-шоу с питчами практиков и комментариями топ-менеджеров из бигтеха, командная интеллектуальная игра «Что? Где? Безопасность!» с экспертами, Speakeasy bar с обсуждением горячих CyberSec-тем и нетворкинг. Офлайн на площадке «Альфа-Кристалл» в Москве или в прямом эфире.",
+    "time": "18:00–23:00 мск",
+    "tasks": [],
+    "prize": null,
+    "participation": "Бесплатно, по регистрации",
+    "format": "Формат: офлайн в Москве и онлайн",
+    "lang": null,
+    "url": "https://alfabank.sale/alfadigital/aiappsecnight/",
+    "registration": null,
+    "registration_iso": null,
+    "phases": null,
+    "talks": [
+      {
+        "time": "18:00",
+        "title": "Сбор гостей",
+        "speaker": null
+      },
+      {
+        "time": "19:00",
+        "title": "ИИ-ток-шоу с питчами и комментариями топов",
+        "speaker": null
+      },
+      {
+        "time": "20:30",
+        "title": "Speakeasy bar",
+        "speaker": null
+      },
+      {
+        "time": "20:30",
+        "title": "Нетворкинг",
+        "speaker": null
+      },
+      {
+        "time": "21:00",
+        "title": "Что? Где? Безопасность!",
+        "speaker": null
+      }
+    ],
+    "links": null,
+    "start": "2026-11-17",
+    "end": "2026-11-17",
+    "start_approx": false
+  },
+  {
+    "type": "МИТАП",
     "name": "ODS:AI Meetup #1",
     "description": "Офлайн-митап ODS в Красноярске: LLM-агенты в Data Science, ИИ в исследованиях, персональный ИИ-ассистент и MCP для корпоративных агентов. Сбор с 14:00, начало в 14:30 мск; обязательна регистрация на Leader-ID.",
     "time": "14:30–17:00 мск",
