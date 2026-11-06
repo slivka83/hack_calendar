@@ -7414,6 +7414,26 @@ const MEETUPS = [
     "start_approx": false
   },
   {
+    "type": "МИТАП",
+    "name": "LLMCrew Meetup #1 — Первая, открывающая встреча!",
+    "description": "Первая офлайн-встреча сообщества LLM Crew в Москве: без докладов, формальностей и обязательной программы — знакомство, общение и обмен опытом. Обсудим LLM, инференс, агентные системы, open-source, харнессы и собственные проекты. Бар Howard Loves Craft, Болотная набережная, 7с3. Регистрация и детали встречи — в Telegram-чате сообщества.",
+    "time": "18:00 мск",
+    "tasks": [],
+    "prize": null,
+    "participation": "По регистрации",
+    "format": "Формат: офлайн в Москве",
+    "lang": null,
+    "url": "https://llmcrew.org/events#LLMCrew-Meetup-first-commit",
+    "registration": null,
+    "registration_iso": null,
+    "phases": null,
+    "talks": null,
+    "links": null,
+    "start": "2026-11-14",
+    "end": "2026-11-14",
+    "start_approx": false
+  },
+  {
     "type": "КОНФ",
     "name": "Matemarketing 2026: онлайн-день",
     "description": "Онлайн-день технической конференции по маркетинговой и продуктовой аналитике: прямой эфир докладов, доступ к видеозаписям и материалам конференции на 6 месяцев. Основные офлайн-дни пройдут 26–27 ноября в Москве.",
