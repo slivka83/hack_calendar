@@ -899,7 +899,7 @@
 <div class="calendar-wrap" id="calendarWrap">
   <div class="calendar-scroll" id="calendarScroll">
     <div class="cal-dow-row" id="calDow">
-      <div class="cal-dow-space" aria-hidden="true"></div>
+      <div aria-hidden="true"></div>
       <div class="cal-dow">Пн</div>
       <div class="cal-dow">Вт</div>
       <div class="cal-dow">Ср</div>
@@ -923,7 +923,7 @@
 </div>
 
 <div class="modal-backdrop hidden" id="suggestBackdrop">
-  <div class="modal modal--suggest" id="suggestCard" role="dialog" aria-modal="true" aria-label="Предложить событие">
+  <div class="modal modal--suggest" role="dialog" aria-modal="true" aria-label="Предложить событие">
     <button type="button" class="modal-close" id="suggestClose" aria-label="Закрыть">&times;</button>
     <div class="suggest-head">Предложить событие</div>
     <form id="suggestForm">
@@ -938,7 +938,7 @@
   </div>
 </div>
 
-<script src="data.js?v=20261111-1"></script>
+<script src="data.js?v=20261111-2"></script>
 <script>
 (function () {
   "use strict";
@@ -1848,9 +1848,7 @@
     const className = "cal-ev" + (format ? " cal-ev--" + format.kind : "") +
       (settings.agenda ? " cal-agenda-ev" : "");
     const btn = el("button", className);
-    const timeLabel = settings.timeLabel !== undefined
-      ? settings.timeLabel
-      : (startTimeOf(h) || {}).label;
+    const timeLabel = settings.timeLabel;
     if (timeLabel) btn.appendChild(el("span", "cal-ev-time", timeLabel));
     btn.appendChild(el("span", "cal-ev-name", h.name));
     if (settings.until && h.end !== h.start) {
@@ -1931,8 +1929,7 @@
       const line = el("div", "cal-vline");
       line.style.left = left + "px";
       line.style.top = top + "px";
-      if (height == null) line.style.bottom = "0";
-      else line.style.height = height + "px";
+      line.style.height = height + "px";
       frames.appendChild(line);
     };
 
@@ -2271,13 +2268,13 @@
     talks.forEach(talk => {
       const item = el("li");
       item.appendChild(el("span", "tt-talk-time", talk.time || ""));
-      const body = el("span", "tt-talk-body");
+      const body = el("span");
       if (talk.video_url && isHttp(talk.video_url)) {
-        const link = externalLink(talk.video_url, "tt-talk-title tt-talk-link", talk.title);
+        const link = externalLink(talk.video_url, "tt-talk-link", talk.title);
         link.title = "Открыть запись доклада";
         body.appendChild(link);
       } else {
-        body.appendChild(el("span", "tt-talk-title", talk.title));
+        body.appendChild(el("span", null, talk.title));
       }
       item.appendChild(body);
       list.appendChild(item);
