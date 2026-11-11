@@ -813,7 +813,6 @@
     .cal-agenda { padding: 0 10px 24px; }
     .cal-agenda-month { margin: 0 -10px; }
     .cal-agenda-ev { font-size: 12.5px; padding: 7px 9px; border-left-width: 3px; }
-    .cal-title { min-width: 104px; }
 
     .modal-backdrop { padding: 0; align-items: stretch; }
     .modal, .modal--wide, .modal--suggest {
@@ -885,7 +884,8 @@
     </div>
     <input id="search" type="search" placeholder="Поиск по названию, задаче или типу…"
            aria-label="Поиск событий" title="Нажмите «/», чтобы перейти к поиску">
-    <button id="suggestBtn" class="suggest-btn" type="button">Предложить</button>
+    <button id="suggestBtn" class="suggest-btn" type="button"
+            aria-haspopup="dialog" aria-controls="suggestBackdrop">Предложить</button>
     <button id="themeToggle" class="icon-btn" type="button" aria-label="Переключить тему"></button>
   </div>
 </header>
@@ -899,7 +899,7 @@
 <div class="calendar-wrap" id="calendarWrap">
   <div class="calendar-scroll" id="calendarScroll">
     <div class="cal-dow-row" id="calDow">
-      <div class="cal-dow-space"></div>
+      <div class="cal-dow-space" aria-hidden="true"></div>
       <div class="cal-dow">Пн</div>
       <div class="cal-dow">Вт</div>
       <div class="cal-dow">Ср</div>
@@ -908,7 +908,7 @@
       <div class="cal-dow">Сб</div>
       <div class="cal-dow">Вс</div>
     </div>
-    <div class="cal-empty" id="calEmpty"></div>
+    <div class="cal-empty" id="calEmpty" role="status"></div>
     <div class="cal-months" id="calGrid"></div>
   </div>
 </div>
@@ -943,125 +943,52 @@
 (function () {
   "use strict";
 
+  /* ==========================================================================
+     Константы
+     ========================================================================== */
+
   const MS_DAY = 86400000;
+  const MOBILE_MAX = 600;
+  const MIN_MONTH_CELL_W = 36;
+  const MIN_DAY_W_MOBILE = 3;
+  const DEFAULT_RANGE = 6;
+  const STORAGE_TAB = "hc-tab";
+  const STORAGE_THEME = "hc-theme";
+  const FEEDBACK_ENDPOINT = "https://formsubmit.co/ajax/slivka_83@mail.ru";
+  const FEEDBACK_EMAIL = "slivka_83@mail.ru";
+  const SEARCH_PLACEHOLDER = "Поиск по названию, задаче или типу…";
+  const SEARCH_PLACEHOLDER_MOBILE = "Поиск событий…";
+
   const MONTHS = ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"];
   const MONTHS_FULL = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь",
     "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
   const MONTHS_GEN = ["января", "февраля", "марта", "апреля", "мая", "июня",
     "июля", "августа", "сентября", "октября", "ноября", "декабря"];
   const DOW_SHORT = ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"];
-  const isMobile = () => window.innerWidth <= 600;
-  const fmtCls = h => {
-    const f = (h.format || "").toLowerCase();
-    const online = f.includes("онлайн");
-    const offline = f.includes("офлайн") || f.includes("оффлайн");
-    if (online && offline) return "hybrid";
-    if (online) return "online";
-    if (offline) return "offline";
-    return "";
-  };
-  const LINK_SVG = '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>';
-  const VIDEO_SVG = '<svg viewBox="0 0 24 24" width="10" height="10" fill="currentColor" aria-hidden="true"><path d="M17 10.5V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3.5l4 4v-11l-4 4z"/></svg>';
-  const CAL_SVG = '<svg viewBox="0 0 48 48" width="10" height="10" fill="currentColor" aria-hidden="true"><path d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>';
-  const ICS_SVG = '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/><path d="M12 13v4.5"/><path d="m9.8 15.3 2.2 2.2 2.2-2.2"/></svg>';
-  const SUN_SVG = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>';
-  const MOON_SVG = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
 
-  const ganttWrap = document.getElementById("ganttWrap");
-  const ganttScroll = ganttWrap.querySelector(".gantt-scroll");
-  const ganttInner = document.getElementById("ganttInner");
-  const calendarWrap = document.getElementById("calendarWrap");
-  const calendarScroll = document.getElementById("calendarScroll");
-  const calNav = document.getElementById("calNav");
-  const calGrid = document.getElementById("calGrid");
-  const calDow = document.getElementById("calDow");
-  const calEmpty = document.getElementById("calEmpty");
-  const calPrev = document.getElementById("calPrev");
-  const calNext = document.getElementById("calNext");
-  const calToday = document.getElementById("calToday");
-  const tooltip = document.getElementById("tooltip");
-  const modalBackdrop = document.getElementById("modalBackdrop");
-  const modalCard = document.getElementById("modalCard");
-  const modalContent = document.getElementById("modalContent");
-  const modalClose = document.getElementById("modalClose");
-  const suggestBackdrop = document.getElementById("suggestBackdrop");
-  const suggestClose = document.getElementById("suggestClose");
-  const suggestBtn = document.getElementById("suggestBtn");
-  const suggestForm = document.getElementById("suggestForm");
-  const suggestDesc = document.getElementById("suggestDesc");
-  const suggestLink = document.getElementById("suggestLink");
-  const suggestSubmit = document.getElementById("suggestSubmit");
-  const suggestStatus = document.getElementById("suggestStatus");
-  const searchInput = document.getElementById("search");
-  const rangeGroup = document.getElementById("rangeGroup");
-  const filterGroup = document.getElementById("filterGroup");
-  const fmtGroup = document.getElementById("fmtGroup");
-  const tabGroup = document.getElementById("tabGroup");
-  const themeToggle = document.getElementById("themeToggle");
-  const themeColor = document.querySelector('meta[name="theme-color"]');
+  const LINK_GROUPS = [
+    { kind: "stream", label: "📡 Трансляции:" },
+    { kind: "solutions", label: "📦 Решения:" },
+    { kind: "ceremony", label: "🎬 Церемонии:" },
+    { kind: "video", label: "📺 Видео:" },
+    { kind: "article", label: "📰 Статьи:" },
+  ];
 
-  let DAY_W = 4;
-  let ROW_H = 62;
-
-  const DATASETS = {
-    comp: (typeof HACKS !== "undefined" && Array.isArray(HACKS)
-      ? HACKS.filter(h => h && h.start && h.end)
-      : []).reverse(),
-    event: (typeof MEETUPS !== "undefined" && Array.isArray(MEETUPS)
-      ? MEETUPS.filter(h => h && h.start && h.end)
-      : []),
+  const ICONS = {
+    link: '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>',
+    video: '<svg viewBox="0 0 24 24" width="10" height="10" fill="currentColor" aria-hidden="true"><path d="M17 10.5V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3.5l4 4v-11l-4 4z"/></svg>',
+    google: '<svg viewBox="0 0 48 48" width="10" height="10" fill="currentColor" aria-hidden="true"><path d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>',
+    ics: '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/><path d="M12 13v4.5"/><path d="m9.8 15.3 2.2 2.2 2.2-2.2"/></svg>',
+    sun: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>',
+    moon: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>',
   };
 
-  const state = { query: "", range: 6, actual: false, signup: false, fmt: "", tab: "comp", calInit: false, ganttInit: false };
-  try {
-    const savedTab = localStorage.getItem("hc-tab");
-    if (savedTab === "event" || savedTab === "comp") state.tab = savedTab;
-  } catch (e) {}
-  let EVENTS = DATASETS[state.tab];
-  tabGroup.querySelectorAll(".seg-btn").forEach(btn => {
-    const active = btn.dataset.tab === state.tab;
-    btn.classList.toggle("is-active", active);
-    btn.setAttribute("aria-selected", String(active));
-  });
-  let MIN, MAX, TOTAL_DAYS, TIMELINE_W;
-  let CELLS = [];
-
-  /* ---------- helpers ---------- */
-  const el = (tag, cls, text) => {
-    const node = document.createElement(tag);
-    if (cls) node.className = cls;
-    if (text != null) node.textContent = text;
-    return node;
-  };
-  const parseISO = iso => {
-    const [y, m, d] = iso.split("-").map(Number);
-    return new Date(y, m - 1, d);
-  };
-  const fmtDate = (iso, withYear) => {
-    const parts = iso.split("-");
-    return Number(parts[2]) + "." + parts[1] + (withYear ? "." + parts[0] : "");
-  };
-  const fmtRange = (start, end, approx, withYear) =>
-    (approx ? "≈" : "") + fmtDate(start, withYear) + " – " + fmtDate(end, withYear);
-  const stripLabel = s => s.replace(/^(Приз(?:ы)?|Участие|Формат):\s*/, "");
-  const hostOf = url => {
-    try { return new URL(url).hostname; } catch (e) { return ""; }
+  const FORMAT_RULES = {
+    hybrid: /гибрид/i,
+    online: /онлайн|kaggle/i,
+    offline: /офлайн|оффлайн|очно|финал[а-яё]*\s+в/i,
   };
 
-  /* ---------- chips ---------- */
-  function trackTags(h) {
-    const seen = new Set();
-    const tags = [];
-    (h.tasks || []).forEach(t => {
-      const m = t.match(/^\[([^\]]+)\]/);
-      if (!m) return;
-      m[1].split(/[,/]+/).forEach(part => {
-        const tag = part.trim().toUpperCase();
-        if (tag && !seen.has(tag)) { seen.add(tag); tags.push(tag); }
-      });
-    });
-    return tags;
-  }
   const MONEY_RE = /([\d][\d\s\u00a0]*?)\s*(т\.?\s*р\.?|тыс\.?\s*(?:руб\.?|р\.?)?|млн\.?\s*(?:руб\.?|р\.?)?|млрд\.?\s*(?:руб\.?|р\.?)?|миллион(?:а|ов)?|руб(?:лей|ля|\.)?|р\.?|₽|\$|€)/gi;
   const MONEY_UNITS = [
     [/^млрд/, 1e9, "₽"],
@@ -1070,53 +997,301 @@
     [/^\$/, 1, "$"],
     [/^€/, 1, "€"],
   ];
+
+  const TRANSLIT = {
+    а: "a", б: "b", в: "v", г: "g", д: "d", е: "e", ё: "e", ж: "zh", з: "z", и: "i",
+    й: "y", к: "k", л: "l", м: "m", н: "n", о: "o", п: "p", р: "r", с: "s", т: "t",
+    у: "u", ф: "f", х: "h", ц: "ts", ч: "ch", ш: "sh", щ: "sch", ъ: "", ы: "y",
+    ь: "", э: "e", ю: "yu", я: "ya",
+  };
+
+  /* ==========================================================================
+     Элементы страницы
+     ========================================================================== */
+
+  const byId = id => document.getElementById(id);
+  const ganttWrap = byId("ganttWrap");
+  const ganttScroll = ganttWrap.querySelector(".gantt-scroll");
+  const ganttInner = byId("ganttInner");
+  const calendarWrap = byId("calendarWrap");
+  const calendarScroll = byId("calendarScroll");
+  const calNav = byId("calNav");
+  const calGrid = byId("calGrid");
+  const calDow = byId("calDow");
+  const calEmpty = byId("calEmpty");
+  const calPrev = byId("calPrev");
+  const calNext = byId("calNext");
+  const calToday = byId("calToday");
+  const tooltip = byId("tooltip");
+  const modalBackdrop = byId("modalBackdrop");
+  const modalCard = byId("modalCard");
+  const modalContent = byId("modalContent");
+  const modalClose = byId("modalClose");
+  const suggestBackdrop = byId("suggestBackdrop");
+  const suggestClose = byId("suggestClose");
+  const suggestBtn = byId("suggestBtn");
+  const suggestForm = byId("suggestForm");
+  const suggestDesc = byId("suggestDesc");
+  const suggestLink = byId("suggestLink");
+  const suggestSubmit = byId("suggestSubmit");
+  const suggestStatus = byId("suggestStatus");
+  const searchInput = byId("search");
+  const rangeGroup = byId("rangeGroup");
+  const filterGroup = byId("filterGroup");
+  const fmtGroup = byId("fmtGroup");
+  const tabGroup = byId("tabGroup");
+  const themeToggle = byId("themeToggle");
+  const themeColor = document.querySelector('meta[name="theme-color"]');
+
+  /* ==========================================================================
+     Состояние и данные
+     ========================================================================== */
+
+  function storageGet(key) {
+    try {
+      return localStorage.getItem(key);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function storageSet(key, value) {
+    try {
+      localStorage.setItem(key, value);
+    } catch (e) {}
+  }
+
+  function initialTab() {
+    const saved = storageGet(STORAGE_TAB);
+    return saved === "event" || saved === "comp" ? saved : "comp";
+  }
+
+  function prepareDataset(raw, reverse) {
+    const list = (Array.isArray(raw) ? raw : []).filter(h => h && h.start && h.end);
+    return reverse ? list.reverse() : list;
+  }
+
+  const DATASETS = {
+    comp: prepareDataset(typeof HACKS !== "undefined" ? HACKS : [], true),
+    event: prepareDataset(typeof MEETUPS !== "undefined" ? MEETUPS : [], false),
+  };
+
+  const state = {
+    tab: initialTab(),
+    query: "",
+    range: DEFAULT_RANGE,
+    actual: false,
+    signup: false,
+    fmt: "",
+    calInit: false,
+    ganttInit: false,
+    get events() {
+      return DATASETS[this.tab];
+    },
+  };
+
+  // Общая шкала диаграммы Ганта. Для календаря здесь хранятся только min/max —
+  // по ним решается, показывать ли год в датах карточки и подсказки.
+  const scale = {
+    min: null,
+    max: null,
+    totalDays: 0,
+    width: 0,
+    dayWidth: 4,
+    rowHeight: 62,
+    cells: [],
+  };
+
+  /* ==========================================================================
+     Общие помощники
+     ========================================================================== */
+
+  const el = (tag, className, text) => {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text != null) node.textContent = text;
+    return node;
+  };
+
+  function button(className, text, onClick) {
+    const node = el("button", className, text);
+    node.type = "button";
+    if (onClick) node.addEventListener("click", onClick);
+    return node;
+  }
+
+  function externalLink(href, className, text) {
+    const link = el("a", className, text);
+    link.href = href;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    return link;
+  }
+
+  function externalIconLink(href, className, svg, label, title) {
+    const link = externalLink(href, className);
+    link.innerHTML = svg;
+    link.setAttribute("aria-label", label);
+    if (title) link.title = title;
+    return link;
+  }
+
+  function setButtonState(btn, active, attribute) {
+    btn.classList.toggle("is-active", active);
+    btn.setAttribute(attribute, String(active));
+  }
+
+  function updateGroup(group, isActive, attribute) {
+    group.querySelectorAll(".seg-btn").forEach(btn => {
+      setButtonState(btn, isActive(btn), attribute);
+    });
+  }
+
+  function onSegmentClick(group, handler) {
+    group.addEventListener("click", e => {
+      const btn = e.target.closest(".seg-btn");
+      if (btn && group.contains(btn)) handler(btn);
+    });
+  }
+
+  const isMobile = () => window.innerWidth <= MOBILE_MAX;
+  const isHttp = url => /^https?:\/\//i.test(url || "");
+  const pad2 = n => (n < 10 ? "0" : "") + n;
+
+  const parseISO = iso => {
+    const [y, m, d] = iso.split("-").map(Number);
+    return new Date(y, m - 1, d);
+  };
+
+  const fmtDate = (iso, withYear) => {
+    const [year, month, day] = iso.split("-");
+    return Number(day) + "." + month + (withYear ? "." + year : "");
+  };
+
+  const fmtRange = (start, end, approx, withYear) =>
+    (approx ? "≈" : "") + fmtDate(start, withYear) + " – " + fmtDate(end, withYear);
+
+  const stripLabel = value => value.replace(/^(Приз(?:ы)?|Участие|Формат):\s*/, "");
+  const hostOf = url => {
+    try {
+      return new URL(url).hostname;
+    } catch (e) {
+      return "";
+    }
+  };
+
+  const ymd = date => date.getFullYear() + "-" + pad2(date.getMonth() + 1) + "-" + pad2(date.getDate());
+  const ymOf = date => date.getFullYear() + "-" + pad2(date.getMonth() + 1);
+  const compactDate = iso => iso.replace(/-/g, "");
+  const hhmm = minutes => pad2(Math.floor(minutes / 60)) + ":" + pad2(minutes % 60);
+
+  function todayMidnight() {
+    const now = new Date();
+    return new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  }
+
+  function showYear() {
+    return Boolean(scale.min && scale.max && scale.min.getFullYear() !== scale.max.getFullYear());
+  }
+
+  function addDaysISO(iso, days) {
+    const date = parseISO(iso);
+    date.setDate(date.getDate() + days);
+    return ymd(date);
+  }
+
+  /* ==========================================================================
+     Представление событий (чипы, формат, приз)
+     ========================================================================== */
+
+  function trackTags(h) {
+    const seen = new Set();
+    const tags = [];
+    (h.tasks || []).forEach(task => {
+      const match = task.match(/^\[([^\]]+)\]/);
+      if (!match) return;
+      match[1].split(/[,/]+/).forEach(part => {
+        const tag = part.trim().toUpperCase();
+        if (tag && !seen.has(tag)) {
+          seen.add(tag);
+          tags.push(tag);
+        }
+      });
+    });
+    return tags;
+  }
+
   function moneyUnit(unit) {
-    const s = unit.toLowerCase();
-    for (const [re, mult, cur] of MONEY_UNITS) {
-      if (re.test(s)) return { mult, cur };
+    const value = unit.toLowerCase();
+    for (const [pattern, multiplier, currency] of MONEY_UNITS) {
+      if (pattern.test(value)) return { multiplier, currency };
     }
-    return { mult: 1, cur: "₽" };
+    return { multiplier: 1, currency: "₽" };
   }
+
   function moneyTotal(text) {
-    let total = 0, cur = null;
-    for (const m of text.matchAll(MONEY_RE)) {
-      const unit = moneyUnit(m[2].trim());
-      if (cur && unit.cur !== cur) continue;
-      cur = cur || unit.cur;
-      total += parseInt(m[1].replace(/[\s\u00a0]/g, ""), 10) * unit.mult;
+    let total = 0;
+    let currency = null;
+    for (const match of text.matchAll(MONEY_RE)) {
+      const unit = moneyUnit(match[2].trim());
+      if (currency && unit.currency !== currency) continue;
+      currency = currency || unit.currency;
+      total += parseInt(match[1].replace(/[\s\u00a0]/g, ""), 10) * unit.multiplier;
     }
-    if (cur == null) return null;
-    return String(total).replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " " + cur;
+    if (currency == null) return null;
+    return String(total).replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " " + currency;
   }
-  function prizeChip(h) {
-    if (!h.prize) return null;
-    return moneyTotal(stripLabel(h.prize));
+
+  function prizeText(h) {
+    return h.prize ? moneyTotal(stripLabel(h.prize)) : null;
   }
-  function formatChip(h) {
-    if (!h.format) return null;
-    const f = h.format;
-    const online = /онлайн|kaggle/i.test(f);
-    const offline = /офлайн|очно|финал[а-яё]*\s+в/i.test(f);
-    if (/гибрид/i.test(f) || (online && offline)) return { cat: "гибрид", cls: "fmt-hybrid" };
-    if (online) return { cat: "онлайн", cls: "fmt-online" };
-    if (offline) return { cat: "офлайн", cls: "fmt-offline" };
+
+  function formatOf(h) {
+    const value = h.format || "";
+    const online = FORMAT_RULES.online.test(value);
+    const offline = FORMAT_RULES.offline.test(value);
+    if (FORMAT_RULES.hybrid.test(value) || (online && offline)) {
+      return { kind: "hybrid", label: "гибрид" };
+    }
+    if (online) return { kind: "online", label: "онлайн" };
+    if (offline) return { kind: "offline", label: "офлайн" };
     return null;
   }
-  function participationChip(h) {
+
+  function participationText(h) {
     if (!h.participation) return null;
-    const p = h.participation;
-    const solo = /соло/i.test(p);
-    const team = /команд/i.test(p);
+    const value = h.participation;
+    const solo = /соло/i.test(value);
+    const team = /команд/i.test(value);
     if (solo && team) return "соло/команда";
     if (solo) return "соло";
     if (team) return "команда";
     return null;
   }
 
-  /* ---------- data ---------- */
+  function renderChips(h) {
+    const chips = el("div", "chips");
+    trackTags(h).forEach(tag => chips.appendChild(el("span", "chip chip-track", tag)));
+
+    const prize = prizeText(h);
+    if (prize) chips.appendChild(el("span", "chip chip-prize", prize));
+
+    const format = formatOf(h);
+    if (format) chips.appendChild(el("span", "chip chip-fmt fmt-" + format.kind, format.label));
+
+    const participation = participationText(h);
+    if (participation) chips.appendChild(el("span", "chip", participation));
+
+    return chips.childElementCount ? chips : null;
+  }
+
+  /* ==========================================================================
+     Модель событий
+     ========================================================================== */
+
   function segmentsOf(h) {
     if (Array.isArray(h.phases) && h.phases.length) {
-      return h.phases.map(p => ({ start: p.start, end: p.end }));
+      return h.phases.map(phase => ({ start: phase.start, end: phase.end }));
     }
     return [{ start: h.start, end: h.end }];
   }
@@ -1124,32 +1299,38 @@
   function regDeadline(h) {
     if (h.registration_iso) return parseISO(h.registration_iso);
     if (!h.registration || !h.registration.startsWith("до ")) return null;
-    const m = h.registration.match(/^до (\d{1,2})\.(\d{1,2})$/);
-    if (!m) return null;
-    const month = Number(m[2]), day = Number(m[1]);
+    const match = h.registration.match(/^до (\d{1,2})\.(\d{1,2})$/);
+    if (!match) return null;
+    const month = Number(match[2]);
+    const day = Number(match[1]);
     const start = parseISO(h.start);
     let best = null;
     for (const year of [start.getFullYear() - 1, start.getFullYear(), start.getFullYear() + 1]) {
-      const d = new Date(year, month - 1, day);
-      if (d >= MIN && d <= MAX) return d;
-      if (!best || Math.abs(d - start) < Math.abs(best - start)) best = d;
+      const date = new Date(year, month - 1, day);
+      if (date >= scale.min && date <= scale.max) return date;
+      if (!best || Math.abs(date - start) < Math.abs(best - start)) best = date;
     }
     return best;
   }
 
+  function eventDates(h) {
+    const dates = [parseISO(h.start), parseISO(h.end)];
+    (h.phases || []).forEach(phase => dates.push(parseISO(phase.start), parseISO(phase.end)));
+    return dates;
+  }
+
   function dataMaxDate() {
     let max = -Infinity;
-    EVENTS.forEach(h => {
-      max = Math.max(max, parseISO(h.start).getTime(), parseISO(h.end).getTime());
-      (h.phases || []).forEach(p => {
-        max = Math.max(max, parseISO(p.start).getTime(), parseISO(p.end).getTime());
+    state.events.forEach(h => {
+      eventDates(h).forEach(date => {
+        max = Math.max(max, date.getTime());
       });
     });
     return new Date(max);
   }
 
   function rangeWindow() {
-    if (!state.range) return null;
+    if (!state.range || !state.events.length) return null;
     const last = dataMaxDate();
     return {
       from: new Date(last.getFullYear(), last.getMonth() - (state.range - 1), 1),
@@ -1158,54 +1339,47 @@
   }
 
   function baseEvents() {
-    const w = rangeWindow();
-    if (!w) return EVENTS;
-    return EVENTS.filter(h => {
-      const dates = [parseISO(h.start), parseISO(h.end)];
-      (h.phases || []).forEach(p => dates.push(parseISO(p.start), parseISO(p.end)));
-      return dates.every(d => d >= w.from && d <= w.to);
-    });
+    const windowRange = rangeWindow();
+    if (!windowRange) return state.events;
+    return state.events.filter(h =>
+      eventDates(h).every(date => date >= windowRange.from && date <= windowRange.to)
+    );
   }
 
   function computeRange(base) {
     if (!base.length) return false;
     const stamps = [];
     base.forEach(h => {
-      stamps.push(parseISO(h.start), parseISO(h.end));
-      (h.phases || []).forEach(p => stamps.push(parseISO(p.start), parseISO(p.end)));
+      eventDates(h).forEach(date => stamps.push(date));
     });
     let lo = Math.min.apply(null, stamps);
     let hi = Math.max.apply(null, stamps);
-    const w = rangeWindow();
-    if (w) {
-      lo = w.from.getTime();
-      hi = w.to.getTime();
+    const windowRange = rangeWindow();
+    if (windowRange) {
+      lo = windowRange.from.getTime();
+      hi = windowRange.to.getTime();
     }
-    const loDate = new Date(lo), hiDate = new Date(hi);
+    const loDate = new Date(lo);
+    const hiDate = new Date(hi);
     const months = (hiDate.getFullYear() - loDate.getFullYear()) * 12 +
-                   (hiDate.getMonth() - loDate.getMonth()) + 1;
+      (hiDate.getMonth() - loDate.getMonth()) + 1;
     if (months > 12) {
-      MIN = new Date(loDate.getFullYear(), 0, 1);
-      MAX = new Date(hiDate.getFullYear(), 11, 31);
+      scale.min = new Date(loDate.getFullYear(), 0, 1);
+      scale.max = new Date(hiDate.getFullYear(), 11, 31);
     } else {
-      MIN = new Date(loDate.getFullYear(), loDate.getMonth(), 1);
-      MAX = new Date(hiDate.getFullYear(), hiDate.getMonth() + 1, 0);
+      scale.min = new Date(loDate.getFullYear(), loDate.getMonth(), 1);
+      scale.max = new Date(hiDate.getFullYear(), hiDate.getMonth() + 1, 0);
     }
-    TOTAL_DAYS = Math.round((MAX - MIN) / MS_DAY) + 1;
+    scale.totalDays = Math.round((scale.max - scale.min) / MS_DAY) + 1;
     return true;
   }
 
-  function todayMidnight() {
-    const n = new Date();
-    return new Date(n.getFullYear(), n.getMonth(), n.getDate());
+  function eventLastDate(h) {
+    return eventDates(h).reduce((latest, date) => (date > latest ? date : latest));
   }
 
   function isActual(h) {
-    const dates = [parseISO(h.start), parseISO(h.end)];
-    (h.phases || []).forEach(p => dates.push(parseISO(p.start), parseISO(p.end)));
-    let hi = dates[0];
-    dates.forEach(d => { if (d > hi) hi = d; });
-    return todayMidnight() <= hi;
+    return todayMidnight() <= eventLastDate(h);
   }
 
   function canSignup(h) {
@@ -1218,713 +1392,328 @@
       if (state.actual && !isActual(h)) return false;
       if (state.signup && !canSignup(h)) return false;
     } else if (state.fmt) {
-      const f = fmtCls(h);
-      if (f !== state.fmt && f !== "hybrid") return false;
+      const format = formatOf(h);
+      const kind = format ? format.kind : "";
+      if (kind !== state.fmt && kind !== "hybrid") return false;
     }
     if (!state.query) return true;
     return h.name.toLowerCase().includes(state.query) ||
-           (h.type || "").toLowerCase().includes(state.query) ||
-           (h.description || "").toLowerCase().includes(state.query) ||
-           (h.tasks || []).some(t => t.toLowerCase().includes(state.query));
+      (h.type || "").toLowerCase().includes(state.query) ||
+      (h.description || "").toLowerCase().includes(state.query) ||
+      (h.tasks || []).some(task => task.toLowerCase().includes(state.query));
   }
 
-  /* ---------- render ---------- */
-  function useYears() {
-    let months = 0;
-    let m = new Date(MIN.getFullYear(), MIN.getMonth(), 1);
-    while (m <= MAX) {
-      months++;
-      m = new Date(m.getFullYear(), m.getMonth() + 1, 1);
+  /* ==========================================================================
+     Время события
+     ========================================================================== */
+
+  function timeOf(h) {
+    const raw = (h.time || "").trim();
+    if (raw && /[–-]/.test(raw)) return raw;
+    const talkMinutes = (h.talks || [])
+      .map(talk => ((talk && talk.time) || "").trim().match(/^(\d{1,2}):(\d{2})$/))
+      .filter(Boolean)
+      .map(match => +match[1] * 60 + +match[2]);
+    let start = null;
+    let suffix = " мск";
+    if (raw) {
+      const match = raw.match(/(\d{1,2}:\d{2})/);
+      if (!match) return raw;
+      start = +match[1].split(":")[0] * 60 + +match[1].split(":")[1];
+      suffix = raw.slice(match.index + match[0].length);
+    } else if (talkMinutes.length) {
+      start = Math.min(...talkMinutes);
+    } else {
+      return null;
     }
-    return months > 12 || DAY_W * 28 < 36;
+    if (!talkMinutes.length) return raw || null;
+    const end = Math.max(...talkMinutes);
+    if (end <= start) return raw || hhmm(start) + suffix;
+    return hhmm(start) + "–" + hhmm(end) + suffix;
+  }
+
+  function startTimeOf(h) {
+    const match = (timeOf(h) || "").match(/(\d{1,2}):(\d{2})/);
+    return match ? { label: match[0], minutes: +match[1] * 60 + +match[2] } : null;
+  }
+
+  /* ==========================================================================
+     Диаграмма Ганта: шкала и отрисовка
+     ========================================================================== */
+
+  function usesYears() {
+    let months = 0;
+    let cursor = new Date(scale.min.getFullYear(), scale.min.getMonth(), 1);
+    while (cursor <= scale.max) {
+      months++;
+      cursor = new Date(cursor.getFullYear(), cursor.getMonth() + 1, 1);
+    }
+    return months > 12 || scale.dayWidth * 28 < MIN_MONTH_CELL_W;
   }
 
   function buildCells() {
     const cells = [];
-    if (useYears()) {
+    if (usesYears()) {
       let x = 0;
-      for (let y = MIN.getFullYear(); y <= MAX.getFullYear(); y++) {
-        const from = new Date(Math.max(new Date(y, 0, 1).getTime(), MIN.getTime()));
-        const to = new Date(Math.min(new Date(y + 1, 0, 1).getTime(), MAX.getTime() + MS_DAY));
-        const w = (to - from) / MS_DAY / TOTAL_DAYS * TIMELINE_W;
-        cells.push({ from: from, to: to, x: x, w: w, label: String(y) });
-        x += w;
+      for (let year = scale.min.getFullYear(); year <= scale.max.getFullYear(); year++) {
+        const from = new Date(Math.max(new Date(year, 0, 1).getTime(), scale.min.getTime()));
+        const to = new Date(Math.min(new Date(year + 1, 0, 1).getTime(), scale.max.getTime() + MS_DAY));
+        const width = (to - from) / MS_DAY / scale.totalDays * scale.width;
+        cells.push({ from, to, x, w: width, label: String(year) });
+        x += width;
       }
     } else {
-      let m = new Date(MIN.getFullYear(), MIN.getMonth(), 1);
-      while (m <= MAX) {
-        const next = new Date(m.getFullYear(), m.getMonth() + 1, 1);
+      let month = new Date(scale.min.getFullYear(), scale.min.getMonth(), 1);
+      while (month <= scale.max) {
+        const next = new Date(month.getFullYear(), month.getMonth() + 1, 1);
         cells.push({
-          from: m,
+          from: month,
           to: next,
-          x: Math.round((m - MIN) / MS_DAY) * DAY_W,
-          w: Math.round((next - m) / MS_DAY) * DAY_W,
-          label: MONTHS[m.getMonth()] + " " + String(m.getFullYear()).slice(2),
+          x: Math.round((month - scale.min) / MS_DAY) * scale.dayWidth,
+          w: Math.round((next - month) / MS_DAY) * scale.dayWidth,
+          label: MONTHS[month.getMonth()] + " " + String(month.getFullYear()).slice(2),
         });
-        m = next;
+        month = next;
       }
     }
     return cells;
   }
 
   function xOf(date) {
-    if (!CELLS.length) return 0;
-    const t = date.getTime();
-    if (t <= CELLS[0].from.getTime()) return CELLS[0].x;
-    const last = CELLS[CELLS.length - 1];
-    if (t >= last.to.getTime()) return last.x + last.w;
-    for (const c of CELLS) {
-      if (t >= c.from.getTime() && t < c.to.getTime()) {
-        return c.x + (t - c.from.getTime()) / (c.to.getTime() - c.from.getTime()) * c.w;
+    if (!scale.cells.length) return 0;
+    const time = date.getTime();
+    const first = scale.cells[0];
+    if (time <= first.from.getTime()) return first.x;
+    const last = scale.cells[scale.cells.length - 1];
+    if (time >= last.to.getTime()) return last.x + last.w;
+    for (const cell of scale.cells) {
+      if (time >= cell.from.getTime() && time < cell.to.getTime()) {
+        return cell.x + (time - cell.from.getTime()) / (cell.to.getTime() - cell.from.getTime()) * cell.w;
       }
     }
     return last.x + last.w;
   }
 
-  function renderHeader() {
+  function renderGanttHeader() {
     const header = el("div", "gantt-header");
-    const corner = el("div", "corner", "Событие");
     const months = el("div", "months");
-    CELLS.forEach(c => {
-      const cell = el("div", "month-cell", c.label);
-      cell.style.width = c.w + "px";
-      months.appendChild(cell);
+    const fragment = document.createDocumentFragment();
+    scale.cells.forEach(cell => {
+      const node = el("div", "month-cell", cell.label);
+      node.style.width = cell.w + "px";
+      fragment.appendChild(node);
     });
-    header.append(corner, months);
+    months.appendChild(fragment);
+    header.append(el("div", "corner", "Событие"), months);
     return header;
   }
 
-  function renderChips(h) {
-    const chips = el("div", "chips");
-    trackTags(h).forEach(t => chips.appendChild(el("span", "chip chip-track", t)));
-    const prize = prizeChip(h);
-    if (prize) chips.appendChild(el("span", "chip chip-prize", prize));
-    const fmt = formatChip(h);
-    if (fmt) chips.appendChild(el("span", "chip chip-fmt " + fmt.cls, fmt.cat));
-    const part = participationChip(h);
-    if (part) chips.appendChild(el("span", "chip", part));
-    return chips.childElementCount ? chips : null;
+  function renderGanttNameRow(h) {
+    const row = el("div", "name-row");
+    const info = el("div", "info");
+    const line = el("div", "n-line");
+    const name = el("span", "n", h.name);
+    name.title = h.name;
+    line.appendChild(name);
+
+    if (isHttp(h.url)) {
+      line.appendChild(externalIconLink(
+        h.url,
+        "src",
+        ICONS.link,
+        "Страница события: " + h.name
+      ));
+    }
+
+    line.appendChild(externalIconLink(
+      googleCalendarUrl(h.name, h.start, h.end, detailsOf(h)),
+      "src",
+      ICONS.google,
+      "Добавить в Google Календарь: " + h.name,
+      "Добавить в Google Календарь"
+    ));
+
+    const ics = button("src", null, () => downloadICS(h));
+    ics.innerHTML = ICONS.ics;
+    ics.setAttribute("aria-label", "Скачать .ics: " + h.name);
+    ics.title = "Скачать .ics";
+    line.appendChild(ics);
+
+    info.appendChild(line);
+    const chips = renderChips(h);
+    if (chips) info.appendChild(chips);
+
+    name.addEventListener("click", () => openModal(h));
+    row.addEventListener("click", e => {
+      if (!isMobile() || e.target.closest("a, button, .n")) return;
+      openModal(h);
+    });
+    row.appendChild(info);
+    return row;
   }
 
-  function computeCornerWidth(availW) {
+  function renderGanttTrack(h, index, nameRow) {
+    const track = el("div", "bar-track");
+    track.style.top = index * scale.rowHeight + "px";
+    track.style.width = scale.width + "px";
+    bindRowHover(nameRow, track);
+
+    for (const segment of segmentsOf(h)) {
+      const x0 = xOf(parseISO(segment.start));
+      const x1 = xOf(new Date(parseISO(segment.end).getTime() + MS_DAY));
+      const width = x1 - x0;
+      if (width <= 0) continue;
+
+      const bar = el("div", "bar");
+      bar.style.left = x0 + "px";
+      bar.style.width = width + "px";
+      bar.tabIndex = 0;
+      bar.setAttribute("aria-label", h.name);
+      bindTip(bar, h);
+      bar.addEventListener("click", () => openModal(h));
+      bar.addEventListener("keydown", e => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          openModal(h);
+        }
+      });
+      bar.addEventListener("focus", () => showTipAtRect(bar.getBoundingClientRect(), h));
+      bar.addEventListener("blur", hideTip);
+      track.appendChild(bar);
+    }
+
+    const deadline = regDeadline(h);
+    if (deadline) {
+      const x = xOf(deadline);
+      if (x >= 0 && x <= scale.width) {
+        const mark = el("div", "reg-mark");
+        mark.style.left = x + "px";
+        mark.setAttribute("aria-label", "Регистрация: " + h.registration);
+        bindTip(mark, h);
+        mark.addEventListener("click", () => openModal(h));
+        track.appendChild(mark);
+      }
+    }
+    return track;
+  }
+
+  function renderGanttBody(items) {
+    const body = el("div", "gantt-body");
+    const names = el("div", "names-col");
+    const timelineEl = el("div", "timeline");
+    const height = items.length * scale.rowHeight;
+    names.style.height = height + "px";
+    timelineEl.style.width = scale.width + "px";
+    timelineEl.style.height = height + "px";
+
+    const bands = document.createDocumentFragment();
+    scale.cells.forEach((cell, index) => {
+      if (index % 2 === 0) return;
+      const band = el("div", "month-band");
+      band.style.left = cell.x + "px";
+      band.style.width = cell.w + "px";
+      bands.appendChild(band);
+    });
+    timelineEl.appendChild(bands);
+
+    const lines = document.createDocumentFragment();
+    scale.cells.slice(1).forEach(cell => {
+      const line = el("div", "month-line");
+      line.style.left = cell.x + "px";
+      lines.appendChild(line);
+    });
+    timelineEl.appendChild(lines);
+
+    items.forEach((h, index) => {
+      const nameRow = renderGanttNameRow(h);
+      names.appendChild(nameRow);
+      timelineEl.appendChild(renderGanttTrack(h, index, nameRow));
+    });
+
+    const today = todayMidnight();
+    if (today >= scale.min && today <= scale.max) {
+      const line = el("div", "today-line");
+      line.style.left = xOf(today) + "px";
+      timelineEl.appendChild(line);
+    }
+
+    body.append(names, timelineEl);
+    return body;
+  }
+
+  function computeCornerWidth(availableWidth) {
     if (isMobile()) return window.innerWidth <= 359 ? 160 : 180;
     const names = ganttInner.querySelector(".names-col");
     const border = names ? parseFloat(getComputedStyle(names).borderRightWidth) || 0 : 0;
-    const cs = names ? getComputedStyle(names.querySelector(".name-row")) : null;
-    const chrome = cs
-      ? (parseFloat(cs.paddingLeft) || 0) + (parseFloat(cs.paddingRight) || 0) + border
+    const rowStyle = names ? getComputedStyle(names.querySelector(".name-row")) : null;
+    const chrome = rowStyle
+      ? (parseFloat(rowStyle.paddingLeft) || 0) + (parseFloat(rowStyle.paddingRight) || 0) + border
       : 28 + border;
     let needed = 0;
     ganttInner.querySelectorAll(".name-row .n-line").forEach(line => {
       const gap = parseFloat(getComputedStyle(line).gap) || 0;
-      let w = 0, children = 0;
+      let width = 0;
+      let children = 0;
       line.querySelectorAll(":scope > *").forEach(child => {
-        w += child.scrollWidth;
+        width += child.scrollWidth;
         children++;
       });
-      w += gap * Math.max(0, children - 1);
-      needed = Math.max(needed, w);
+      width += gap * Math.max(0, children - 1);
+      needed = Math.max(needed, width);
     });
     needed += chrome;
-    const cap = Math.max(320, availW - 260);
+    const cap = Math.max(320, availableWidth - 260);
     return Math.ceil(Math.max(320, Math.min(needed, cap)));
   }
 
   function fitChips() {
     ganttInner.querySelectorAll(".chips").forEach(chips => {
       chips.style.fontSize = "";
-      const avail = chips.parentElement.clientWidth;
+      const available = chips.parentElement.clientWidth;
       let natural = chips.getBoundingClientRect().width;
-      if (!avail || natural <= avail) return;
+      if (!available || natural <= available) return;
       const base = parseFloat(getComputedStyle(chips).fontSize) || 10.5;
       let size = base;
       for (let i = 0; i < 8 && size > 7; i++) {
-        size = Math.max(7, size * avail / natural * 0.99);
+        size = Math.max(7, size * available / natural * 0.99);
         chips.style.fontSize = size + "px";
         natural = chips.getBoundingClientRect().width;
-        if (natural <= avail) break;
+        if (natural <= available) break;
       }
     });
-  }
-
-  function bindRowHover(nameRow, track) {
-    const on = () => { nameRow.classList.add("is-hover"); track.classList.add("is-hover"); };
-    const off = () => { nameRow.classList.remove("is-hover"); track.classList.remove("is-hover"); };
-    nameRow.addEventListener("mouseenter", on);
-    nameRow.addEventListener("mouseleave", off);
-    track.addEventListener("mouseenter", on);
-    track.addEventListener("mouseleave", off);
-  }
-
-  function bindTip(node, h) {
-    node.addEventListener("mouseenter", e => showTip(e, h));
-    node.addEventListener("mousemove", moveTip);
-    node.addEventListener("mouseleave", hideTip);
-  }
-
-  function addVideoMark(btn, h) {
-    if (!h.links || !h.links.some(l => l.kind === "video")) return;
-    const mark = el("span", "cal-ev-video");
-    mark.innerHTML = VIDEO_SVG;
-    mark.title = "Есть видео";
-    mark.setAttribute("role", "img");
-    mark.setAttribute("aria-label", "Есть видео");
-    btn.appendChild(mark);
-  }
-
-  function renderBody(items) {
-    const body = el("div", "gantt-body");
-    const names = el("div", "names-col");
-    const timeline = el("div", "timeline");
-    const rowsH = items.length * ROW_H;
-    names.style.height = rowsH + "px";
-    timeline.style.width = TIMELINE_W + "px";
-    timeline.style.height = rowsH + "px";
-
-    const bands = document.createDocumentFragment();
-    CELLS.forEach((c, i) => {
-      if (i % 2 === 0) return;
-      const band = el("div", "month-band");
-      band.style.left = c.x + "px";
-      band.style.width = c.w + "px";
-      bands.appendChild(band);
-    });
-    timeline.appendChild(bands);
-
-    const lines = document.createDocumentFragment();
-    CELLS.slice(1).forEach(c => {
-      const line = el("div", "month-line");
-      line.style.left = c.x + "px";
-      lines.appendChild(line);
-    });
-    timeline.appendChild(lines);
-
-    items.forEach((h, i) => {
-      const nameRow = el("div", "name-row");
-      const info = el("div", "info");
-      const line = el("div", "n-line");
-      const nameEl = el("span", "n", h.name);
-      nameEl.title = h.name;
-      line.appendChild(nameEl);
-      if (h.url && /^https?:\/\//i.test(h.url)) {
-        const src = el("a", "src");
-        src.href = h.url;
-        src.target = "_blank";
-        src.rel = "noopener noreferrer";
-        src.setAttribute("aria-label", "Страница события: " + h.name);
-        src.innerHTML = LINK_SVG;
-        line.appendChild(src);
-      }
-      const gcal = el("a", "src");
-      gcal.href = googleUrl(h.name, h.start, h.end, detailsOf(h));
-      gcal.target = "_blank";
-      gcal.rel = "noopener noreferrer";
-      gcal.setAttribute("aria-label", "Добавить в Google Календарь: " + h.name);
-      gcal.title = "Добавить в Google Календарь";
-      gcal.innerHTML = CAL_SVG;
-      line.appendChild(gcal);
-
-      const icsBtn = el("button", "src");
-      icsBtn.type = "button";
-      icsBtn.setAttribute("aria-label", "Скачать .ics: " + h.name);
-      icsBtn.title = "Скачать .ics";
-      icsBtn.innerHTML = ICS_SVG;
-      icsBtn.addEventListener("click", () => downloadICS(h));
-      line.appendChild(icsBtn);
-      info.appendChild(line);
-      const chips = renderChips(h);
-      if (chips) info.appendChild(chips);
-      nameEl.addEventListener("click", () => openModal(h));
-      nameRow.addEventListener("click", e => {
-        if (!isMobile() || e.target.closest("a, button, .n")) return;
-        openModal(h);
-      });
-      nameRow.appendChild(info);
-      names.appendChild(nameRow);
-
-      const track = el("div", "bar-track");
-      track.style.top = i * ROW_H + "px";
-      track.style.width = TIMELINE_W + "px";
-      bindRowHover(nameRow, track);
-
-      for (const seg of segmentsOf(h)) {
-        const x0 = xOf(parseISO(seg.start));
-        const x1 = xOf(new Date(parseISO(seg.end).getTime() + MS_DAY));
-        const w = x1 - x0;
-        if (w <= 0) continue;
-        const bar = el("div", "bar");
-        bar.style.left = x0 + "px";
-        bar.style.width = w + "px";
-        bar.tabIndex = 0;
-        bar.setAttribute("aria-label", h.name);
-        bindTip(bar, h);
-        bar.addEventListener("click", () => openModal(h));
-        bar.addEventListener("keydown", e => {
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            openModal(h);
-          }
-        });
-        bar.addEventListener("focus", () => showTipAtRect(bar.getBoundingClientRect(), h));
-        bar.addEventListener("blur", hideTip);
-        track.appendChild(bar);
-      }
-
-      const reg = regDeadline(h);
-      if (reg) {
-        const x = xOf(reg);
-        if (x >= 0 && x <= TIMELINE_W) {
-          const mk = el("div", "reg-mark");
-          mk.style.left = x + "px";
-          mk.setAttribute("aria-label", "Регистрация: " + h.registration);
-          bindTip(mk, h);
-          mk.addEventListener("click", () => openModal(h));
-          track.appendChild(mk);
-        }
-      }
-      timeline.appendChild(track);
-    });
-
-    const today = todayMidnight();
-    if (today >= MIN && today <= MAX) {
-      const line = el("div", "today-line");
-      line.style.left = xOf(today) + "px";
-      timeline.appendChild(line);
-    }
-
-    body.append(names, timeline);
-    return body;
-  }
-
-  function resetFilters() {
-    searchInput.value = "";
-    state.query = "";
-    state.actual = false;
-    state.signup = false;
-    state.fmt = "";
-    filterGroup.querySelectorAll(".seg-btn").forEach(btn => {
-      btn.classList.remove("is-active");
-      btn.setAttribute("aria-pressed", "false");
-    });
-    fmtGroup.querySelectorAll(".seg-btn").forEach(btn => {
-      const active = btn.dataset.fmt === "";
-      btn.classList.toggle("is-active", active);
-      btn.setAttribute("aria-pressed", String(active));
-    });
-    build();
-    searchInput.focus();
-  }
-
-  /* ---------- calendar ---------- */
-  function calBounds() {
-    if (!DATASETS.event.length) return null;
-    let lo = null, hi = null;
-    DATASETS.event.forEach(h => {
-      const s = parseISO(h.start), e = parseISO(h.end);
-      if (!lo || s < lo) lo = s;
-      if (!hi || e > hi) hi = e;
-    });
-    return {
-      min: new Date(lo.getFullYear(), lo.getMonth(), 1),
-      max: new Date(hi.getFullYear(), hi.getMonth(), 1),
-    };
-  }
-
-  const ymd = d => d.getFullYear() + "-" + pad2(d.getMonth() + 1) + "-" + pad2(d.getDate());
-  const ymOf = d => d.getFullYear() + "-" + pad2(d.getMonth() + 1);
-
-  function calHeaderH() {
-    return calDow.classList.contains("is-hidden") ? 0 : calDow.offsetHeight;
-  }
-
-  function calFirstCell(ym) {
-    return calGrid.querySelector('[data-ym="' + ym + '"]');
-  }
-
-  function calMonthStart(ym) {
-    const cell = calFirstCell(ym);
-    return cell ? cell.offsetTop : null;
-  }
-
-  function calScrollToMonth(ym, smooth) {
-    const start = calMonthStart(ym);
-    if (start == null) return false;
-    const top = Math.max(0, start);
-    if (smooth) calendarScroll.scrollTo({ top, behavior: "smooth" });
-    else calendarScroll.scrollTop = top;
-    return true;
-  }
-
-  function calScrollToDay(dateKey, smooth) {
-    const cell = calGrid.querySelector('[data-date="' + dateKey + '"]');
-    if (!cell) return false;
-    const mh = calGrid.querySelector(".cal-agenda-month");
-    const top = Math.max(0, cell.offsetTop - (mh ? mh.offsetHeight : 0));
-    if (smooth) calendarScroll.scrollTo({ top, behavior: "smooth" });
-    else calendarScroll.scrollTop = top;
-    return true;
-  }
-
-  function calMonthList() {
-    const list = [];
-    calGrid.querySelectorAll("[data-ym]").forEach(c => {
-      const ym = c.dataset.ym;
-      if (list[list.length - 1] !== ym) list.push(ym);
-    });
-    return list;
-  }
-
-  function calTopMonth() {
-    const list = calMonthList();
-    if (!list.length) return null;
-    const edge = calendarScroll.scrollTop + calHeaderH() + 1;
-    let cur = list[0];
-    list.forEach(ym => {
-      const start = calMonthStart(ym);
-      if (start != null && start <= edge) cur = ym;
-    });
-    return cur;
-  }
-
-  function calShift(delta) {
-    const list = calMonthList();
-    if (!list.length) return;
-    const next = list[Math.max(0, list.indexOf(calTopMonth())) + delta];
-    if (next) calScrollToMonth(next, true);
-  }
-
-  function calJumpToResults() {
-    if (state.tab !== "event") return;
-    if (!state.query && !state.fmt) return;
-    const items = EVENTS.filter(matches);
-    if (!items.length) return;
-    const h = items.reduce((a, b) => (parseISO(a.start) <= parseISO(b.start) ? a : b));
-    const start = parseISO(h.start);
-    const ym = ymOf(start);
-    const dayKey = ymd(start);
-    const cell = (isMobile() && calGrid.querySelector('[data-date="' + dayKey + '"]')) || calFirstCell(ym);
-    if (!cell) return;
-    const scRect = calendarScroll.getBoundingClientRect();
-    const cRect = cell.getBoundingClientRect();
-    const topEdge = scRect.top + calHeaderH();
-    if (cRect.bottom > topEdge && cRect.top < scRect.bottom) return;
-    if (cell.dataset.date) calScrollToDay(dayKey, true);
-    else calScrollToMonth(ym, true);
-  }
-
-  function startMinutes(h) {
-    const t = (timeOf(h) || "").match(/(\d{1,2}):(\d{2})/);
-    return t ? +t[1] * 60 + +t[2] : 24 * 60 + 1;
-  }
-
-  function buildAgenda(items) {
-    calGrid.replaceChildren();
-    const sorted = items.slice().sort((a, b) => {
-      const d = parseISO(a.start) - parseISO(b.start);
-      if (d) return d;
-      return startMinutes(a) - startMinutes(b);
-    });
-    const today = ymd(todayMidnight());
-    const frag = document.createDocumentFragment();
-    let curMonth = "", curDay = "";
-    sorted.forEach(h => {
-      const d = parseISO(h.start);
-      const ym = ymOf(d);
-      if (ym !== curMonth) {
-        curMonth = ym;
-        curDay = "";
-        const mh = el("div", "cal-agenda-month", MONTHS_FULL[d.getMonth()] + " " + d.getFullYear());
-        mh.dataset.ym = ym;
-        frag.appendChild(mh);
-      }
-      const key = ymd(d);
-      if (key !== curDay) {
-        curDay = key;
-        const dh = el("div", "cal-agenda-day" + (key === today ? " is-today" : ""),
-          DOW_SHORT[d.getDay()] + ", " + d.getDate() + " " + MONTHS_GEN[d.getMonth()] +
-          (key === today ? " · сегодня" : ""));
-        dh.dataset.date = key;
-        frag.appendChild(dh);
-      }
-      const fmt = fmtCls(h);
-      const btn = el("button", "cal-ev cal-agenda-ev" + (fmt ? " cal-ev--" + fmt : ""));
-      const t = (timeOf(h) || "").match(/(\d{1,2}):(\d{2})/);
-      if (t) btn.appendChild(el("span", "cal-ev-time", t[0]));
-      btn.appendChild(el("span", "cal-ev-name", h.name));
-      if (h.end !== h.start) btn.appendChild(el("span", "cal-agenda-until", "до " + fmtDate(h.end)));
-      addVideoMark(btn, h);
-      btn.type = "button";
-      btn.title = h.name;
-      bindTip(btn, h);
-      btn.addEventListener("click", () => openModal(h));
-      frag.appendChild(btn);
-    });
-    calGrid.appendChild(frag);
-    if (!state.calInit) {
-      state.calInit = true;
-      const todayKey = ymd(todayMidnight());
-      if (!calScrollToDay(todayKey, false) && !calScrollToMonth(ymOf(todayMidnight()), false)) {
-        const first = calGrid.querySelector("[data-ym]");
-        if (first) calScrollToMonth(first.dataset.ym, false);
-      }
-    }
-  }
-
-  function buildCalendar() {
-    const b = calBounds();
-    if (b) {
-      MIN = b.min;
-      MAX = new Date(b.max.getFullYear(), b.max.getMonth() + 1, 0);
-    }
-
-    const items = EVENTS.filter(matches);
-    if (!items.length) {
-      calGrid.replaceChildren();
-      calGrid.classList.add("is-hidden");
-      calDow.classList.add("is-hidden");
-      calEmpty.replaceChildren();
-      calEmpty.appendChild(el("span", null,
-        EVENTS.length ? "Ничего не найдено" : "Нет данных о событиях"));
-      if (EVENTS.length) {
-        const reset = el("button", "link", "сбросить фильтры");
-        reset.type = "button";
-        reset.addEventListener("click", resetFilters);
-        calEmpty.appendChild(reset);
-      }
-      calEmpty.classList.add("is-active");
-      return;
-    }
-    calEmpty.classList.remove("is-active");
-    calEmpty.replaceChildren();
-    calGrid.classList.remove("is-hidden");
-    calDow.classList.remove("is-hidden");
-
-    const mobileCal = isMobile();
-    calGrid.classList.toggle("cal-agenda", mobileCal);
-    calDow.classList.toggle("is-hidden", mobileCal);
-    if (mobileCal) {
-      buildAgenda(items);
-      return;
-    }
-    calGrid.classList.remove("cal-agenda");
-
-    const byDay = new Map();
-    const startInfo = new Map();
-    items.forEach(h => {
-      const t = (timeOf(h) || "").match(/(\d{1,2}):(\d{2})/);
-      startInfo.set(h, t ? { label: t[0], min: +t[1] * 60 + +t[2] } : null);
-      const end = parseISO(h.end);
-      for (const d = parseISO(h.start); d <= end; d.setDate(d.getDate() + 1)) {
-        const key = ymd(d);
-        if (!byDay.has(key)) byDay.set(key, []);
-        byDay.get(key).push(h);
-      }
-    });
-    byDay.forEach(arr => arr.sort((a, b) => {
-      const sa = startInfo.get(a), sb = startInfo.get(b);
-      if (!sa) return sb ? 1 : 0;
-      if (!sb) return -1;
-      return sa.min - sb.min;
-    }));
-
-    const today = todayMidnight().getTime();
-    const firstItem = items.reduce((a, h) => (parseISO(a.start) <= parseISO(h.start) ? a : h));
-    const lastItem = items.reduce((a, h) => (parseISO(a.end) >= parseISO(h.end) ? a : h));
-    const fromS = parseISO(firstItem.start);
-    const toE = parseISO(lastItem.end);
-    const from = new Date(fromS.getFullYear(), fromS.getMonth(), 1);
-    const to = new Date(toE.getFullYear(), toE.getMonth(), 1);
-    const gridStart = new Date(from.getFullYear(), from.getMonth(), 1 - ((from.getDay() + 6) % 7));
-    const toLast = new Date(to.getFullYear(), to.getMonth() + 1, 0);
-    const gridEnd = new Date(to.getFullYear(), to.getMonth(), toLast.getDate() + (6 - ((toLast.getDay() + 6) % 7)));
-    const totalDays = Math.round((gridEnd - gridStart) / MS_DAY) + 1;
-    const rows = totalDays / 7;
-
-    const months = [];
-    for (let y = from.getFullYear(), m = from.getMonth(); ; ) {
-      months.push({ y: y, m: m, ym: ymOf(new Date(y, m, 1)) });
-      if (y === to.getFullYear() && m === to.getMonth()) break;
-      m++;
-      if (m > 11) { m = 0; y++; }
-    }
-    const monthIdx = new Map(months.map((mo, i) => [mo.ym, i]));
-
-    const rowMonth = [];
-    for (let r = 0; r < rows; r++) {
-      const d = new Date(gridStart.getFullYear(), gridStart.getMonth(), gridStart.getDate() + r * 7);
-      const ym = ymOf(d);
-      rowMonth.push(monthIdx.has(ym) ? monthIdx.get(ym)
-        : (r === 0 ? 0 : months.length - 1));
-    }
-    const labelSpan = months.map(() => null);
-    rowMonth.forEach((mi, r) => {
-      if (!labelSpan[mi]) labelSpan[mi] = { r0: r, r1: r };
-      else labelSpan[mi].r1 = r;
-    });
-
-    const frag = document.createDocumentFragment();
-    months.forEach((mo, i) => {
-      const sp = labelSpan[i];
-      const label = el("div", "cal-rail");
-      label.style.gridColumn = "1";
-      label.style.gridRow = (sp.r0 + 1) + " / span " + (sp.r1 - sp.r0 + 1);
-      label.appendChild(el("span", null, MONTHS_FULL[mo.m] + " " + mo.y));
-      frag.appendChild(label);
-    });
-
-    const firstCells = new Map();
-    for (let r = 0; r < rows; r++) {
-      for (let c = 0; c < 7; c++) {
-        const d = new Date(gridStart.getFullYear(), gridStart.getMonth(), gridStart.getDate() + r * 7 + c);
-        const ym = ymOf(d);
-        const cell = el("div", "cal-day" + (c === 0 ? " cal-day--mon" : "") + (c >= 5 ? " cal-day--weekend" : ""));
-        cell.style.gridColumn = String(c + 2);
-        cell.style.gridRow = String(r + 1);
-        if (d.getTime() === today) cell.classList.add("is-today");
-        cell.appendChild(el("div", "cal-day-num", String(d.getDate())));
-        (byDay.get(ymd(d)) || []).forEach(h => {
-          const fmt = fmtCls(h);
-          const btn = el("button", "cal-ev" + (fmt ? " cal-ev--" + fmt : ""));
-          const si = startInfo.get(h);
-          if (si) btn.appendChild(el("span", "cal-ev-time", si.label));
-          btn.appendChild(el("span", "cal-ev-name", h.name));
-          addVideoMark(btn, h);
-          btn.type = "button";
-          btn.title = h.name;
-          bindTip(btn, h);
-          btn.addEventListener("click", () => openModal(h));
-          cell.appendChild(btn);
-        });
-        if (monthIdx.has(ym) && !firstCells.has(ym)) {
-          cell.dataset.ym = ym;
-          firstCells.set(ym, cell);
-        }
-        frag.appendChild(cell);
-      }
-    }
-    calGrid.replaceChildren(frag);
-
-    const frames = el("div", "cal-frames");
-    const addH = (top, left, width) => {
-      const n = el("div", "cal-hline");
-      n.style.top = top + "px";
-      n.style.left = left + "px";
-      if (width == null) n.style.right = "0";
-      else n.style.width = width + "px";
-      frames.appendChild(n);
-    };
-    const addV = (left, top, height) => {
-      const n = el("div", "cal-vline");
-      n.style.left = left + "px";
-      n.style.top = top + "px";
-      if (height == null) n.style.bottom = "0";
-      else n.style.height = height + "px";
-      frames.appendChild(n);
-    };
-    for (let i = 0; i < months.length - 1; i++) {
-      const cell = firstCells.get(months[i + 1].ym);
-      if (!cell) continue;
-      const rowTop = cell.offsetTop;
-      const rowH = cell.offsetHeight;
-      const stepX = cell.offsetLeft;
-      const c1 = Number(cell.style.gridColumn) - 2;
-      if (c1 === 0) {
-        addH(rowTop, 0);
-      } else {
-        addH(rowTop + rowH, 0, stepX);
-        addV(stepX, rowTop, rowH + 1);
-        addH(rowTop, stepX);
-      }
-    }
-    calGrid.appendChild(frames);
-
-    if (!state.calInit) {
-      state.calInit = true;
-      if (!calScrollToMonth(ymOf(todayMidnight()), false)) {
-        calScrollToMonth(months[0].ym, false);
-      }
-    }
-  }
-
-  function build() {
-    hideTip();
-    searchInput.placeholder = isMobile() ? "Поиск событий…" : "Поиск по названию, задаче или типу…";
-    const isCal = state.tab === "event";
-    ganttWrap.classList.toggle("is-hidden", isCal);
-    calendarWrap.classList.toggle("is-active", isCal);
-    rangeGroup.classList.toggle("is-hidden", isCal);
-    calNav.classList.toggle("is-active", isCal);
-    fmtGroup.classList.toggle("is-active", isCal);
-    filterGroup.classList.toggle("is-hidden", isCal);
-    if (isCal) {
-      buildCalendar();
-      return null;
-    }
-    const base = baseEvents();
-    ganttInner.replaceChildren();
-
-    if (!EVENTS.length) {
-      ganttInner.appendChild(el("div", "empty", "Нет данных о событиях"));
-      return null;
-    }
-    if (!base.length) {
-      const box = el("div", "empty");
-      box.append(el("span", null, "Нет событий за выбранный период"));
-      const all = el("button", "link", "показать все");
-      all.type = "button";
-      all.addEventListener("click", () => setRange(0));
-      box.appendChild(all);
-      ganttInner.appendChild(box);
-      return null;
-    }
-
-    computeRange(base);
-    const items = base.filter(matches);
-
-    if (!items.length) {
-      const box = el("div", "empty");
-      box.append(el("span", null, "Ничего не найдено"));
-      const reset = el("button", "link", "сбросить фильтры");
-      reset.type = "button";
-      reset.addEventListener("click", resetFilters);
-      box.appendChild(reset);
-      ganttInner.appendChild(box);
-      return null;
-    }
-
-    layout(items);
-    return items;
   }
 
   function scrollGanttToToday() {
-    const cornerW = parseFloat(getComputedStyle(ganttWrap).getPropertyValue("--corner-w")) || 0;
-    const visible = Math.max(0, ganttScroll.clientWidth - cornerW);
+    const cornerWidth = parseFloat(getComputedStyle(ganttWrap).getPropertyValue("--corner-w")) || 0;
+    const visible = Math.max(0, ganttScroll.clientWidth - cornerWidth);
     const today = todayMidnight();
     const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
     const x = xOf(monthStart);
-    const max = Math.max(0, TIMELINE_W - visible);
+    const max = Math.max(0, scale.width - visible);
     ganttScroll.scrollLeft = Math.max(0, Math.min(max, x - 2));
   }
 
-  function layout(items) {
-    const availW = ganttWrap.clientWidth || window.innerWidth || 1000;
-    ROW_H = parseFloat(getComputedStyle(ganttWrap).getPropertyValue("--row-h")) || 62;
+  function layoutGantt(items) {
+    const availableWidth = ganttWrap.clientWidth || window.innerWidth || 1000;
+    scale.rowHeight = parseFloat(getComputedStyle(ganttWrap).getPropertyValue("--row-h")) || 62;
 
-    TIMELINE_W = 1000;
-    DAY_W = TIMELINE_W / TOTAL_DAYS;
-    CELLS = buildCells();
-    ganttInner.append(renderHeader(), renderBody(items));
+    scale.width = 1000;
+    scale.dayWidth = scale.width / scale.totalDays;
+    scale.cells = buildCells();
+    ganttInner.append(renderGanttHeader(), renderGanttBody(items));
 
-    const cornerW = computeCornerWidth(availW);
-    const scrollbarW = ganttScroll.offsetWidth - ganttScroll.clientWidth;
-    ganttWrap.style.setProperty("--corner-w", cornerW + "px");
-    const fitW = Math.max(100, availW - scrollbarW - cornerW);
-    TIMELINE_W = isMobile() ? Math.max(fitW, Math.ceil(TOTAL_DAYS * 3)) : fitW;
-    DAY_W = TIMELINE_W / TOTAL_DAYS;
-    CELLS = buildCells();
-    ganttInner.style.setProperty("--timeline-w", TIMELINE_W + "px");
+    const cornerWidth = computeCornerWidth(availableWidth);
+    const scrollbarWidth = ganttScroll.offsetWidth - ganttScroll.clientWidth;
+    ganttWrap.style.setProperty("--corner-w", cornerWidth + "px");
+    const fitWidth = Math.max(100, availableWidth - scrollbarWidth - cornerWidth);
+    scale.width = isMobile()
+      ? Math.max(fitWidth, Math.ceil(scale.totalDays * MIN_DAY_W_MOBILE))
+      : fitWidth;
+    scale.dayWidth = scale.width / scale.totalDays;
+    scale.cells = buildCells();
+    ganttInner.style.setProperty("--timeline-w", scale.width + "px");
 
-    ganttInner.replaceChildren(renderHeader(), renderBody(items));
+    ganttInner.replaceChildren(renderGanttHeader(), renderGanttBody(items));
     fitChips();
 
     if (isMobile()) {
@@ -1938,54 +1727,490 @@
     }
   }
 
-  /* ---------- tooltip & modal ---------- */
+  /* ==========================================================================
+     Календарь мероприятий: прокрутка и навигация
+     ========================================================================== */
+
+  function calendarBounds() {
+    if (!DATASETS.event.length) return null;
+    let lo = null;
+    let hi = null;
+    DATASETS.event.forEach(h => {
+      const start = parseISO(h.start);
+      const end = parseISO(h.end);
+      if (!lo || start < lo) lo = start;
+      if (!hi || end > hi) hi = end;
+    });
+    return {
+      min: new Date(lo.getFullYear(), lo.getMonth(), 1),
+      max: new Date(hi.getFullYear(), hi.getMonth(), 1),
+    };
+  }
+
+  function calendarHeaderHeight() {
+    return calDow.classList.contains("is-hidden") ? 0 : calDow.offsetHeight;
+  }
+
+  function calendarFirstCell(monthKey) {
+    return calGrid.querySelector('[data-ym="' + monthKey + '"]');
+  }
+
+  function calendarMonthStart(monthKey) {
+    const cell = calendarFirstCell(monthKey);
+    return cell ? cell.offsetTop : null;
+  }
+
+  function scrollCalendarTo(top, smooth) {
+    const target = Math.max(0, top);
+    if (smooth) calendarScroll.scrollTo({ top: target, behavior: "smooth" });
+    else calendarScroll.scrollTop = target;
+  }
+
+  function calendarScrollToMonth(monthKey, smooth) {
+    const start = calendarMonthStart(monthKey);
+    if (start == null) return false;
+    scrollCalendarTo(start, smooth);
+    return true;
+  }
+
+  function calendarScrollToDay(dateKey, smooth) {
+    const cell = calGrid.querySelector('[data-date="' + dateKey + '"]');
+    if (!cell) return false;
+    const monthHeading = calGrid.querySelector(".cal-agenda-month");
+    scrollCalendarTo(cell.offsetTop - (monthHeading ? monthHeading.offsetHeight : 0), smooth);
+    return true;
+  }
+
+  function calendarMonthList() {
+    const list = [];
+    calGrid.querySelectorAll("[data-ym]").forEach(cell => {
+      const monthKey = cell.dataset.ym;
+      if (list[list.length - 1] !== monthKey) list.push(monthKey);
+    });
+    return list;
+  }
+
+  function calendarTopMonth() {
+    const list = calendarMonthList();
+    if (!list.length) return null;
+    const edge = calendarScroll.scrollTop + calendarHeaderHeight() + 1;
+    let current = list[0];
+    list.forEach(monthKey => {
+      const start = calendarMonthStart(monthKey);
+      if (start != null && start <= edge) current = monthKey;
+    });
+    return current;
+  }
+
+  function shiftCalendarMonth(delta) {
+    const list = calendarMonthList();
+    if (!list.length) return;
+    const next = list[Math.max(0, list.indexOf(calendarTopMonth())) + delta];
+    if (next) calendarScrollToMonth(next, true);
+  }
+
+  function jumpToCalendarResults() {
+    if (state.tab !== "event" || (!state.query && !state.fmt)) return;
+    const items = state.events.filter(matches);
+    if (!items.length) return;
+    const first = items.reduce((a, b) => (parseISO(a.start) <= parseISO(b.start) ? a : b));
+    const start = parseISO(first.start);
+    const monthKey = ymOf(start);
+    const dayKey = ymd(start);
+    const cell = (isMobile() && calGrid.querySelector('[data-date="' + dayKey + '"]')) ||
+      calendarFirstCell(monthKey);
+    if (!cell) return;
+    const scrollRect = calendarScroll.getBoundingClientRect();
+    const cellRect = cell.getBoundingClientRect();
+    const topEdge = scrollRect.top + calendarHeaderHeight();
+    if (cellRect.bottom > topEdge && cellRect.top < scrollRect.bottom) return;
+    if (cell.dataset.date) calendarScrollToDay(dayKey, true);
+    else calendarScrollToMonth(monthKey, true);
+  }
+
+  /* ==========================================================================
+     Календарь: сетка месяца и агенда
+     ========================================================================== */
+
+  function addVideoMark(btn, h) {
+    if (!Array.isArray(h.links) || !h.links.some(link => link.kind === "video")) return;
+    const mark = el("span", "cal-ev-video");
+    mark.innerHTML = ICONS.video;
+    mark.title = "Есть видео";
+    mark.setAttribute("role", "img");
+    mark.setAttribute("aria-label", "Есть видео");
+    btn.appendChild(mark);
+  }
+
+  function calendarChip(h, options) {
+    const settings = options || {};
+    const format = formatOf(h);
+    const className = "cal-ev" + (format ? " cal-ev--" + format.kind : "") +
+      (settings.agenda ? " cal-agenda-ev" : "");
+    const btn = el("button", className);
+    const timeLabel = settings.timeLabel !== undefined
+      ? settings.timeLabel
+      : (startTimeOf(h) || {}).label;
+    if (timeLabel) btn.appendChild(el("span", "cal-ev-time", timeLabel));
+    btn.appendChild(el("span", "cal-ev-name", h.name));
+    if (settings.until && h.end !== h.start) {
+      btn.appendChild(el("span", "cal-agenda-until", "до " + fmtDate(h.end)));
+    }
+    addVideoMark(btn, h);
+    btn.type = "button";
+    btn.title = h.name;
+    bindTip(btn, h);
+    btn.addEventListener("click", () => openModal(h));
+    return btn;
+  }
+
+  function renderAgenda(items) {
+    calGrid.replaceChildren();
+    const startTimes = new Map(items.map(h => [h, startTimeOf(h)]));
+    const sorted = items.slice().sort((a, b) => {
+      const byDate = parseISO(a.start) - parseISO(b.start);
+      if (byDate) return byDate;
+      const timeA = startTimes.get(a);
+      const timeB = startTimes.get(b);
+      return (timeA ? timeA.minutes : 24 * 60 + 1) - (timeB ? timeB.minutes : 24 * 60 + 1);
+    });
+    const todayKey = ymd(todayMidnight());
+    const fragment = document.createDocumentFragment();
+    let currentMonth = "";
+    let currentDay = "";
+
+    sorted.forEach(h => {
+      const start = parseISO(h.start);
+      const monthKey = ymOf(start);
+      if (monthKey !== currentMonth) {
+        currentMonth = monthKey;
+        currentDay = "";
+        const heading = el("div", "cal-agenda-month", MONTHS_FULL[start.getMonth()] + " " + start.getFullYear());
+        heading.dataset.ym = monthKey;
+        fragment.appendChild(heading);
+      }
+      const dayKey = ymd(start);
+      if (dayKey !== currentDay) {
+        currentDay = dayKey;
+        const heading = el("div", "cal-agenda-day" + (dayKey === todayKey ? " is-today" : ""),
+          DOW_SHORT[start.getDay()] + ", " + start.getDate() + " " + MONTHS_GEN[start.getMonth()] +
+          (dayKey === todayKey ? " · сегодня" : ""));
+        heading.dataset.date = dayKey;
+        fragment.appendChild(heading);
+      }
+      const time = startTimes.get(h);
+      fragment.appendChild(calendarChip(h, {
+        agenda: true,
+        until: true,
+        timeLabel: time ? time.label : "",
+      }));
+    });
+
+    calGrid.appendChild(fragment);
+    if (!state.calInit) {
+      state.calInit = true;
+      const today = todayMidnight();
+      if (!calendarScrollToDay(ymd(today), false) && !calendarScrollToMonth(ymOf(today), false)) {
+        const first = calGrid.querySelector("[data-ym]");
+        if (first) calendarScrollToMonth(first.dataset.ym, false);
+      }
+    }
+  }
+
+  function renderMonthFrames(months, firstCells) {
+    const frames = el("div", "cal-frames");
+    const addHorizontal = (top, left, width) => {
+      const line = el("div", "cal-hline");
+      line.style.top = top + "px";
+      line.style.left = left + "px";
+      if (width == null) line.style.right = "0";
+      else line.style.width = width + "px";
+      frames.appendChild(line);
+    };
+    const addVertical = (left, top, height) => {
+      const line = el("div", "cal-vline");
+      line.style.left = left + "px";
+      line.style.top = top + "px";
+      if (height == null) line.style.bottom = "0";
+      else line.style.height = height + "px";
+      frames.appendChild(line);
+    };
+
+    for (let i = 0; i < months.length - 1; i++) {
+      const cell = firstCells.get(months[i + 1].ym);
+      if (!cell) continue;
+      const rowTop = cell.offsetTop;
+      const rowHeight = cell.offsetHeight;
+      const stepX = cell.offsetLeft;
+      const column = Number(cell.style.gridColumn) - 2;
+      if (column === 0) {
+        addHorizontal(rowTop, 0);
+      } else {
+        addHorizontal(rowTop + rowHeight, 0, stepX);
+        addVertical(stepX, rowTop, rowHeight + 1);
+        addHorizontal(rowTop, stepX);
+      }
+    }
+    calGrid.appendChild(frames);
+  }
+
+  function buildCalendarGridModel(items) {
+    const byDay = new Map();
+    const startTimes = new Map();
+    items.forEach(h => {
+      startTimes.set(h, startTimeOf(h));
+      const end = parseISO(h.end);
+      for (const day = parseISO(h.start); day <= end; day.setDate(day.getDate() + 1)) {
+        const key = ymd(day);
+        if (!byDay.has(key)) byDay.set(key, []);
+        byDay.get(key).push(h);
+      }
+    });
+    byDay.forEach(list => list.sort((a, b) => {
+      const timeA = startTimes.get(a);
+      const timeB = startTimes.get(b);
+      if (!timeA) return timeB ? 1 : 0;
+      if (!timeB) return -1;
+      return timeA.minutes - timeB.minutes;
+    }));
+
+    const todayTime = todayMidnight().getTime();
+    const firstItem = items.reduce((a, h) => (parseISO(a.start) <= parseISO(h.start) ? a : h));
+    const lastItem = items.reduce((a, h) => (parseISO(a.end) >= parseISO(h.end) ? a : h));
+    const firstStart = parseISO(firstItem.start);
+    const lastEnd = parseISO(lastItem.end);
+    const from = new Date(firstStart.getFullYear(), firstStart.getMonth(), 1);
+    const to = new Date(lastEnd.getFullYear(), lastEnd.getMonth(), 1);
+    const gridStart = new Date(from.getFullYear(), from.getMonth(), 1 - ((from.getDay() + 6) % 7));
+    const lastDayOfMonth = new Date(to.getFullYear(), to.getMonth() + 1, 0);
+    const gridEnd = new Date(to.getFullYear(), to.getMonth(),
+      lastDayOfMonth.getDate() + (6 - ((lastDayOfMonth.getDay() + 6) % 7)));
+    const totalDays = Math.round((gridEnd - gridStart) / MS_DAY) + 1;
+    const rows = totalDays / 7;
+
+    const months = [];
+    for (let year = from.getFullYear(), month = from.getMonth(); ; ) {
+      months.push({ y: year, m: month, ym: ymOf(new Date(year, month, 1)) });
+      if (year === to.getFullYear() && month === to.getMonth()) break;
+      month++;
+      if (month > 11) {
+        month = 0;
+        year++;
+      }
+    }
+    const monthIndex = new Map(months.map((month, index) => [month.ym, index]));
+
+    const rowMonth = [];
+    for (let row = 0; row < rows; row++) {
+      const date = new Date(gridStart.getFullYear(), gridStart.getMonth(), gridStart.getDate() + row * 7);
+      const monthKey = ymOf(date);
+      rowMonth.push(monthIndex.has(monthKey) ? monthIndex.get(monthKey) : (row === 0 ? 0 : months.length - 1));
+    }
+    const labelSpan = months.map(() => null);
+    rowMonth.forEach((index, row) => {
+      if (!labelSpan[index]) labelSpan[index] = { r0: row, r1: row };
+      else labelSpan[index].r1 = row;
+    });
+
+    return { byDay, startTimes, todayTime, gridStart, rows, months, monthIndex, labelSpan };
+  }
+
+  function renderCalendarGrid(items) {
+    const { byDay, startTimes, todayTime, gridStart, rows, months, monthIndex, labelSpan } =
+      buildCalendarGridModel(items);
+
+    const fragment = document.createDocumentFragment();
+    months.forEach((month, index) => {
+      const span = labelSpan[index];
+      const label = el("div", "cal-rail");
+      label.style.gridColumn = "1";
+      label.style.gridRow = (span.r0 + 1) + " / span " + (span.r1 - span.r0 + 1);
+      label.appendChild(el("span", null, MONTHS_FULL[month.m] + " " + month.y));
+      fragment.appendChild(label);
+    });
+
+    const firstCells = new Map();
+    for (let row = 0; row < rows; row++) {
+      for (let column = 0; column < 7; column++) {
+        const date = new Date(gridStart.getFullYear(), gridStart.getMonth(),
+          gridStart.getDate() + row * 7 + column);
+        const monthKey = ymOf(date);
+        const cell = el("div", "cal-day" +
+          (column === 0 ? " cal-day--mon" : "") +
+          (column >= 5 ? " cal-day--weekend" : ""));
+        cell.style.gridColumn = String(column + 2);
+        cell.style.gridRow = String(row + 1);
+        if (date.getTime() === todayTime) cell.classList.add("is-today");
+        cell.appendChild(el("div", "cal-day-num", String(date.getDate())));
+        (byDay.get(ymd(date)) || []).forEach(h => {
+          const time = startTimes.get(h);
+          cell.appendChild(calendarChip(h, { timeLabel: time ? time.label : "" }));
+        });
+        if (monthIndex.has(monthKey) && !firstCells.has(monthKey)) {
+          cell.dataset.ym = monthKey;
+          firstCells.set(monthKey, cell);
+        }
+        fragment.appendChild(cell);
+      }
+    }
+    calGrid.replaceChildren(fragment);
+    renderMonthFrames(months, firstCells);
+
+    if (!state.calInit) {
+      state.calInit = true;
+      if (!calendarScrollToMonth(ymOf(todayMidnight()), false)) {
+        calendarScrollToMonth(months[0].ym, false);
+      }
+    }
+  }
+
+  function renderCalendarEmpty() {
+    calGrid.replaceChildren();
+    calGrid.classList.add("is-hidden");
+    calGrid.classList.remove("cal-agenda");
+    calDow.classList.add("is-hidden");
+    calEmpty.replaceChildren();
+    calEmpty.appendChild(el("span", null,
+      state.events.length ? "Ничего не найдено" : "Нет данных о событиях"));
+    if (state.events.length) {
+      calEmpty.appendChild(button("link", "сбросить фильтры", resetFilters));
+    }
+    calEmpty.classList.add("is-active");
+  }
+
+  function renderCalendar() {
+    const bounds = calendarBounds();
+    if (bounds) {
+      scale.min = bounds.min;
+      scale.max = new Date(bounds.max.getFullYear(), bounds.max.getMonth() + 1, 0);
+    }
+
+    const items = state.events.filter(matches);
+    if (!items.length) {
+      renderCalendarEmpty();
+      return;
+    }
+
+    calEmpty.classList.remove("is-active");
+    calEmpty.replaceChildren();
+    calGrid.classList.remove("is-hidden");
+    calDow.classList.remove("is-hidden");
+
+    if (isMobile()) {
+      calGrid.classList.add("cal-agenda");
+      calDow.classList.add("is-hidden");
+      renderAgenda(items);
+      return;
+    }
+
+    calGrid.classList.remove("cal-agenda");
+    renderCalendarGrid(items);
+  }
+
+  /* ==========================================================================
+     Пустые состояния
+     ========================================================================== */
+
+  function emptyBox(text, actionLabel, onAction) {
+    const box = el("div", "empty");
+    box.appendChild(el("span", null, text));
+    if (actionLabel) box.appendChild(button("link", actionLabel, onAction));
+    return box;
+  }
+
+  function resetFilters() {
+    searchInput.value = "";
+    state.query = "";
+    state.actual = false;
+    state.signup = false;
+    state.fmt = "";
+    updateGroup(filterGroup, () => false, "aria-pressed");
+    updateGroup(fmtGroup, btn => btn.dataset.fmt === "", "aria-pressed");
+    build();
+    searchInput.focus();
+  }
+
+  /* ==========================================================================
+     Сборка страницы
+     ========================================================================== */
+
+  function updateSearchPlaceholder() {
+    searchInput.placeholder = isMobile() ? SEARCH_PLACEHOLDER_MOBILE : SEARCH_PLACEHOLDER;
+  }
+
+  function renderGantt() {
+    ganttInner.replaceChildren();
+
+    if (!state.events.length) {
+      ganttInner.appendChild(emptyBox("Нет данных о событиях"));
+      return;
+    }
+
+    const base = baseEvents();
+    if (!base.length) {
+      ganttInner.appendChild(emptyBox(
+        "Нет событий за выбранный период",
+        "показать все",
+        () => setRange(0)
+      ));
+      return;
+    }
+
+    computeRange(base);
+    const items = base.filter(matches);
+    if (!items.length) {
+      ganttInner.appendChild(emptyBox("Ничего не найдено", "сбросить фильтры", resetFilters));
+      return;
+    }
+    layoutGantt(items);
+  }
+
+  function build() {
+    hideTip();
+    updateSearchPlaceholder();
+
+    const isCalendar = state.tab === "event";
+    ganttWrap.classList.toggle("is-hidden", isCalendar);
+    calendarWrap.classList.toggle("is-active", isCalendar);
+    rangeGroup.classList.toggle("is-hidden", isCalendar);
+    calNav.classList.toggle("is-active", isCalendar);
+    fmtGroup.classList.toggle("is-active", isCalendar);
+    filterGroup.classList.toggle("is-hidden", isCalendar);
+
+    if (isCalendar) {
+      renderCalendar();
+      return;
+    }
+    renderGantt();
+  }
+
+  /* ==========================================================================
+     Подсказка и карточка события
+     ========================================================================== */
+
   function ttRow(label, value, valueClass) {
     const row = el("div", "tt-row");
     row.append(el("span", "tt-label", label), el("span", valueClass, value));
     return row;
   }
 
-  function timeOf(h) {
-    const raw = (h.time || "").trim();
-    if (raw && /[–-]/.test(raw)) return raw;
-    const mins = (h.talks || [])
-      .map(t => ((t && t.time) || "").trim().match(/^(\d{1,2}):(\d{2})$/))
-      .filter(Boolean)
-      .map(m => +m[1] * 60 + +m[2]);
-    const hhmm = v => String(Math.floor(v / 60)).padStart(2, "0") + ":" + String(v % 60).padStart(2, "0");
-    let start = null, suffix = " мск";
-    if (raw) {
-      const m = raw.match(/(\d{1,2}:\d{2})/);
-      if (!m) return raw;
-      start = +m[1].split(":")[0] * 60 + +m[1].split(":")[1];
-      suffix = raw.slice(m.index + m[0].length);
-    } else if (mins.length) {
-      start = Math.min(...mins);
-    } else {
-      return null;
-    }
-    if (!mins.length) return raw || null;
-    const end = Math.max(...mins);
-    if (end <= start) return raw || hhmm(start) + suffix;
-    return hhmm(start) + "–" + hhmm(end) + suffix;
-  }
-
   function dateLineOf(h) {
-    const wY = MIN.getFullYear() !== MAX.getFullYear();
+    const wideYear = showYear();
     let line;
     if (Array.isArray(h.phases) && h.phases.length) {
       line = h.phases
-        .map(p => fmtRange(p.start, p.end, p.start_approx, wY) + (p.label ? " (" + p.label + ")" : ""))
+        .map(phase => fmtRange(phase.start, phase.end, phase.start_approx, wideYear) +
+          (phase.label ? " (" + phase.label + ")" : ""))
         .join(" · ");
     } else {
       line = h.start === h.end
-        ? (h.start_approx ? "≈" : "") + fmtDate(h.start, wY)
-        : fmtRange(h.start, h.end, h.start_approx, wY);
+        ? (h.start_approx ? "≈" : "") + fmtDate(h.start, wideYear)
+        : fmtRange(h.start, h.end, h.start_approx, wideYear);
     }
     const time = timeOf(h);
     if (time) line += " · " + time;
     if (h.registration) {
-      line += " · рег. " + (wY && h.registration_iso
+      line += " · рег. " + (wideYear && h.registration_iso
         ? h.registration.split(" ")[0] + " " + fmtDate(h.registration_iso, true)
         : h.registration);
     }
@@ -1993,17 +2218,20 @@
   }
 
   function regLineOf(h) {
-    if (h.registration_iso) return "Рег. до " + fmtDate(h.registration_iso, MIN.getFullYear() !== MAX.getFullYear());
+    if (h.registration_iso) return "Рег. до " + fmtDate(h.registration_iso, showYear());
     if (h.registration) return "Рег. " + h.registration;
     return null;
   }
 
   function phaseLinesOf(h) {
-    const wY = MIN.getFullYear() !== MAX.getFullYear();
-    return (h.phases || []).map(p => {
-      const label = p.label ? p.label.charAt(0).toUpperCase() + p.label.slice(1) : "";
-      const icon = (p.label || "").toLowerCase().includes("финал") ? "🏁" : "🎯";
-      return { icon: icon, text: (label ? label + " " : "") + fmtRange(p.start, p.end, p.start_approx, wY) };
+    const wideYear = showYear();
+    return (h.phases || []).map(phase => {
+      const label = phase.label ? phase.label.charAt(0).toUpperCase() + phase.label.slice(1) : "";
+      const icon = (phase.label || "").toLowerCase().includes("финал") ? "🏁" : "🎯";
+      return {
+        icon,
+        text: (label ? label + " " : "") + fmtRange(phase.start, phase.end, phase.start_approx, wideYear),
+      };
     });
   }
 
@@ -2018,167 +2246,167 @@
     const head = el("div", "tt-head");
     head.appendChild(el("span", "tt-name", h.name));
     tooltip.appendChild(head);
-    const wY = MIN.getFullYear() !== MAX.getFullYear();
+
+    const wideYear = showYear();
     const approx = h.start_approx ? "≈ " : "";
     const dates = h.start === h.end
-      ? approx + fmtDate(h.start, wY)
-      : approx + "С " + fmtDate(h.start, wY) + " по " + fmtDate(h.end, wY);
+      ? approx + fmtDate(h.start, wideYear)
+      : approx + "С " + fmtDate(h.start, wideYear) + " по " + fmtDate(h.end, wideYear);
     tooltip.appendChild(whenRow("📅", dates));
     const time = timeOf(h);
     if (time) tooltip.appendChild(whenRow("🕒", time));
     const reg = regLineOf(h);
     if (reg) tooltip.appendChild(whenRow("⏳", reg));
-    phaseLinesOf(h).forEach(p => tooltip.appendChild(whenRow(p.icon, p.text)));
+    phaseLinesOf(h).forEach(phase => tooltip.appendChild(whenRow(phase.icon, phase.text)));
     tooltip.classList.remove("hidden");
+  }
+
+  function renderProgram(talks) {
+    const program = el("div", "tt-program");
+    const section = el("div", "tt-section");
+    section.appendChild(el("span", "tt-label", "📋 Программа:"));
+    program.appendChild(section);
+
+    const list = el("ul", "tt-talks" + (talks.some(talk => talk.time) ? "" : " tt-talks--notime"));
+    talks.forEach(talk => {
+      const item = el("li");
+      item.appendChild(el("span", "tt-talk-time", talk.time || ""));
+      const body = el("span", "tt-talk-body");
+      if (talk.video_url && isHttp(talk.video_url)) {
+        const link = externalLink(talk.video_url, "tt-talk-title tt-talk-link", talk.title);
+        link.title = "Открыть запись доклада";
+        body.appendChild(link);
+      } else {
+        body.appendChild(el("span", "tt-talk-title", talk.title));
+      }
+      item.appendChild(body);
+      list.appendChild(item);
+    });
+    program.appendChild(list);
+    return program;
+  }
+
+  function calendarExportRow(h) {
+    const row = el("div", "tt-row tt-cal");
+    row.appendChild(el("span", "tt-label", "📆 В календарь:"));
+    row.appendChild(externalLink(
+      googleCalendarUrl(h.name, h.start, h.end, detailsOf(h)),
+      "tt-link",
+      "Google"
+    ));
+    if (h.registration_iso) {
+      const regText = fmtDate(h.registration_iso, showYear());
+      row.appendChild(externalLink(
+        googleCalendarUrl(
+          h.name + " — рег. до " + regText,
+          h.registration_iso,
+          h.registration_iso,
+          "Регистрация до " + regText + (h.url ? "\n" + h.url : "")
+        ),
+        "tt-link",
+        "Google (рег. до " + regText + ")"
+      ));
+    }
+    row.appendChild(button("tt-link", "Скачать .ics", () => downloadICS(h)));
+    return row;
   }
 
   function renderFull(container, h) {
     container.replaceChildren();
+
     const head = el("div", "tt-head");
     const host = h.url ? hostOf(h.url) : "";
     if (host) {
-      const exts = ["png", "svg"];
-      const img = el("img", "tt-fav");
-      img.alt = "";
-      img.addEventListener("error", () => {
-        if (exts.length) img.src = "icons/" + host + "." + exts.shift();
-        else img.remove();
+      const extensions = ["png", "svg"];
+      const image = el("img", "tt-fav");
+      image.alt = "";
+      image.addEventListener("error", () => {
+        if (extensions.length) image.src = "icons/" + host + "." + extensions.shift();
+        else image.remove();
       });
-      img.src = "icons/" + host + "." + exts.shift();
-      head.appendChild(img);
+      image.src = "icons/" + host + "." + extensions.shift();
+      head.appendChild(image);
     }
     head.appendChild(el("span", "tt-name", h.name));
     container.append(head, el("div", "tt-dates", dateLineOf(h)));
+
     const talks = h.talks || [];
-    const cols = el("div", "tt-cols" + (talks.length ? " tt-cols--split" : ""));
+    const columns = el("div", "tt-cols" + (talks.length ? " tt-cols--split" : ""));
     const main = el("div");
-    if (h.description && !talks.length) main.appendChild(el("div", "tt-desc", h.description));
     const side = el("div", "tt-col-side tt-links");
-    cols.appendChild(main);
-    if (talks.length) {
-      const program = el("div", "tt-program");
-      const section = el("div", "tt-section");
-      section.appendChild(el("span", "tt-label", "📋 Программа:"));
-      program.appendChild(section);
-      const ul = el("ul", "tt-talks" + (talks.some(t => t.time) ? "" : " tt-talks--notime"));
-      talks.forEach(t => {
-        const li = el("li");
-        li.appendChild(el("span", "tt-talk-time", t.time || ""));
-        const body = el("span", "tt-talk-body");
-        if (t.video_url && /^https?:\/\//i.test(t.video_url)) {
-          const a = el("a", "tt-talk-title tt-talk-link", t.title);
-          a.href = t.video_url;
-          a.target = "_blank";
-          a.rel = "noopener noreferrer";
-          a.title = "Открыть запись доклада";
-          body.appendChild(a);
-        } else {
-          body.appendChild(el("span", "tt-talk-title", t.title));
-        }
-        li.appendChild(body);
-        ul.appendChild(li);
-      });
-      program.appendChild(ul);
-      cols.appendChild(program);
+    columns.appendChild(main);
+    if (talks.length) columns.appendChild(renderProgram(talks));
+    container.appendChild(columns);
+
+    if (h.description && !talks.length) {
+      main.appendChild(el("div", "tt-desc", h.description));
     }
-    container.appendChild(cols);
 
     const tasks = h.tasks || [];
     if (tasks.length) {
       const section = el("div", "tt-section");
       section.appendChild(el("span", "tt-label", state.tab === "event" ? "🏷️ Темы:" : "🏷️ Треки:"));
       main.appendChild(section);
-      const ul = el("ul", "tt-list");
-      tasks.forEach(t => ul.appendChild(el("li", null, t)));
-      main.appendChild(ul);
+      const list = el("ul", "tt-list");
+      tasks.forEach(task => list.appendChild(el("li", null, task)));
+      main.appendChild(list);
     }
+
     if (h.prize) main.appendChild(ttRow("💰 Приз:", stripLabel(h.prize), "tt-prize"));
     if (h.participation) main.appendChild(ttRow("🏀 Участие:", stripLabel(h.participation)));
     if (h.format) main.appendChild(ttRow("🌐 Формат:", stripLabel(h.format)));
     if (h.lang) main.appendChild(ttRow("🖥️ Язык:", h.lang));
 
-    if (h.url && /^https?:\/\//i.test(h.url)) {
-      const a = el("a", "tt-link tt-side-link", "🔗 Открыть страницу события");
-      a.href = h.url;
-      a.target = "_blank";
-      a.rel = "noopener noreferrer";
-      side.appendChild(a);
+    if (isHttp(h.url)) {
+      side.appendChild(externalLink(h.url, "tt-link tt-side-link", "🔗 Открыть страницу события"));
     }
-    const links = h.links || [];
-    [["stream", "📡 Трансляции:"], ["solutions", "📦 Решения:"], ["ceremony", "🎬 Церемонии:"], ["video", "📺 Видео:"], ["article", "📰 Статьи:"]]
-      .forEach(([kind, label]) => {
-        let items = links.filter(l => l.kind === kind);
-        if (state.tab === "event" && kind === "video" && items.length > 1 &&
-            (h.talks || []).some(t => t.video_url)) {
-          items = items.slice(0, 1);
-        }
-        if (!items.length) return;
-        side.appendChild(el("span", "tt-label", label));
-        const ul = el("ul", "tt-list");
-        items.forEach(l => {
-          const a = el("a", "tt-link", l.title);
-          a.href = l.url;
-          a.target = "_blank";
-          a.rel = "noopener noreferrer";
-          ul.appendChild(el("li")).appendChild(a);
-        });
-        side.appendChild(ul);
-      });
 
-    const calRow = el("div", "tt-row tt-cal");
-    calRow.appendChild(el("span", "tt-label", "📆 В календарь:"));
-    const google = el("a", "tt-link", "Google");
-    google.href = googleUrl(h.name, h.start, h.end, detailsOf(h));
-    google.target = "_blank";
-    google.rel = "noopener noreferrer";
-    calRow.appendChild(google);
-    if (h.registration_iso) {
-      const wY = MIN.getFullYear() !== MAX.getFullYear();
-      const regText = fmtDate(h.registration_iso, wY);
-      const googleReg = el("a", "tt-link", "Google (рег. до " + regText + ")");
-      googleReg.href = googleUrl(h.name + " — рег. до " + regText, h.registration_iso, h.registration_iso,
-        "Регистрация до " + regText + (h.url ? "\n" + h.url : ""));
-      googleReg.target = "_blank";
-      googleReg.rel = "noopener noreferrer";
-      calRow.appendChild(googleReg);
-    }
-    const ics = el("button", "tt-link", "Скачать .ics");
-    ics.type = "button";
-    ics.addEventListener("click", () => downloadICS(h));
-    calRow.appendChild(ics);
-    main.appendChild(calRow);
+    const links = h.links || [];
+    LINK_GROUPS.forEach(group => {
+      let groupLinks = links.filter(link => link.kind === group.kind);
+      if (state.tab === "event" && group.kind === "video" && groupLinks.length > 1 &&
+          talks.some(talk => talk.video_url)) {
+        groupLinks = groupLinks.slice(0, 1);
+      }
+      if (!groupLinks.length) return;
+      side.appendChild(el("span", "tt-label", group.label));
+      const list = el("ul", "tt-list");
+      groupLinks.forEach(link => {
+        const anchor = externalLink(link.url, "tt-link", link.title);
+        list.appendChild(el("li")).appendChild(anchor);
+      });
+      side.appendChild(list);
+    });
+
+    main.appendChild(calendarExportRow(h));
+
     if (side.childNodes.length) {
       if (!talks.length && state.tab === "comp") {
-        cols.classList.add("tt-cols--side");
-        cols.appendChild(side);
+        columns.classList.add("tt-cols--side");
+        columns.appendChild(side);
       } else {
         main.appendChild(side);
       }
     }
   }
 
-  /* ---------- calendar export ---------- */
-  const pad2 = n => (n < 10 ? "0" : "") + n;
-  const compactDate = iso => iso.replace(/-/g, "");
-  function addDaysISO(iso, n) {
-    const d = parseISO(iso);
-    d.setDate(d.getDate() + n);
-    return d.getFullYear() + "-" + pad2(d.getMonth() + 1) + "-" + pad2(d.getDate());
-  }
+  /* ==========================================================================
+     Экспорт в календарь (.ics)
+     ========================================================================== */
 
   function detailsOf(h) {
-    const wY = MIN.getFullYear() !== MAX.getFullYear();
+    const wideYear = showYear();
     const lines = ["Даты: " + (h.start === h.end
-      ? (h.start_approx ? "≈" : "") + fmtDate(h.start, wY)
-      : fmtRange(h.start, h.end, h.start_approx, wY))];
-    (h.phases || []).forEach(p => {
-      lines.push((p.label ? p.label.charAt(0).toUpperCase() + p.label.slice(1) + ": " : "") +
-                 fmtRange(p.start, p.end, p.start_approx, wY));
+      ? (h.start_approx ? "≈" : "") + fmtDate(h.start, wideYear)
+      : fmtRange(h.start, h.end, h.start_approx, wideYear))];
+    (h.phases || []).forEach(phase => {
+      lines.push((phase.label ? phase.label.charAt(0).toUpperCase() + phase.label.slice(1) + ": " : "") +
+        fmtRange(phase.start, phase.end, phase.start_approx, wideYear));
     });
     if (h.time) lines.push("Время: " + h.time);
     if (h.description) lines.push(h.description);
     if (h.registration) {
-      const reg = h.registration_iso ? fmtDate(h.registration_iso, wY) : h.registration.replace(/^до\s*/i, "");
+      const reg = h.registration_iso ? fmtDate(h.registration_iso, wideYear) : h.registration.replace(/^до\s*/i, "");
       lines.push("Рег. до: " + reg);
     }
     if (h.prize) lines.push(stripLabel(h.prize));
@@ -2187,30 +2415,24 @@
     return lines.join("\n");
   }
 
-  function googleUrl(text, start, end, details) {
+  function googleCalendarUrl(text, start, end, details) {
     return "https://calendar.google.com/calendar/render?action=TEMPLATE" +
       "&text=" + encodeURIComponent(text) +
       "&dates=" + compactDate(start) + "/" + compactDate(addDaysISO(end, 1)) +
       (details ? "&details=" + encodeURIComponent(details) : "");
   }
 
-  const TRANSLIT = {
-    а: "a", б: "b", в: "v", г: "g", д: "d", е: "e", ё: "e", ж: "zh", з: "z", и: "i",
-    й: "y", к: "k", л: "l", м: "m", н: "n", о: "o", п: "p", р: "r", с: "s", т: "t",
-    у: "u", ф: "f", х: "h", ц: "ts", ч: "ch", ш: "sh", щ: "sch", ъ: "", ы: "y",
-    ь: "", э: "e", ю: "yu", я: "ya",
-  };
-  function slugify(s) {
-    return s.toLowerCase().split("")
-      .map(ch => (TRANSLIT[ch] !== undefined ? TRANSLIT[ch] : ch))
+  function slugify(value) {
+    return value.toLowerCase().split("")
+      .map(char => (TRANSLIT[char] !== undefined ? TRANSLIT[char] : char))
       .join("")
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/^-+|-+$/g, "")
       .slice(0, 60) || "event";
   }
 
-  function icsEscape(s) {
-    return String(s)
+  function icsEscape(value) {
+    return String(value)
       .replace(/\\/g, "\\\\")
       .replace(/;/g, "\\;")
       .replace(/,/g, "\\,")
@@ -2218,30 +2440,31 @@
   }
 
   function icsFold(line) {
-    const out = [];
-    let cur = "", len = 0;
-    for (const ch of line) {
-      const size = encodeURIComponent(ch).replace(/%[0-9A-F]{2}/g, "x").length;
-      if (len + size > 73) {
-        out.push(cur);
-        cur = " ";
-        len = 1;
+    const result = [];
+    let current = "";
+    let length = 0;
+    for (const char of line) {
+      const size = encodeURIComponent(char).replace(/%[0-9A-F]{2}/g, "x").length;
+      if (length + size > 73) {
+        result.push(current);
+        current = " ";
+        length = 1;
       }
-      cur += ch;
-      len += size;
+      current += char;
+      length += size;
     }
-    out.push(cur);
-    return out.join("\r\n");
+    result.push(current);
+    return result.join("\r\n");
   }
 
   function utcStamp() {
-    const d = new Date();
-    return d.getUTCFullYear() + pad2(d.getUTCMonth() + 1) + pad2(d.getUTCDate()) +
-      "T" + pad2(d.getUTCHours()) + pad2(d.getUTCMinutes()) + pad2(d.getUTCSeconds()) + "Z";
+    const date = new Date();
+    return date.getUTCFullYear() + pad2(date.getUTCMonth() + 1) + pad2(date.getUTCDate()) +
+      "T" + pad2(date.getUTCHours()) + pad2(date.getUTCMinutes()) + pad2(date.getUTCSeconds()) + "Z";
   }
 
   function buildICS(h) {
-    const wY = MIN.getFullYear() !== MAX.getFullYear();
+    const wideYear = showYear();
     const stamp = utcStamp();
     const uid = slugify(h.name) + "-" + compactDate(h.start);
     const lines = [
@@ -2260,7 +2483,7 @@
     if (h.url) lines.push("URL:" + h.url);
     lines.push("END:VEVENT");
     if (h.registration_iso) {
-      const reg = fmtDate(h.registration_iso, wY);
+      const reg = fmtDate(h.registration_iso, wideYear);
       lines.push(
         "BEGIN:VEVENT",
         "UID:" + uid + "-reg@hack-calendar",
@@ -2268,7 +2491,7 @@
         "DTSTART;VALUE=DATE:" + compactDate(h.registration_iso),
         "DTEND;VALUE=DATE:" + compactDate(addDaysISO(h.registration_iso, 1)),
         "SUMMARY:" + icsEscape(h.name + " — рег. до " + reg),
-        "DESCRIPTION:" + icsEscape("Дедлайн регистрации: " + reg + (h.url ? "\n" + h.url : "")),
+        "DESCRIPTION:" + icsEscape("Дедлайн регистрации: " + reg + (h.url ? "\n" + h.url : ""))
       );
       if (h.url) lines.push("URL:" + h.url);
       lines.push("END:VEVENT");
@@ -2280,16 +2503,77 @@
   function downloadICS(h) {
     const blob = new Blob([buildICS(h)], { type: "text/calendar;charset=utf-8" });
     const url = URL.createObjectURL(blob);
-    const a = el("a");
-    a.href = url;
-    a.download = slugify(h.name) + ".ics";
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
+    const link = el("a");
+    link.href = url;
+    link.download = slugify(h.name) + ".ics";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
 
+  /* ==========================================================================
+     Подсказка: позиционирование
+     ========================================================================== */
+
+  function placeTip(x, y) {
+    const padding = 14;
+    const margin = 8;
+    const width = tooltip.offsetWidth;
+    const height = tooltip.offsetHeight;
+    let left = x + padding;
+    let top = y + padding;
+    if (left + width > window.innerWidth - margin) left = x - width - padding;
+    if (top + height > window.innerHeight - margin) top = y - height - padding;
+    tooltip.style.left = Math.max(margin, left) + "px";
+    tooltip.style.top = Math.max(margin, top) + "px";
+  }
+
+  function showTip(e, h) {
+    renderTip(h);
+    placeTip(e.clientX, e.clientY);
+  }
+
+  function showTipAtRect(rect, h) {
+    renderTip(h);
+    placeTip(rect.right + 10, rect.top);
+  }
+
+  function moveTip(e) {
+    placeTip(e.clientX, e.clientY);
+  }
+
+  function hideTip() {
+    tooltip.classList.add("hidden");
+  }
+
+  function bindTip(node, h) {
+    node.addEventListener("mouseenter", e => showTip(e, h));
+    node.addEventListener("mousemove", moveTip);
+    node.addEventListener("mouseleave", hideTip);
+  }
+
+  function bindRowHover(nameRow, track) {
+    const on = () => {
+      nameRow.classList.add("is-hover");
+      track.classList.add("is-hover");
+    };
+    const off = () => {
+      nameRow.classList.remove("is-hover");
+      track.classList.remove("is-hover");
+    };
+    nameRow.addEventListener("mouseenter", on);
+    nameRow.addEventListener("mouseleave", off);
+    track.addEventListener("mouseenter", on);
+    track.addEventListener("mouseleave", off);
+  }
+
+  /* ==========================================================================
+     Модальная карточка
+     ========================================================================== */
+
   let modalLastFocus = null;
+
   function openModal(h) {
     hideTip();
     modalLastFocus = document.activeElement;
@@ -2299,6 +2583,7 @@
     modalBackdrop.classList.remove("hidden");
     modalClose.focus();
   }
+
   function closeModal() {
     if (modalBackdrop.classList.contains("hidden")) return;
     modalBackdrop.classList.add("hidden");
@@ -2306,27 +2591,38 @@
     if (modalLastFocus && typeof modalLastFocus.focus === "function") modalLastFocus.focus();
     modalLastFocus = null;
   }
+
   modalClose.addEventListener("click", closeModal);
   modalBackdrop.addEventListener("click", e => {
     if (e.target === modalBackdrop) closeModal();
   });
 
+  /* ==========================================================================
+     Форма предложения события
+     ========================================================================== */
+
   let suggestLastFocus = null;
+  let suggestCloseTimer = null;
+
   function setSuggestStatus(text, kind) {
     suggestStatus.textContent = text || "";
     suggestStatus.classList.toggle("is-hidden", !text);
     suggestStatus.classList.toggle("is-ok", kind === "ok");
     suggestStatus.classList.toggle("is-err", kind === "err");
   }
+
   function openSuggest() {
     hideTip();
+    clearTimeout(suggestCloseTimer);
     suggestLastFocus = document.activeElement;
     suggestBackdrop.classList.remove("hidden");
     setSuggestStatus("", "");
     suggestDesc.focus();
   }
+
   function closeSuggest() {
     if (suggestBackdrop.classList.contains("hidden")) return;
+    clearTimeout(suggestCloseTimer);
     suggestBackdrop.classList.add("hidden");
     suggestForm.reset();
     setSuggestStatus("", "");
@@ -2334,16 +2630,18 @@
     if (suggestLastFocus && typeof suggestLastFocus.focus === "function") suggestLastFocus.focus();
     suggestLastFocus = null;
   }
-  function mailtoSuggest(desc, link) {
-    const body = "Ссылка: " + link + "\n\nОписание:\n" + desc;
+
+  function mailtoSuggest(description, link) {
+    const body = "Ссылка: " + link + "\n\nОписание:\n" + description;
     const subject = encodeURIComponent("ML-Gantt: предложение события");
-    window.location.href = "mailto:slivka_83@mail.ru?subject=" + subject + "&body=" + encodeURIComponent(body);
+    window.location.href = "mailto:" + FEEDBACK_EMAIL + "?subject=" + subject + "&body=" + encodeURIComponent(body);
   }
-  async function sendSuggest(desc, link) {
+
+  async function sendSuggest(description, link) {
     suggestSubmit.disabled = true;
     setSuggestStatus("Отправляем…", "");
     try {
-      const res = await fetch("https://formsubmit.co/ajax/slivka_83@mail.ru", {
+      const response = await fetch(FEEDBACK_ENDPOINT, {
         method: "POST",
         headers: { "Content-Type": "application/json", "Accept": "application/json" },
         body: JSON.stringify({
@@ -2351,20 +2649,21 @@
           _template: "table",
           _captcha: "false",
           "Ссылка": link,
-          "Описание": desc
-        })
+          "Описание": description,
+        }),
       });
-      if (!res.ok) throw new Error("HTTP " + res.status);
+      if (!response.ok) throw new Error("HTTP " + response.status);
       setSuggestStatus("Спасибо! Предложение отправлено.", "ok");
       suggestForm.reset();
-      setTimeout(closeSuggest, 2200);
-    } catch (err) {
+      suggestCloseTimer = setTimeout(closeSuggest, 2200);
+    } catch (error) {
       setSuggestStatus("Не получилось отправить автоматически — открываю почтовый клиент…", "err");
-      mailtoSuggest(desc, link);
+      mailtoSuggest(description, link);
     } finally {
       suggestSubmit.disabled = false;
     }
   }
+
   suggestBtn.addEventListener("click", openSuggest);
   suggestClose.addEventListener("click", closeSuggest);
   suggestBackdrop.addEventListener("click", e => {
@@ -2372,14 +2671,14 @@
   });
   suggestForm.addEventListener("submit", e => {
     e.preventDefault();
-    const desc = suggestDesc.value.trim();
+    const description = suggestDesc.value.trim();
     const link = suggestLink.value.trim();
-    if (!desc && !link) {
+    if (!description && !link) {
       setSuggestStatus("Заполните хотя бы одно поле — описание или ссылка.", "err");
       suggestDesc.focus();
       return;
     }
-    sendSuggest(desc, link);
+    sendSuggest(description, link);
   });
   [suggestDesc, suggestLink].forEach(field => {
     field.addEventListener("input", () => {
@@ -2387,163 +2686,147 @@
     });
   });
 
-  function placeTip(x, y) {
-    const pad = 14, margin = 8;
-    const tw = tooltip.offsetWidth, th = tooltip.offsetHeight;
-    let left = x + pad, top = y + pad;
-    if (left + tw > window.innerWidth - margin) left = x - tw - pad;
-    if (top + th > window.innerHeight - margin) top = y - th - pad;
-    tooltip.style.left = Math.max(margin, left) + "px";
-    tooltip.style.top = Math.max(margin, top) + "px";
-  }
+  /* ==========================================================================
+     Тема оформления
+     ========================================================================== */
 
-  function showTip(e, h) {
-    renderTip(h);
-    placeTip(e.clientX, e.clientY);
-  }
-  function showTipAtRect(rect, h) {
-    renderTip(h);
-    placeTip(rect.right + 10, rect.top);
-  }
-  function moveTip(e) {
-    placeTip(e.clientX, e.clientY);
-  }
-  function hideTip() {
-    tooltip.classList.add("hidden");
-  }
-
-  /* ---------- theme ---------- */
-  function applyTheme(theme, save) {
+  function applyTheme(theme, persist) {
     document.documentElement.dataset.theme = theme;
-    themeToggle.innerHTML = theme === "light" ? MOON_SVG : SUN_SVG;
+    themeToggle.innerHTML = theme === "light" ? ICONS.moon : ICONS.sun;
     const label = theme === "light" ? "Включить тёмную тему" : "Включить светлую тему";
     themeToggle.setAttribute("aria-label", label);
     themeToggle.title = label;
     if (themeColor) themeColor.setAttribute("content", theme === "light" ? "#eef1f7" : "#0d1322");
-    if (save) {
-      try { localStorage.setItem("hc-theme", theme); } catch (err) {}
-    }
+    if (persist) storageSet(STORAGE_THEME, theme);
   }
+
   applyTheme(document.documentElement.dataset.theme === "light" ? "light" : "dark", false);
   themeToggle.addEventListener("click", () => {
     applyTheme(document.documentElement.dataset.theme === "light" ? "dark" : "light", true);
   });
 
-  /* ---------- controls ---------- */
-  function setRange(n) {
-    state.range = n;
+  /* ==========================================================================
+     Управление: вкладки, период, фильтры, поиск
+     ========================================================================== */
+
+  function setRange(range) {
+    state.range = range;
     state.ganttInit = false;
-    rangeGroup.querySelectorAll(".seg-btn").forEach(btn => {
-      const active = Number(btn.dataset.range) === n;
-      btn.classList.toggle("is-active", active);
-      btn.setAttribute("aria-pressed", String(active));
-    });
+    updateGroup(rangeGroup, btn => Number(btn.dataset.range) === range, "aria-pressed");
     build();
   }
-  rangeGroup.addEventListener("click", e => {
-    const btn = e.target.closest(".seg-btn");
-    if (!btn) return;
-    const n = Number(btn.dataset.range);
-    if (Number.isFinite(n) && n !== state.range) setRange(n);
-  });
 
-  filterGroup.addEventListener("click", e => {
-    const btn = e.target.closest(".seg-btn");
-    if (!btn) return;
-    const key = btn.dataset.filter;
-    if (key !== "actual" && key !== "signup") return;
-    state[key] = !state[key];
-    btn.classList.toggle("is-active", state[key]);
-    btn.setAttribute("aria-pressed", String(state[key]));
+  function setFormat(format) {
+    state.fmt = format;
+    updateGroup(fmtGroup, btn => btn.dataset.fmt === format, "aria-pressed");
     build();
-    calJumpToResults();
-  });
+    jumpToCalendarResults();
+  }
 
-  fmtGroup.addEventListener("click", e => {
-    const btn = e.target.closest(".seg-btn");
-    if (!btn || btn.dataset.fmt === state.fmt) return;
-    state.fmt = btn.dataset.fmt;
-    fmtGroup.querySelectorAll(".seg-btn").forEach(b => {
-      const active = b === btn;
-      b.classList.toggle("is-active", active);
-      b.setAttribute("aria-pressed", String(active));
-    });
-    build();
-    calJumpToResults();
-  });
-
-  tabGroup.addEventListener("click", e => {
-    const btn = e.target.closest(".seg-btn");
-    if (!btn) return;
-    const tab = btn.dataset.tab;
-    if ((tab !== "comp" && tab !== "event") || tab === state.tab) return;
+  function setTab(tab) {
     state.tab = tab;
-    tabGroup.querySelectorAll(".seg-btn").forEach(b => {
-      const active = b === btn;
-      b.classList.toggle("is-active", active);
-      b.setAttribute("aria-selected", String(active));
-    });
-    EVENTS = DATASETS[tab];
-    try { localStorage.setItem("hc-tab", tab); } catch (err) {}
+    updateGroup(tabGroup, btn => btn.dataset.tab === tab, "aria-selected");
+    storageSet(STORAGE_TAB, tab);
     ganttScroll.scrollTop = 0;
     state.ganttInit = false;
     build();
-    calJumpToResults();
+    jumpToCalendarResults();
+  }
+
+  updateGroup(tabGroup, btn => btn.dataset.tab === state.tab, "aria-selected");
+
+  onSegmentClick(rangeGroup, btn => {
+    const range = Number(btn.dataset.range);
+    if (Number.isFinite(range) && range !== state.range) setRange(range);
   });
 
-  calPrev.addEventListener("click", () => calShift(-1));
-  calNext.addEventListener("click", () => calShift(1));
+  onSegmentClick(filterGroup, btn => {
+    const key = btn.dataset.filter;
+    if (key !== "actual" && key !== "signup") return;
+    state[key] = !state[key];
+    setButtonState(btn, state[key], "aria-pressed");
+    build();
+    jumpToCalendarResults();
+  });
+
+  onSegmentClick(fmtGroup, btn => {
+    if (btn.dataset.fmt === state.fmt) return;
+    setFormat(btn.dataset.fmt);
+  });
+
+  onSegmentClick(tabGroup, btn => {
+    const tab = btn.dataset.tab;
+    if ((tab !== "comp" && tab !== "event") || tab === state.tab) return;
+    setTab(tab);
+  });
+
+  calPrev.addEventListener("click", () => shiftCalendarMonth(-1));
+  calNext.addEventListener("click", () => shiftCalendarMonth(1));
   calToday.addEventListener("click", () => {
-    const todayDate = todayMidnight();
-    if (isMobile() && calScrollToDay(ymd(todayDate), true)) return;
-    if (!calScrollToMonth(ymOf(todayDate), true)) {
+    const today = todayMidnight();
+    if (isMobile() && calendarScrollToDay(ymd(today), true)) return;
+    if (!calendarScrollToMonth(ymOf(today), true)) {
       const first = calGrid.querySelector("[data-ym]");
-      if (first) calScrollToMonth(first.dataset.ym, true);
+      if (first) calendarScrollToMonth(first.dataset.ym, true);
     }
   });
 
   searchInput.addEventListener("input", () => {
     state.query = searchInput.value.trim().toLowerCase();
     build();
-    calJumpToResults();
-  });
-  document.addEventListener("keydown", e => {
-    if (e.key === "/" && !e.ctrlKey && !e.metaKey && !e.altKey &&
-        document.activeElement !== searchInput && suggestBackdrop.classList.contains("hidden")) {
-      e.preventDefault();
-      searchInput.focus();
-    } else if (state.tab === "event" && modalBackdrop.classList.contains("hidden") && suggestBackdrop.classList.contains("hidden") &&
-               (e.key === "ArrowLeft" || e.key === "ArrowRight") &&
-               !/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName)) {
-      e.preventDefault();
-      calShift(e.key === "ArrowLeft" ? -1 : 1);
-    } else if (e.key === "Escape") {
-      if (!suggestBackdrop.classList.contains("hidden")) {
-        closeSuggest();
-        return;
-      }
-      if (!modalBackdrop.classList.contains("hidden")) {
-        closeModal();
-        return;
-      }
-      if (state.query) {
-        searchInput.value = "";
-        state.query = "";
-        build();
-      }
-      searchInput.blur();
-      hideTip();
-    }
+    jumpToCalendarResults();
   });
 
-  const mobileMQ = window.matchMedia("(max-width: 600px)");
+  document.addEventListener("keydown", e => {
+    if (e.key === "/" && !e.ctrlKey && !e.metaKey && !e.altKey &&
+        document.activeElement !== searchInput &&
+        suggestBackdrop.classList.contains("hidden")) {
+      e.preventDefault();
+      searchInput.focus();
+      return;
+    }
+
+    if (state.tab === "event" &&
+        modalBackdrop.classList.contains("hidden") &&
+        suggestBackdrop.classList.contains("hidden") &&
+        (e.key === "ArrowLeft" || e.key === "ArrowRight") &&
+        !/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName)) {
+      e.preventDefault();
+      shiftCalendarMonth(e.key === "ArrowLeft" ? -1 : 1);
+      return;
+    }
+
+    if (e.key !== "Escape") return;
+
+    if (!suggestBackdrop.classList.contains("hidden")) {
+      closeSuggest();
+      return;
+    }
+    if (!modalBackdrop.classList.contains("hidden")) {
+      closeModal();
+      return;
+    }
+    if (state.query) {
+      searchInput.value = "";
+      state.query = "";
+      build();
+    }
+    searchInput.blur();
+    hideTip();
+  });
+
+  /* ==========================================================================
+     Адаптивность и запуск
+     ========================================================================== */
+
+  const mobileQuery = window.matchMedia("(max-width: " + MOBILE_MAX + "px)");
   const onBreakpoint = () => {
     state.calInit = false;
     state.ganttInit = false;
     build();
   };
-  if (mobileMQ.addEventListener) mobileMQ.addEventListener("change", onBreakpoint);
-  else if (mobileMQ.addListener) mobileMQ.addListener(onBreakpoint);
+  if (mobileQuery.addEventListener) mobileQuery.addEventListener("change", onBreakpoint);
+  else if (mobileQuery.addListener) mobileQuery.addListener(onBreakpoint);
 
   let resizeTimer = null;
   window.addEventListener("resize", () => {
