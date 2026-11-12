@@ -7110,6 +7110,35 @@ const MEETUPS = [
     "start_approx": false
   },
   {
+    "type": "МИТАП",
+    "name": "VTORNIK. Вечер #12",
+    "description": "Вечерний митап VTORNIK.Company о внедрении AI в организациях: доклады об AIOps — от детекции аномалий до автономных операций — и о том, как внедрить владение данными не только на бумаге. Офлайн в Москве, Никитский пер. 7с1 (офис ГК «Солар»).",
+    "time": "19:00–21:00 мск",
+    "tasks": [],
+    "prize": null,
+    "participation": "Участие: бесплатно, по регистрации",
+    "format": "Формат: офлайн в Москве",
+    "lang": null,
+    "url": "https://vtornik.company/events/vtornik-vecher-12",
+    "registration": null,
+    "registration_iso": null,
+    "phases": null,
+    "talks": [
+      {
+        "time": "19:10",
+        "title": "AIOps: от детекции аномалий до автономных операций"
+      },
+      {
+        "time": "20:10",
+        "title": "Внедрение владения данными не только на бумаге"
+      }
+    ],
+    "links": null,
+    "start": "2026-11-24",
+    "end": "2026-11-24",
+    "start_approx": false
+  },
+  {
     "type": "КОНФ",
     "name": "AI Journey 2026",
     "description": "Международная конференция по искусственному интеллекту от Сбера: Москва и онлайн.",
