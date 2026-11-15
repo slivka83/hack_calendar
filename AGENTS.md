@@ -205,9 +205,9 @@
   `events.online.gpb.ru` (Газпромбанк; сайт — SPA, данные отдаёт
   `/oerservice/api/v1/events/<id>`, список — `/oerservice/api/v1/events/dashboard`
   с `TimePeriodFilter=1&ClientAccount=gpb`), семинары AGI-in-Russian из
-  `agirussia.github.io/workshops.md` — не добавляются: у них нет индивидуальных
-  страниц (только общая страница расписания `agirussia.org/workshops.html` и
-  одна серия регистрации на `aigents.timepad.ru`), афиша
+  `agirussia.org/workshops.md` — добавляются вручную по анонсам (индивидуальной
+  страницы может не быть — тогда `url` — страница серии на
+  `aigents.timepad.ru`, а программа — один доклад из расписания), афиша
   ODS `ods.ai/events` (митапы и Data Fest),
   `cloud.ru/events` (Cloud.ru), конференции Онтико `aicasesconf.ru` и
   `ainativeconf.ru`, `conversations-ai.com`. Обновляются вручную с открытых
