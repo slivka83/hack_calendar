@@ -204,7 +204,10 @@
   (Яндекс), `developers.sber.ru/kak-v-sbere/events` (Сбер),
   `events.online.gpb.ru` (Газпромбанк; сайт — SPA, данные отдаёт
   `/oerservice/api/v1/events/<id>`, список — `/oerservice/api/v1/events/dashboard`
-  с `TimePeriodFilter=1&ClientAccount=gpb`), семинары AGI-in-Russian из
+  с `TimePeriodFilter=1&ClientAccount=gpb`), конференция AI Journey `aij.ru`
+  (программа — API
+  `/proxy/services/dictionary/shared/api/v2/schedule/period/<id>?language=RU`),
+  семинары AGI-in-Russian из
   `agirussia.org/workshops.md` — добавляются вручную по анонсам (индивидуальной
   страницы может не быть — тогда `url` — страница серии на
   `aigents.timepad.ru`, а программа — один доклад из расписания), афиша
