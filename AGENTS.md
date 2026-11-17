@@ -215,8 +215,10 @@
   `aigents.timepad.ru`, а программа — один доклад из расписания), афиша
   ODS `ods.ai/events` (митапы и Data Fest),
   `cloud.ru/events` (Cloud.ru), конференции Онтико `aicasesconf.ru` и
-  `ainativeconf.ru`, `conversations-ai.com`. Обновляются вручную с открытых
-  страниц.
+  `ainativeconf.ru`, `conversations-ai.com`, Podlodka `podlodka.io` (программа —
+  API `billingator.podlodka.io/billingator/season_info?product_id=...`),
+  `techweek.moscow` (программа — PDF, ссылка на `/program`), митапы ФКН НИУ ВШЭ
+  и Сбера `cs.hse.ru`. Обновляются вручную с открытых страниц.
 - Материалы в `links` ищутся в открытом вебе: трансляции — YouTube/VK Видео,
   решения — GitHub/Kaggle/разборы,
   церемонии — YouTube/VK Видео/RuTube, статьи — Хабр/VC.ru/СМИ. В БД попадают
