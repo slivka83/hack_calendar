@@ -207,6 +207,8 @@
   с `TimePeriodFilter=1&ClientAccount=gpb`), конференция AI Journey `aij.ru`
   (программа — API
   `/proxy/services/dictionary/shared/api/v2/schedule/period/<id>?language=RU`),
+  конференция «Импульс Т1» `impulse.t1.ru` (программа — страницы
+  `/event/moscow`, `/event/nizhnij-novgorod`, `/event/izhevsk`),
   семинары AGI-in-Russian из
   `agirussia.org/workshops.md` — добавляются вручную по анонсам (индивидуальной
   страницы может не быть — тогда `url` — страница серии на
