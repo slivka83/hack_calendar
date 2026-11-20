@@ -775,8 +775,13 @@
   .suggest-status.is-ok { color: var(--fmt-online); }
   .suggest-status.is-err { color: var(--today); }
 
-  @media (max-width: 1350px) {
+  @media (max-width: 1439px) {
     .promo { display: none; }
+  }
+  @media (min-width: 1440px) and (max-width: 1599px) {
+    .topbar { gap: 14px; }
+    .controls input[type="search"] { width: 170px; }
+    .promo { font-size: 11px; }
   }
   @media (max-width: 900px) {
     :root { --corner-w: 300px; }
@@ -886,11 +891,11 @@
   <!-- Ссылки на курсы из adv.md; показываем по одной, см. rotatePromo(). -->
   <nav class="promo" aria-label="Курсы">
     <a href="https://stepik.org/a/68260?promo=b997c468b105096d" target="_blank" rel="noopener noreferrer"
-       title="Алгоритмы машинного обучения с нуля — курс на Stepik">Алгоритмы ML</a>
+       title="Алгоритмы Машинного обучения с нуля">Алгоритмы Машинного обучения с нуля</a>
     <a href="https://stepik.org/a/231306?promo=5e79340ae02bce0d" target="_blank" rel="noopener noreferrer"
-       title="Разработка LLM с нуля — курс на Stepik" hidden>LLM с нуля</a>
+       title="Разработка LLM с нуля" hidden>Разработка LLM с нуля</a>
     <a href="https://stepik.org/a/258792?promo=43397a605d060da3" target="_blank" rel="noopener noreferrer"
-       title="Геопространственный анализ данных на Python — курс на Stepik" hidden>Геоанализ</a>
+       title="Геопространственный анализ данных на Python" hidden>Геопространственный анализ данных на Python</a>
   </nav>
   <div class="controls">
     <div class="seg" id="rangeGroup" role="group" aria-label="Период отображения">
