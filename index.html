@@ -91,6 +91,27 @@
   .tabs { margin-right: auto; padding: 4px; }
   .tabs .seg-btn { font-size: 13px; padding: 5px 12px; font-weight: 600; }
 
+  .promo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+    margin-right: auto;
+    font-size: 12px;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+  .promo a {
+    color: var(--muted);
+    text-decoration: underline dashed;
+    text-decoration-color: color-mix(in srgb, var(--muted) 55%, transparent);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    transition: color .15s, text-decoration-color .15s;
+  }
+  .promo a:hover { color: var(--accent); text-decoration-color: var(--accent); }
+  .promo a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+
   .controls { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 
   .seg {
@@ -754,6 +775,9 @@
   .suggest-status.is-ok { color: var(--fmt-online); }
   .suggest-status.is-err { color: var(--today); }
 
+  @media (max-width: 1350px) {
+    .promo { display: none; }
+  }
   @media (max-width: 900px) {
     :root { --corner-w: 300px; }
   }
@@ -859,6 +883,15 @@
     <button type="button" class="seg-btn is-active" data-tab="comp" role="tab" aria-selected="true">Соревнования</button>
     <button type="button" class="seg-btn" data-tab="event" role="tab" aria-selected="false">Мероприятия</button>
   </div>
+  <!-- Ссылки на курсы из adv.md; показываем по одной, см. rotatePromo(). -->
+  <nav class="promo" aria-label="Курсы">
+    <a href="https://stepik.org/a/68260?promo=b997c468b105096d" target="_blank" rel="noopener noreferrer"
+       title="Алгоритмы машинного обучения с нуля — курс на Stepik">Алгоритмы ML</a>
+    <a href="https://stepik.org/a/231306?promo=5e79340ae02bce0d" target="_blank" rel="noopener noreferrer"
+       title="Разработка LLM с нуля — курс на Stepik" hidden>LLM с нуля</a>
+    <a href="https://stepik.org/a/258792?promo=43397a605d060da3" target="_blank" rel="noopener noreferrer"
+       title="Геопространственный анализ данных на Python — курс на Stepik" hidden>Геоанализ</a>
+  </nav>
   <div class="controls">
     <div class="seg" id="rangeGroup" role="group" aria-label="Период отображения">
       <button type="button" class="seg-btn is-active" data-range="6" aria-pressed="true">6 мес</button>
@@ -954,6 +987,7 @@
   const DEFAULT_RANGE = 6;
   const STORAGE_TAB = "hc-tab";
   const STORAGE_THEME = "hc-theme";
+  const STORAGE_PROMO = "hc-promo";
   const FEEDBACK_ENDPOINT = "https://formsubmit.co/ajax/slivka_83@mail.ru";
   const FEEDBACK_EMAIL = "slivka_83@mail.ru";
   const SEARCH_PLACEHOLDER = "Поиск по названию, задаче или типу…";
@@ -1064,6 +1098,16 @@
   function initialTab() {
     const saved = storageGet(STORAGE_TAB);
     return saved === "event" || saved === "comp" ? saved : "comp";
+  }
+
+  function rotatePromo() {
+    const links = document.querySelectorAll(".promo a");
+    if (!links.length) return;
+    let index = Number(storageGet(STORAGE_PROMO));
+    if (!Number.isInteger(index) || index < 0) index = 0;
+    index %= links.length;
+    links.forEach((link, i) => { link.hidden = i !== index; });
+    storageSet(STORAGE_PROMO, String((index + 1) % links.length));
   }
 
   function prepareDataset(raw, reverse) {
@@ -2832,6 +2876,7 @@
     resizeTimer = setTimeout(build, 120);
   });
 
+  rotatePromo();
   build();
 })();
 </script>
