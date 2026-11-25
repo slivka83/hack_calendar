@@ -8843,5 +8843,58 @@ const MEETUPS = [
     "start": "2026-12-03",
     "end": "2026-12-04",
     "start_approx": false
+  },
+  {
+    "type": "МИТАП",
+    "name": "ML & Data Meetup RWB",
+    "description": "ML & Data Meetup RWB о том, как устроены ML- и Data-системы в production: BerryLM-100B, inference-платформа на KServe, оптимизация логистики, синтетические данные для OCR и отбор эмбеддингов. Эксперты RWB, Авито, VK Tech и Neoflex делятся инженерными решениями, узкими местами и компромиссами из реальной практики. Два трека: ML «Train Before Midnight» — масштабирование обучения до 100B параметров, быстрый инференс и ML-биддинг; Data «Let It Flow, Let It Scale» — синтетика для OCR, отладка stateful-пайплайнов на Kafka, Flink, RocksDB и ClickHouse, отбор эмбеддингов и семантический слой для агентов. В конце — нетворкинг и новогодняя атмосфера.",
+    "time": "13:00 мск",
+    "tasks": [],
+    "prize": null,
+    "participation": "По регистрации",
+    "format": "Формат: офлайн в Москве и онлайн",
+    "lang": null,
+    "url": "https://meetup.rwb.ru/events/ml-data",
+    "registration": null,
+    "registration_iso": null,
+    "phases": null,
+    "talks": [
+      {
+        "time": null,
+        "title": "Как превратить R&D в BerryLM-100B: от экспериментов до pretrain на 100B параметров"
+      },
+      {
+        "time": null,
+        "title": "Баланс обучения и окупаемости: как устроен ML-биддинг в real-time аукционе"
+      },
+      {
+        "time": null,
+        "title": "Где живут модели Авито: как мы построили inference-платформу на KServe"
+      },
+      {
+        "time": null,
+        "title": "От графа к подграфу: сокращение пространства поиска в задачах маршрутизации"
+      },
+      {
+        "time": null,
+        "title": "От одного изображения к бесконечной выборке: синтетика для OCR"
+      },
+      {
+        "time": null,
+        "title": "Не всё, что потерялось, потерял Flink: отладка сегментатора на Kafka, RocksDB и ClickHouse"
+      },
+      {
+        "time": null,
+        "title": "Feature Store: универсальный отбор эмбеддингов"
+      },
+      {
+        "time": null,
+        "title": "Как мы научили наших агентов обращаться к данным посредством построения семантического слоя"
+      }
+    ],
+    "links": null,
+    "start": "2026-12-05",
+    "end": "2026-12-05",
+    "start_approx": false
   }
 ];
